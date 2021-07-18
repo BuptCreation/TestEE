@@ -13,4 +13,14 @@
         <servlet-name>Regist</servlet-name>
         <url-pattern>/hello</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>RegistServlet</servlet-name>
+        <servlet-class>web.RegistServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RegistServlet</servlet-name>
+        <url-pattern>/registServlet</url-pattern>
+    </servlet-mapping>
 </web-app>
