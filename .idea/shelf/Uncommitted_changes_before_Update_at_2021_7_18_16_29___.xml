@@ -1,0 +1,24 @@
+<changelist name="Uncommitted_changes_before_Update_at_2021_7_18_16_29_[默认变更列表]" date="1626596978897" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2021_7_18_16_29_[默认变更列表]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 2021/7/18 16:29 [默认变更列表]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/Hello.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/Hello.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2021_7_18_16_29_[默认变更列表]/Hello.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/HelloHttp.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/HelloHttp.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2021_7_18_16_29_[默认变更列表]/HelloHttp.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/HelloHttp.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/HelloHttp.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2021_7_18_16_29_[默认变更列表]/HelloHttp1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/Hello.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/Hello.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2021_7_18_16_29_[默认变更列表]/Hello1.class" />
+  </binary>
+</changelist>

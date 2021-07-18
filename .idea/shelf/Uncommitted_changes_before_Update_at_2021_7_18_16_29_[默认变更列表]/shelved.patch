@@ -1,0 +1,48 @@
+Index: out/artifacts/BuptCreationEE_war_exploded/pages/user/regist.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html>\r\n\t<head>\r\n\t\t<meta charset=\"UTF-8\">\r\n\t\t<title>尚硅谷会员注册页面</title>\r\n\t\t<!--写base标签，永远固定相对路径跳转的结果-->\r\n\t\t<base href=\"../../\">\r\n\r\n\t\t<link type=\"text/css\" rel=\"stylesheet\" href=\"static/css/style.css\" >\r\n\t\t<script type=\"text/javascript\" src=\"static/script/jquery-1.7.2.js\"></script>\r\n\t\t<script type=\"text/javascript\">\r\n\t\t\t// 页面加载完成之后\r\n\t\t\t$(function () {\r\n\t\t\t\t// 给注册绑定单击事件\r\n\t\t\t\t$(\"#sub_btn\").click(function () {\r\n\t\t\t\t\t// 验证用户名：必须由字母，数字下划线组成，并且长度为5到12位\r\n\t\t\t\t\t//1 获取用户名输入框里的内容\r\n\t\t\t\t\tvar usernameText = $(\"#username\").val();\r\n\t\t\t\t\t//2 创建正则表达式对象\r\n\t\t\t\t\tvar usernamePatt = /^\\w{5,12}$/;\r\n\t\t\t\t\t//3 使用test方法验证\r\n\t\t\t\t\tif (!usernamePatt.test(usernameText)) {\r\n\t\t\t\t\t\t//4 提示用户结果\r\n\t\t\t\t\t\t$(\"span.errorMsg\").text(\"用户名不合法！\");\r\n\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\t// 验证密码：必须由字母，数字下划线组成，并且长度为5到12位\r\n\t\t\t\t\t//1 获取用户名输入框里的内容\r\n\t\t\t\t\tvar passwordText = $(\"#password\").val();\r\n\t\t\t\t\t//2 创建正则表达式对象\r\n\t\t\t\t\tvar passwordPatt = /^\\w{5,12}$/;\r\n\t\t\t\t\t//3 使用test方法验证\r\n\t\t\t\t\tif (!passwordPatt.test(passwordText)) {\r\n\t\t\t\t\t\t//4 提示用户结果\r\n\t\t\t\t\t\t$(\"span.errorMsg\").text(\"密码不合法！\");\r\n\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\t// 验证确认密码：和密码相同\r\n\t\t\t\t\t//1 获取确认密码内容\r\n\t\t\t\t\tvar repwdText = $(\"#repwd\").val();\r\n\t\t\t\t\t//2 和密码相比较\r\n\t\t\t\t\tif (repwdText != passwordText) {\r\n\t\t\t\t\t\t//3 提示用户\r\n\t\t\t\t\t\t$(\"span.errorMsg\").text(\"确认密码和密码不一致！\");\r\n\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\t// 邮箱验证：xxxxx@xxx.com\r\n\t\t\t\t\t//1 获取邮箱里的内容\r\n\t\t\t\t\tvar emailText = $(\"#email\").val();\r\n\t\t\t\t\t//2 创建正则表达式对象\r\n\t\t\t\t\tvar emailPatt = /^[a-z\\d]+(\\.[a-z\\d]+)*@([\\da-z](-[\\da-z])?)+(\\.{1,2}[a-z]+)+$/;\r\n\t\t\t\t\t//3 使用test方法验证是否合法\r\n\t\t\t\t\tif (!emailPatt.test(emailText)) {\r\n\t\t\t\t\t\t//4 提示用户\r\n\t\t\t\t\t\t$(\"span.errorMsg\").text(\"邮箱格式不合法！\");\r\n\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\t// 验证码：现在只需要验证用户已输入。因为还没讲到服务器。验证码生成。\r\n\t\t\t\t\tvar codeText = $(\"#code\").val();\r\n\r\n\t\t\t\t\t//去掉验证码前后空格\r\n\t\t\t\t\t// alert(\"去空格前：[\"+codeText+\"]\")\r\n\t\t\t\t\tcodeText = $.trim(codeText);\r\n\t\t\t\t\t// alert(\"去空格后：[\"+codeText+\"]\")\r\n\r\n\t\t\t\t\tif (codeText == null || codeText == \"\") {\r\n\t\t\t\t\t\t//4 提示用户\r\n\t\t\t\t\t\t$(\"span.errorMsg\").text(\"验证码不能为空！\");\r\n\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\t// 去掉错误信息\r\n\t\t\t\t\t$(\"span.errorMsg\").text(\"\");\r\n\r\n\t\t\t\t});\r\n\r\n\t\t\t});\r\n\r\n\t\t</script>\r\n\t<style type=\"text/css\">\r\n\t\t.login_form{\r\n\t\t\theight:420px;\r\n\t\t\tmargin-top: 25px;\r\n\t\t}\r\n\r\n\t</style>\r\n\t</head>\r\n\t<body>\r\n\t\t<div id=\"login_header\">\r\n\t\t\t<img class=\"logo_img\" alt=\"\" src=\"static/img/logo.gif\" >\r\n\t\t</div>\r\n\r\n\t\t\t<div class=\"login_banner\">\r\n\r\n\t\t\t\t<div id=\"l_content\">\r\n\t\t\t\t\t<span class=\"login_word\">欢迎注册</span>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div id=\"content\">\r\n\t\t\t\t\t<div class=\"login_form\">\r\n\t\t\t\t\t\t<div class=\"login_box\">\r\n\t\t\t\t\t\t\t<div class=\"tit\">\r\n\t\t\t\t\t\t\t\t<h1>注册尚硅谷会员</h1>\r\n\t\t\t\t\t\t\t\t<span class=\"errorMsg\"></span>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"form\">\r\n\t\t\t\t\t\t\t\t<form action=\"http://localhost:8080/BuptCreationEE_war_exploded/hello\" method=\"get\">\r\n\t\t\t\t\t\t\t\t\t<label>用户名称：</label>\r\n\t\t\t\t\t\t\t\t\t<input class=\"itxt\" type=\"text\" placeholder=\"请输入用户名\"\r\n\t\t\t\t\t\t\t\t\t\t   value=\"wzg168\"\r\n\t\t\t\t\t\t\t\t\t\t   autocomplete=\"off\" tabindex=\"1\" name=\"username\" id=\"username\" />\r\n\t\t\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t\t\t<label>用户密码：</label>\r\n\t\t\t\t\t\t\t\t\t<input class=\"itxt\" type=\"password\" placeholder=\"请输入密码\"\r\n\t\t\t\t\t\t\t\t\t\t   value=\"123456\"\r\n\t\t\t\t\t\t\t\t\t\t   autocomplete=\"off\" tabindex=\"1\" name=\"password\" id=\"password\" />\r\n\t\t\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t\t\t<label>确认密码：</label>\r\n\t\t\t\t\t\t\t\t\t<input class=\"itxt\" type=\"password\" placeholder=\"确认密码\"\r\n\t\t\t\t\t\t\t\t\t\t   value=\"123456\"\r\n\t\t\t\t\t\t\t\t\t\t   autocomplete=\"off\" tabindex=\"1\" name=\"repwd\" id=\"repwd\" />\r\n\t\t\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t\t\t<label>电子邮件：</label>\r\n\t\t\t\t\t\t\t\t\t<input class=\"itxt\" type=\"text\" placeholder=\"请输入邮箱地址\"\r\n\t\t\t\t\t\t\t\t\t\t   value=\"wzg168@qq.com\"\r\n\t\t\t\t\t\t\t\t\t\t   autocomplete=\"off\" tabindex=\"1\" name=\"email\" id=\"email\" />\r\n\t\t\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t\t\t<label>验证码：</label>\r\n\t\t\t\t\t\t\t\t\t<input class=\"itxt\" type=\"text\" name=\"code\" style=\"width: 150px;\" id=\"code\" value=\"abcde\"/>\r\n\t\t\t\t\t\t\t\t\t<img alt=\"\" src=\"static/img/code.bmp\" style=\"float: right; margin-right: 40px\">\r\n\t\t\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t\t\t<input type=\"submit\" value=\"注册\" id=\"sub_btn\" />\r\n\t\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t<div id=\"bottom\">\r\n\t\t\t<span>\r\n\t\t\t\t尚硅谷书城.Copyright &copy;2015\r\n\t\t\t</span>\r\n\t\t</div>\r\n\t</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/artifacts/BuptCreationEE_war_exploded/pages/user/regist.html b/out/artifacts/BuptCreationEE_war_exploded/pages/user/regist.html
+--- a/out/artifacts/BuptCreationEE_war_exploded/pages/user/regist.html	(revision 6150ada6619334afd0320b0e883d7b7875261f11)
++++ b/out/artifacts/BuptCreationEE_war_exploded/pages/user/regist.html	(date 1626596961791)
+@@ -113,7 +113,11 @@
+ 								<span class="errorMsg"></span>
+ 							</div>
+ 							<div class="form">
++<<<<<<< HEAD
+ 								<form action="http://localhost:8080/BuptCreationEE_war_exploded/hello" method="get">
++=======
++								<form action="/hello" method="post">
++>>>>>>> origin/master
+ 									<label>用户名称：</label>
+ 									<input class="itxt" type="text" placeholder="请输入用户名"
+ 										   value="wzg168"
+Index: .idea/libraries/lib.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/lib.xml b/.idea/libraries/lib.xml
+new file mode 100644
+--- /dev/null	(date 1626596829148)
++++ b/.idea/libraries/lib.xml	(date 1626596829148)
+@@ -0,0 +1,15 @@
++<component name="libraryTable">
++  <library name="lib">
++    <CLASSES>
++      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-dbutils-1.3.jar!/" />
++      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/druid-1.1.9.jar!/" />
++      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/hamcrest-core-1.3.jar!/" />
++      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/junit-4.12.jar!/" />
++      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/mysql-connector-java-5.1.7-bin.jar!/" />
++      <root url="file://$PROJECT_DIR$/web/WEB-INF/lib" />
++    </CLASSES>
++    <JAVADOC />
++    <SOURCES />
++    <jarDirectory url="file://$PROJECT_DIR$/web/WEB-INF/lib" recursive="false" />
++  </library>
++</component>
+\ No newline at end of file
