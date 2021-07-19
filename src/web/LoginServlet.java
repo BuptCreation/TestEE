@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
         } else {
             // 登录 成功
             System.out.println("用户登陆成功");
-            if (loginUser.getIdentity()=="学生") {
+            if (loginUser.getIdentity().equals("student")) {
                 //跳到学生端主页
               //  req.getRequestDispatcher("/pages/user/login_success.html").forward(req, resp);
             }else{
