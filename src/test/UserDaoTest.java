@@ -5,8 +5,6 @@ import dao.impl.UserDaoImpl;
 import org.junit.Test;
 import pojo.User;
 
-import static org.junit.Assert.*;
-
 public class UserDaoTest {
 
     UserDao userDao = new UserDaoImpl();
@@ -32,6 +30,6 @@ public class UserDaoTest {
 
     @Test
     public void saveUser() {
-        System.out.println( userDao.saveUser(new User(null,"wzg168", "123456", "wzg168@qq.com")) );
+        System.out.println( userDao.saveUser(new User(null,"wzg168", "123456", "wzg168@qq.com", "学生")) );
     }
 }

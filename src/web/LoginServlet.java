@@ -22,15 +22,21 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         // 调用 userService.login()登录处理业务
-        User loginUser = userService.login(new User(null, username, password, null));
+        User loginUser = userService.login(new User(null, username, password, null, null));
         // 如果等于null,说明登录 失败!
         if (loginUser == null) {
             //   跳回登录页面
             req.getRequestDispatcher("/pages/user/login.html").forward(req, resp);
         } else {
             // 登录 成功
-            //跳到成功页面login_success.html
-            req.getRequestDispatcher("/pages/user/login_success.html").forward(req, resp);
+            System.out.println("用户登陆成功");
+            if (loginUser.getIdentity()=="学生") {
+                //跳到学生端主页
+              //  req.getRequestDispatcher("/pages/user/login_success.html").forward(req, resp);
+            }else{
+                //跳到教师端主页
+             //   req.getRequestDispatcher("/pages/user/login_success.html").forward(req, resp);
+            }
         }
     }
 }

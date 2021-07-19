@@ -5,6 +5,7 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private String identity;
 
     public Integer getId() {
         return id;
@@ -45,16 +46,29 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", identity='" + identity + '\'' +
                 '}';
     }
 
-    public User() {
+    public String getIdentity() {
+        return identity;
     }
 
-    public User(Integer id, String username, String password, String email) {
+    public void setIdentity(String identity) {
+        this.identity = identity;
+    }
+
+    public User(String identity) {
+        this.identity = identity;
+    }
+
+    public User(Integer id, String username, String password, String email, String identity) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.identity = identity;
     }
+
+
 }

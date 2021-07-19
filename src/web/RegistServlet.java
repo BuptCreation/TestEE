@@ -23,7 +23,7 @@ public class RegistServlet extends HttpServlet {
         String password = req.getParameter("password");
         String email = req.getParameter("email");
         String code = req.getParameter("code");
-
+        String identity = req.getParameter("identify");
 //        2、检查 验证码是否正确  === 写死,要求验证码为:abcde
         if ("abcde".equalsIgnoreCase(code)) {
 //        3、检查 用户名是否可用
@@ -34,7 +34,7 @@ public class RegistServlet extends HttpServlet {
             } else {
                 //      可用
 //                调用Sservice保存到数据库
-                userService.registUser(new User(null, username, password, email));
+                userService.registUser(new User(null, username, password, email, identity));
 //
 //        跳到注册成功页面 regist_success.html
                 req.getRequestDispatcher("/pages/user/regist_success.html").forward(req, resp);
