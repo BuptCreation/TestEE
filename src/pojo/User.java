@@ -58,6 +58,8 @@ public class User {
         this.identity = identity;
     }
 
+    public User(){}
+
     public User(String identity) {
         this.identity = identity;
     }

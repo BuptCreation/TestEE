@@ -21,7 +21,7 @@ public class UserDaoTest {
 
     @Test
     public void queryUserByUsernameAndPassword() {
-        if ( userDao.queryUserByUsernameAndPassword("admin","admin1234") == null) {
+        if ( userDao.queryUserByUsernameAndPassword("a","a") == null) {
             System.out.println("用户名或密码错误，登录失败");
         } else {
             System.out.println("查询成功");
@@ -30,6 +30,6 @@ public class UserDaoTest {
 
     @Test
     public void saveUser() {
-        System.out.println( userDao.saveUser(new User(null,"wzg168", "123456", "wzg168@qq.com", "学生")) );
+        System.out.println( userDao.saveUser(new User(null,"wzg168", "123456", "wzg168@qq.com", "student")) );
     }
 }
