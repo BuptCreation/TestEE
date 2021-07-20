@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>实现博客</title>
+    <base href="../../">
+    <script src="static/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+</head>
+<body>
+
+<div class="app-blog">
+<!--    标题部分-->
+        <h2>添加多人协作内容</h2>
+<!--    文章标题内容编写-->
+    <form action="" method="post" id="form">
+        <label>文章标题</label>
+        <input type="text" name="title" v-model="blog.title" required/>
+
+        <label>文章内容</label>
+        <textarea name="content" v-model="blog.content"></textarea>
+        <div id="checkboxes">
+            <label>Vue.js</label>
+            <input name="categories" type="checkbox" value="Vue.js" v-model="blog.categories">
+            <label>Node.js</label>
+            <input name="categories" type="checkbox" value="Node.js" v-model="blog.categories">
+            <label>React.js</label>
+            <input name="categories" type="checkbox" value="React.js" v-model="blog.categories">
+            <label>Angular4</label>
+            <input name="categories" type="checkbox" value="Angular4" v-model="blog.categories">
+        </div>
+        <label>作者:</label>
+        <select v-model="blog.author">
+            <option name="author" v-for="author in authors">
+                {{author}}
+            </option>
+        </select>
+        <input type="submit" value="发布文章" id="sub_btn" />
+    </form>
+
+<h3 id="ok" hidden="ture">您的文章发布成功</h3>
+<hr>
+    <div id="preview">
+        <h3>文章总览</h3>
+        <p>文章标题:{{blog.title}}</p>
+        <p>文章内容:</p>
+        <p>{{blog.content}}</p>
+        <p>文章类别</p>
+        <ul>
+            <li v-for="category in blog.categories">
+                {{category}}
+            </li>
+        </ul>
+        <p>作者:{{blog.author}}</p>
+    </div>
+</div>
+<!--vue功能-->
+<script type="text/javascript">
+    var vm = new Vue({
+        el: ".app-blog" ,
+        data:{
+            blog:{
+                title:"hi",
+                content:"你好",
+                categories:[],
+                author:"",
+            },
+            authors:["Hemiah","Hemry","Buky"]
+        }
+
+    })
+
+</script>
+
+<!--jquery部分功能-->
+<script type="text/javascript" src="static/script/jquery-1.7.2.js"></script>
+<script type="text/javascript">
+    // 页面加载完成之后
+    $(function () {
+        // 给注册绑定单击事件
+        $("#sub_btn").click(function () {
+
+            $("#form").toggle(1000);
+            $("#ok").toggle(100);
+            return false;
+        });
+
+    });
+
+</script>
+
+
+
+</body>
+</html>
