@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>实现博客</title>
+<!--    基础路径-->
     <base href="../../">
 <!--    vue-基础包导入-->
     <script src="static/vue/vue.js" type="text/javascript" charset="utf-8"></script>
@@ -62,6 +63,7 @@
     <div class="snow19"></div>
     <div class="snow20"></div>
 </div>
+
 <!--多人写作关键词提示区-->
 <div class="content">
     <div class="content__container">
@@ -143,7 +145,7 @@
         },
         methods:{
             Post:function(){
-                this.$http.post("https://jsonplaceholder.typicode.com/posts",{
+                this.$http.post("https://jsonplaceholder.typicode.com/posts/",{
                     title: this.blog.title,
                     body:this.blog.content,
                     userId:1
@@ -160,12 +162,12 @@
 <style>
     #add-blog *{
         box-sizing: border-box;
-
     }
     #add-blog{
         margin:20px auto;
         max-width:400px;
         padding:20px;
+
     }
     lable{
         display:block;

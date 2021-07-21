@@ -8,16 +8,18 @@
 </head>
 <body>
 <div id="app">
-    {{a}}
+    <div v-if="type === 'A'">A</div>
+    <div v-else-if="type === 'B'">B</div>
+    <div v-else-if="type === 'C'">C</div>
+    <div v-else>Not A/B/C</div>
 </div>
-
 <script type="text/javascript">
-    var data = { a : 1 };
-   var app=new Vue({
-       el:'#app',
-       data:data
-   });
-   data.a = "hi...new..."
+    var app=new Vue({
+        el : "#app",
+        data:{
+            type:"A"
+        }
+    })
 </script>
 </body>
 </html>

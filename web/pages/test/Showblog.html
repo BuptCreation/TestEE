@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Parallax Photo Carousel</title>
+<!--  基础路径-->
+  <base href="../../">
+<!--  导入css基础设定的包-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="static/css/style-roll.css">
+  <!--    vue-基础包导入-->
+  <script src="static/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+  <!--    vue-resource 包导入-->
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js"></script>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+
+  <!--  滚动展示文章-->
+<div class="stage" id="show-blogs">
+  <p>{{test}}</p>
+  <h1 align="center">博客总览</h1>
+<!--  <blog class="single-blog" v-for="blog in blogs">-->
+<!--    <h2>{{blog.title}}</h2>-->
+<!--    <article>{{blog.body}}</article>-->
+<!--  </blog>-->
+  <div class="container">
+    <div class="ring">
+
+<!--  展示十个检索出来的博客 少于十个则后面的不会展示    -->
+      <div class="img">  <blog class="single-blog" v-for="blog in blogs.slice(0,1)">
+        <h2>{{blog.title}}</h2>
+        <br/>
+        <article>{{blog.body}}</article>
+      </blog>
+      </div>
+      <div class="img">  <blog class="single-blog" v-for="blog in blogs.slice(1,2)">
+        <h2>{{blog.title}}</h2>
+        <br/>
+        <article>{{blog.body}}</article>
+      </blog>
+      </div>
+      <div class="img">  <blog class="single-blog" v-for="blog in blogs.slice(2,3)">
+        <h2>{{blog.title}}</h2>
+        <br/>
+        <article>{{blog.body}}</article>
+      </blog>
+      </div>
+      <div class="img">  <blog class="single-blog" v-for="blog in blogs.slice(3,4)">
+        <h2>{{blog.title}}</h2>
+        <br/>
+        <article>{{blog.body}}</article>
+      </blog>
+      </div>
+      <div class="img">  <blog class="single-blog" v-for="blog in blogs.slice(4,5)">
+        <h2>{{blog.title}}</h2>
+        <br/>
+        <article>{{blog.body}}</article>
+      </blog>
+      </div>
+      <div class="img">  <blog class="single-blog" v-for="blog in blogs.slice(5,6)">
+        <h2>{{blog.title}}</h2>
+        <br/>
+        <article>{{blog.body}}</article>
+      </blog>
+      </div>
+      <div class="img">  <blog class="single-blog" v-for="blog in blogs.slice(6,7)">
+        <h2>{{blog.title}}</h2>
+        <br/>
+        <article>{{blog.body}}</article>
+      </blog>
+      </div>
+      <div class="img">  <blog class="single-blog" v-for="blog in blogs.slice(7,8)">
+        <h2>{{blog.title}}</h2>
+        <br/>
+        <article>{{blog.body}}</article>
+      </blog>
+      </div>
+      <div class="img">  <blog class="single-blog" v-for="blog in blogs.slice(8,9)">
+        <h2>{{blog.title}}</h2>
+        <br/>
+        <article>{{blog.body}}</article>
+      </blog>
+      </div>
+      <div class="img">  <blog class="single-blog" v-for="blog in blogs.slice(9,10)">
+        <h2>{{blog.title}}</h2>
+        <br/>
+        <article>{{blog.body}}</article>
+      </blog>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>
+
+
+<!--vue实现交互功能-->
+
+<script type="text/javascript">
+  var vm = new Vue({
+     el:'#show-blogs',
+    data:{
+      test:"connect-success",
+      blogs:[]
+    },
+    created(){
+      this.$http.get('https://jsonplaceholder.typicode.com/posts/')
+      .then(function (data) {
+          this.blogs = data.body.slice(0,10);
+          console.log(this.blogs);
+      })
+    }
+
+    })
+</script>
+
+<!-- 引入动画文件 -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js'></script>
+<script  src="static/script/script-roll.js"></script>
+
+<!--最后微调一下各个格式-->
+<style>
+  #show-blogs{
+    margin: 0 auto;
+  }
+  blog{
+    padding: 20px;
+    margin: 20px 0;
+    box-sizing: border-box;
+  }
+</style>
+
+</body>
+</html>
