@@ -1,3 +1,4 @@
+import Routes from './vue-router'
 /*!
  * Vue.js v2.6.14
  * (c) 2014-2021 Evan You
@@ -12012,3 +12013,8 @@
   return Vue;
 
 }));
+
+//创建路由器
+const router = new VueRouter({
+  routes:Routes
+})
