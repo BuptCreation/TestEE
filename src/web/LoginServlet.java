@@ -30,12 +30,14 @@ public class LoginServlet extends HttpServlet {
         } else {
             // 登录 成功
             System.out.println("用户登陆成功");
+            //将数据存储到session中
+            req.getSession().setAttribute("User",loginUser);
             if (loginUser.getIdentity().equals("student")) {
-                //跳到学生端主页
-              //  req.getRequestDispatcher("/pages/user/login_success.html").forward(req, resp);
+                //跳到学生端欢迎登陆主页
+                req.getRequestDispatcher("/pages/Student/Welcome.jsp").forward(req, resp);
             }else{
                 //跳到教师端主页
-             //   req.getRequestDispatcher("/pages/user/login_success.html").forward(req, resp);
+                req.getRequestDispatcher("/pages/user/login_success.html").forward(req, resp);
             }
         }
     }

@@ -1,41 +1,32 @@
-<!DOCTYPE html>
+<%--
+  Created by IntelliJ IDEA.
+  User: tigers
+  Date: 2021/7/26
+  Time: 8:21 上午
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>实现博客</title>
-<!--    基础路径-->
+    <!--    基础路径-->
     <base href="../../">
-<!--    vue-基础包导入-->
+    <!--    vue-基础包导入-->
     <script src="static/vue/vue.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
-<!--    vue-resource 包导入-->
+    <!--    vue-resource 包导入-->
     <script src="https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js"></script>
-<!--    vue 路由功能导入-->
+    <!--    vue 路由功能导入-->
     <script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script>
-<!--    提示区样式导入-->
+    <!--    提示区样式导入-->
     <link rel="stylesheet" href="static/css/style-text-animation.css">
-    <!--    引入相应样式文件-->
-    <link rel="stylesheet" href="static/css/bootstrap.css">
-<!-- 雪落背景-->
+    <!-- 雪落背景-->
     <link rel="stylesheet" href="static/css/style-winter.css">
 </head>
 <body >
 
-<!-- 导航栏区域   -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <a href="#" class="navbar-brand">智慧英语协同写作学生端</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li ><a href="pages/test/MyHouse.html">我的</a></li>
-                <li class="active"><a href="#">协同写作</a></li>
-                <li ><a href="pages/test/Showblog.html">作品评论</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<%@include file="headleader.jsp"%>
 <!--雪落-->
 <div class="sky">
     <div class="deep_sky"></div>
@@ -100,9 +91,9 @@
 </div>
 <!--写作部分-->
 <div class="app-blog">
-<!--    标题部分-->
-        <h2>多人协作内容</h2>
-<!--    文章标题内容编写-->
+    <!--    标题部分-->
+    <h2>多人协作内容</h2>
+    <!--    文章标题内容编写-->
     <form action="" method="post" id="form" v-if="!blog.submitted">
         <label>文章标题</label>
         <input type="text" name="title" v-model="blog.title" required/>
@@ -120,19 +111,19 @@
             <input name="categories" type="checkbox" value="Angular4" v-model="blog.categories">
         </div>
 
-<!--    动态浏览部分    -->
+        <!--    动态浏览部分    -->
         <label>作者:</label>
         <select v-model="blog.author">
             <option name="author" v-for="author in authors">
                 {{author}}
             </option>
         </select>
-<!--        <input type="submit" value="发布文章" id="sub_btn" />-->
+        <!--        <input type="submit" value="发布文章" id="sub_btn" />-->
         <button v-on:click.prevent="Post">发布文章</button>
     </form>
 
-<h3 id="ok" v-if="blog.submitted">您的文章发布成功</h3>
-<hr>
+    <h3 id="ok" v-if="blog.submitted">您的文章发布成功</h3>
+    <hr>
     <div id="preview">
         <h3>文章总览</h3>
         <p>文章标题:{{blog.title}}</p>

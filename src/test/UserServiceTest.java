@@ -12,13 +12,13 @@ public class UserServiceTest {
 
     @Test
     public void registUser() {
-        userService.registUser(new User(null, "bbj168", "666666", "bbj168@qq.com", "sutdent"));
-        userService.registUser(new User(null, "abc168", "666666", "abc168@qq.com", "teacher"));
+        userService.registUser(new User(null, "student168", "666666", "bbj168@qq.com", "student"));
+        userService.registUser(new User(null, "teacher168", "666666", "abc168@qq.com", "teacher"));
     }
 
     @Test
     public void login() {
-        System.out.println( userService.login(new User(null, "wzg168", "123456", null, "sutdent")) );
+        System.out.println( userService.login(new User(null, "wzg168", "123456", null, "student")) );
     }
 
     @Test
