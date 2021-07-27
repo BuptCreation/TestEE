@@ -34,10 +34,10 @@ public class LoginServlet extends HttpServlet {
             req.getSession().setAttribute("User",loginUser);
             if (loginUser.getIdentity().equals("student")) {
                 //跳到学生端欢迎登陆主页
-                req.getRequestDispatcher("/pages/Student/Welcome.jsp").forward(req, resp);
+                resp.sendRedirect("pages/Student/Welcome.jsp");
             }else{
                 //跳到教师端主页
-                req.getRequestDispatcher("/pages/user/login_success.html").forward(req, resp);
+                resp.sendRedirect("pages/Teacher/Welcome.jsp");
             }
         }
     }
