@@ -20,6 +20,24 @@
 <%--    雪落背景加入--%>
     <link rel="stylesheet" href="static/css/snow-style.css">
     <title>任务发布</title>
+<%--    keyword card--%>
+    <style>
+        keyword{
+            display: flex;
+
+        }
+        div.polaroid {
+            width: 250px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            text-align: center;
+            padding: 10px;
+        }
+
+        div.keyword {
+            background-color: #ecf0f1;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
 <%@include file="headleader.jsp"%>
@@ -235,13 +253,40 @@
         <textarea name="guide" v-model="blog.guide"></textarea>
     <br/>
         <label>写作关键词</label>
-        <select v-model="blog.keyword">
-        <option name="keyword" v-for="keyword in keywords">
-            {{keyword}}
-        </option>
-        </select>
+<%--        <select v-model="blog.keyword">--%>
+<%--        <option name="keyword" v-for="keyword in keywords">--%>
+<%--            {{keyword}}--%>
+<%--        </option>--%>
+<%--        </select>--%>
     <br/>
-<%--        --%>
+<%--      关键词展示样式  --%>
+        <keyword>
+        <div class="polaroid">
+            <img src="static/img/challenge.jpeg" alt="Norway" style="width:100%;height: 60%">
+            <div class="keyword">
+                Challenge<input type="radio" checked="checked" name="keyword" value="Challenge" v-model="blog.keyword"/>
+            </div>
+        </div>
+        <div class="polaroid">
+            <img src="static/img/funny.jpeg" alt="Norway" style="width:100%;height: 60%">
+            <div class="keyword">
+                Funny<input type="radio" checked="checked" name="keyword" value="Funny" v-model="blog.keyword"/>
+            </div>
+        </div>
+            <div class="polaroid">
+                <img src="static/img/trying.jpeg" alt="Norway" style="width:100%;height: 60% ">
+                <div class="keyword">
+                    Trying<input type="radio" checked="checked" name="keyword" value="Trying" v-model="blog.keyword"/>
+                </div>
+            </div>
+            <div class="polaroid">
+                <img src="static/img/meaningful.jpeg" alt="Norway" style="width:100%;height: 60%">
+                <div class="keyword">
+                    Meaningful<input type="radio" checked="checked" name="keyword" value=" Meaningful" v-model="blog.keyword"/>
+                </div>
+            </div>
+        </keyword>
+        <br/>
 <%--        搜索样式--%>
         <input type="text" v-model="search" placeholder="搜索学生">
 <%--    表格样式    --%>
