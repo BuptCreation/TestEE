@@ -122,7 +122,7 @@
         <button v-on:click.prevent="Post">发布文章</button>
     </form>
 
-    <h3 id="ok" v-if="blog.submitted">您的文章发布成功</h3>
+    <h3 id="ok" v-if="blog.submitted">您的文章发布成功！</h3>
     <hr>
     <div id="preview">
         <h3>文章总览</h3>
