@@ -100,7 +100,7 @@ a {
 .list a {
     
     display: block;
-    color: #fff;
+    color:#1b1b1b;
 }
 
 .list a:hover {
@@ -115,7 +115,7 @@ a {
     margin: 0;
     height: 55px;
     width: 60%;
-    color: #fff;
+    color: #1b1b1b;
 }
 
 .list dt {

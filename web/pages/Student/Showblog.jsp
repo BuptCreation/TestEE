@@ -180,8 +180,13 @@
         margin: 20px 0;
         box-sizing: border-box;
     }
+    button{
+        transition: transform 2s;
+    }
+    button:hover{
+        transform: rotate(360deg);
+    }
 </style>
-
 </body>
 </html>
 

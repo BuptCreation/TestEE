@@ -433,7 +433,12 @@
     li{
         color:#ecf0f1;
     }
-
+    button{
+        transition: transform 1s;
+    }
+    button:hover{
+        transform: rotate(360deg);
+    }
 </style>
 </body>
 </html>
