@@ -43,61 +43,61 @@
             <divr class="img" >  <blog class="single-blog" v-for="blog in filterblogs.slice(0,1)">
                 <h2 v-rainbow>{{blog.title}}</h2>
                 <br/>
-                <article>{{blog.body|snippet}}</article>
+                <article>{{blog.content|snippet}}</article>
             </blog>
             </divr>
             <divr class="img" >  <blog class="single-blog" v-for="blog in filterblogs.slice(1,2)">
                 <h2 v-rainbow>{{blog.title}}</h2>
                 <br/>
-                <article>{{blog.body|snippet}}</article>
+                <article>{{blog.content|snippet}}</article>
             </blog>
             </divr>
             <divr class="img" >  <blog class="single-blog" v-for="blog in filterblogs.slice(2,3)">
                 <h2 v-rainbow>{{blog.title}}</h2>
                 <br/>
-                <article>{{blog.body|snippet}}</article>
+                <article>{{blog.content|snippet}}</article>
             </blog>
             </divr>
             <divr class="img" >  <blog class="single-blog" v-for="blog in filterblogs.slice(3,4)">
                 <h2 v-rainbow>{{blog.title}}</h2>
                 <br/>
-                <article>{{blog.body|snippet}}</article>
+                <article>{{blog.content|snippet}}</article>
             </blog>
             </divr>
             <divr class="img" >  <blog class="single-blog" v-for="blog in filterblogs.slice(4,5)">
                 <h2 v-rainbow>{{blog.title}}</h2>
                 <br/>
-                <article>{{blog.body|snippet}}</article>
+                <article>{{blog.content|snippet}}</article>
             </blog>
             </divr>
             <divr class="img" >  <blog class="single-blog" v-for="blog in filterblogs.slice(5,6)">
                 <h2 v-rainbow>{{blog.title}}</h2>
                 <br/>
-                <article>{{blog.body|snippet}}</article>
+                <article>{{blog.content|snippet}}</article>
             </blog>
             </divr>
             <divr class="img">  <blog class="single-blog" v-for="blog in filterblogs.slice(6,7)">
                 <h2 v-rainbow>{{blog.title}}</h2>
                 <br/>
-                <article>{{blog.body|snippet}}</article>
+                <article>{{blog.content|snippet}}</article>
             </blog>
             </divr>
             <divr class="img">  <blog class="single-blog" v-for="blog in filterblogs.slice(7,8)">
                 <h2 v-rainbow>{{blog.title}}</h2>
                 <br/>
-                <article>{{blog.body|snippet}}</article>
+                <article>{{blog.content|snippet}}</article>
             </blog>
             </divr>
             <divr class="img">  <blog class="single-blog" v-for="blog in filterblogs.slice(8,9)">
                 <h2 v-rainbow>{{blog.title}}</h2>
                 <br/>
-                <article>{{blog.body|snippet}}</article>
+                <article>{{blog.content|snippet}}</article>
             </blog>
             </divr>
             <divr class="img">  <blog class="single-blog" v-for="blog in filterblogs.slice(9,10)">
                 <h2 v-rainbow>{{blog.title}}</h2>
                 <br/>
-                <article>{{blog.body|snippet}}</article>
+                <article>{{blog.content|snippet}}</article>
             </blog>
             </divr>
 
@@ -113,15 +113,14 @@
 <script type="text/javascript">
     //文章获取
     var vm = new Vue({
-        el:'#show-blogs',//管理id=show-blog下面的所有类
+        el:'#show-blogs',
         data:{
             test:"connect-success",
             blogs:[],
             search:""
         },
         created(){
-            //url表示从哪里获得数据
-            this.$http.get('https://jsonplaceholder.typicode.com/posts/')
+            this.$http.get("showblogsevlet")
                 .then(function (data) {
                     this.blogs = data.body.slice(0,10);
                     console.log(this.blogs);
@@ -158,9 +157,9 @@
 
     //    自定义过滤器
     //    防止内容过长
-    Vue.filter("snippet",function(value){
+    /*Vue.filter("snippet",function(value){
         return value.slice(0,100)+"..."
-    })
+    })*/
 </script>
 
 <!-- 引入动画文件 -->
@@ -181,13 +180,8 @@
         margin: 20px 0;
         box-sizing: border-box;
     }
-    button{
-        transition: transform 2s;
-    }
-    button:hover{
-        transform: rotate(360deg);
-    }
 </style>
+
 </body>
 </html>
 

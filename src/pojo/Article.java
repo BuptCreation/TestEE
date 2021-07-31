@@ -8,17 +8,17 @@ package pojo;
  * @date 2021-07-21
  */
 public class Article {
-    private int id;
+    private int _id;
     private String title;
     private String author;
     private String content;
 
     public int getId() {
-        return id;
+        return _id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getTitle() {
@@ -48,7 +48,7 @@ public class Article {
     @Override
     public String toString() {
         return "Article{" +
-                "id=" + id +
+                "id=" + _id +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", content='" + content + '\'' +
@@ -59,7 +59,7 @@ public class Article {
     }
 
     public Article(int id, String title, String author, String content) {
-        this.id = id;
+        this._id = id;
         this.title = title;
         this.author = author;
         this.content = content;

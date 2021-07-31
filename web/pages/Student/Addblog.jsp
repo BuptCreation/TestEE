@@ -142,7 +142,7 @@
 <!--vue功能-->
 <script type="text/javascript">
     var vm = new Vue({
-        el: ".app-blog" , //范围为class=app-blog
+        el: ".app-blog" ,
         data:{
             blog:{
                 title:"hi",
@@ -154,17 +154,13 @@
             authors:["Hemiah","Hemry","Buky"]
         },
         methods:{
-            //名字叫做post的方法
             Post:function(){
-                //post的url
-                this.$http.post("https://jsonplaceholder.typicode.com/posts/",{
-                    //传递的内容
-                    title: this.blog.title,
-                    body:this.blog.content,
-                    userId:1
-                }).then(function(data){
-                    //在浏览器的控制区显示传递的数据
+                var article = {title: this.blog.title,content:this.blog.content, author:this.blog.author,id:1}
+                this.$http.post("addblogsevlet",JSON.stringify(article)).then(function(data){
                     console.log(data);
+                    $("#messageDiv").html(data);
+                    var json=JSON.parse(data);
+                    alert(json.message);
                     this.blog.submitted=true;
                 })
             }
