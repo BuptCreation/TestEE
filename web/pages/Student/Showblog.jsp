@@ -113,13 +113,14 @@
 <script type="text/javascript">
     //文章获取
     var vm = new Vue({
-        el:'#show-blogs',
+        el:'#show-blogs',//管理id=show-blog下面的所有类
         data:{
             test:"connect-success",
             blogs:[],
             search:""
         },
         created(){
+            //url表示从哪里获得数据
             this.$http.get('https://jsonplaceholder.typicode.com/posts/')
                 .then(function (data) {
                     this.blogs = data.body.slice(0,10);

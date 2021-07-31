@@ -7,11 +7,12 @@ import service.UserService;
 import service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+@WebServlet(value = {"/login"})
 public class LoginServlet extends HttpServlet {
 
     private UserService userService = new UserServiceImpl();
@@ -30,6 +31,7 @@ public class LoginServlet extends HttpServlet {
         } else {
             // 登录 成功
             System.out.println("用户登陆成功");
+            //传送json数据给谁谁
             //将数据存储到session中
             req.getSession().setAttribute("User",loginUser);
             if (loginUser.getIdentity().equals("student")) {
