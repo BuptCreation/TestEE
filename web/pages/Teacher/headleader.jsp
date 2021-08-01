@@ -27,7 +27,7 @@
             <ul class="nav navbar-nav">
                 <li ><a href="pages/Teacher/My.jsp">我的</a></li>
                 <li ><a href="pages/Teacher/Postblog.jsp">任务发布</a></li>
-                <li ><a href="pages/Teacher/Comment.jsp">作品评论</a></li>
+                <li ><a href="pages/Teacher/Showblog.jsp">作品评论</a></li>
             </ul>
         </div>
     </div>

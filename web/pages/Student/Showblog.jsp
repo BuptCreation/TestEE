@@ -156,10 +156,12 @@
     })
 
     //    自定义过滤器
+
     //    防止内容过长
-    /*Vue.filter("snippet",function(value){
+     Vue.filter("snippet",function(value){
+    if(value)
         return value.slice(0,100)+"..."
-    })*/
+     })
 </script>
 
 <!-- 引入动画文件 -->

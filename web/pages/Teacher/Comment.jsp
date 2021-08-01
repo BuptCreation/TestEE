@@ -50,23 +50,21 @@
     </div>
     <br/><br/><br/>
 <%--    --%>
-<div id="blog">
-    <h1>协同写作</h1>
-    <h4>协同写作平台协同写作是怎么回事呢？协同写作平台相信大家都很熟悉，但是协同写作平台协同写作是怎么回事呢，下面就让小编带大家一起了解吧。
-        　　协同写作平台协同写作，其实就是多个人一起写作，大家可能会很惊讶协同写作平台怎么会协同写作呢？但事实就是这样，小编也感到非常惊讶。
-        　　这就是关于协同写作平台协同写作的事情了，大家有什么想法呢，欢迎在评论区告诉小编一起讨论哦！</h4>
-    <h4>关键词:编使劲编</h4>
-    <h2 style="float: right">作者:营销号</h2>
-</div>
+
 <div id="tmpl">
-    <div >
+    <div id="blog">
+        <h1>{{title}}</h1>
+        <h4>{{context}}</h4>
+        <h4>关键词:编使劲编</h4>
+        <h2 style="float: right">作者:营销号</h2>
+    </div>
+    <div id="comment">
         <ul class="list-group">
             <li class="list-group-item" v-for="item in list" :key="item.id">
                 <span class="badge">评论人：{{ item.user }}</span>
                 {{ item.content }}
             </li>
         </ul>
-    </div>
     <div>
         <div class="form-group">
             <label>评论人：</label>
@@ -80,11 +78,14 @@
             <input type="button" value="发表评论" class="btn btn-primary" @click="postComments">
         </div>
     </div>
+    </div>
 </div>
 <script type="text/javascript">
     var vm = new Vue({
         el: "#tmpl" ,
         data:{
+            title:'',
+            context:'',
             user:'<%=loginUser.getUsername()%>',
             content: '',
             list:[
@@ -98,27 +99,40 @@
             postComments() {
                 if (this.user!=''&&this.content!='') {
                     var comment = {id: Date.now(), user: this.user, content: this.content}
-                    var list = JSON.parse(localStorage.getItem('cmts') || '[]')
-                    list.unshift(comment)
-                    localStorage.setItem('cmts', JSON.stringify(list))
-                    this.user = this.content = ''
-                    this.$emit('func')
-                    this.list=list
+                    this.$http.post('https://jsonplaceholder.typicode.com/posts/',JSON.stringify(comment)).then(function(data){
+                        console.log(data);
+                        console.log(comment)
+                    })
+                    //
+                    // var list = JSON.parse(localStorage.getItem('cmts') || '[]')
+                    // list.unshift(comment)
+                    // localStorage.setItem('cmts', JSON.stringify(list))
+                    // this.user = this.content = ''
+                    // this.$emit('func')
+                    // this.list=list
                 }
             },
             loadComments(){
                 var list = JSON.parse(localStorage.getItem('cmts') || '[]')
                 this.list = list
+                this.$http.get("showblogsevlet")
+                    .then(function (data) {
+                        this.list = data.body.slice(0,10);
+                        console.log(this.blogs);
+                    })
             }
         },
         created(){
             this.loadComments()
+            var blog=JSON.parse(localStorage.getItem('blog')||'[]')
+            this.title=blog.title
+            this.context=blog.content
         }
 
     })
 </script>
 <style>
-    #tmpl{
+    #comment{
         width: 40%;
         float: right;
         padding: 10px;
