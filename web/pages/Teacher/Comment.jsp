@@ -98,7 +98,7 @@
         methods:{
             postComments() {
                 if (this.user!=''&&this.content!='') {
-                    var comment = {id: Date.now(), user: this.user, content: this.content}
+                    var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,context:this.context}
                     this.$http.post('https://jsonplaceholder.typicode.com/posts/',JSON.stringify(comment)).then(function(data){
                         console.log(data);
                         console.log(comment)
