@@ -3,6 +3,8 @@ package dao;
 
 import pojo.User;
 
+import java.util.List;
+
 public interface UserDao {
 
 
@@ -29,4 +31,5 @@ public interface UserDao {
      */
     public int saveUser(User user);
 
+    public List<User> querybyIdentity(String identity);
 }

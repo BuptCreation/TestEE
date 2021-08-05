@@ -96,10 +96,11 @@
             ]
         },
         methods:{
+            //评论发布
             postComments() {
                 if (this.user!=''&&this.content!='') {
                     var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,context:this.context}
-                    this.$http.post('https://jsonplaceholder.typicode.com/posts/',JSON.stringify(comment)).then(function(data){
+                    this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){
                         console.log(data);
                         console.log(comment)
                     })
@@ -113,9 +114,9 @@
                 }
             },
             loadComments(){
-                var list = JSON.parse(localStorage.getItem('cmts') || '[]')
-                this.list = list
-                this.$http.get("showblogsevlet")
+                //var list = JSON.parse(localStorage.getItem('cmts') || '[]')
+                //this.list = list
+                this.$http.get("showcommentservlet")
                     .then(function (data) {
                         this.list = data.body.slice(0,10);
                         console.log(this.blogs);

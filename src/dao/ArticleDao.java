@@ -2,6 +2,9 @@ package dao;
 
 import pojo.Article;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 类<code>Doc</code>用于：TODO
  *
@@ -10,7 +13,7 @@ import pojo.Article;
  * @date 2021-07-31-14
  */
 public interface ArticleDao {
-    public Article queryonearticle(String title,int _id);
-    public Article queryallarticle(String title,int _id);
-    public Article savearticle(String title,String body,int _id);
+    public Article queryonearticle(int id);
+    public List<Map<String, Object>>queryallarticle(int id) throws Exception;
+    public void savearticle(String json) throws Exception;
 }

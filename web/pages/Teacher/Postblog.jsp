@@ -1,4 +1,4 @@
-<%--
+<%@ page import="pojo.User" %><%--
   Created by IntelliJ IDEA.
   User: tigers
   Date: 2021/7/27
@@ -244,6 +244,10 @@
 <div class="app-post">
 <%-- 以上为背景   --%>
     <h2>协同写作任务发布</h2>
+    <%--从session中获得user--%>
+    <%
+        User loginUser=(User)request.getSession().getAttribute("User");
+    %>
 <%--    教师编辑，发布端--%>
     <form method="post" id="form" v-if="!blog.submitted">
         <label >文章标题</label>
@@ -293,7 +297,7 @@
             <dl class="list maki">
                 <dt>合作学生:</dt>
                 <dd v-for="student,index in filterStudents.slice(0,10)" >
-                    <a>{{student.title}}<input  :value="student.title" name="writers" type="checkbox"  v-model="blog.writers"></a>
+                    <a>{{student.username}}<input  :value="student.username name="writers" type="checkbox"  v-model="blog.writers"></a>
                 </dd>
             </dl>
             <a href="#" class="toggle">Toggle</a>
@@ -329,6 +333,7 @@
         el: ".app-post" ,
         data:{
             blog:{
+                username:<%=loginUser.getUsername()%>,
                 title:"hi-student",
                 guide:"别水字数",
                 keyword:"",
@@ -342,19 +347,19 @@
         },
         methods:{
             Post:function(){
-                this.$http.post("https://jsonplaceholder.typicode.com/posts/",{
-                    title: this.blog.title,
-                    guide:this.blog.guide,
-                    keyword: this.blog.keyword,
-                    writers: this.blog.writers
-                }).then(function(data){
+                var misson = {username:this.blog.username,
+                                title: this.blog.title,
+                                guide:this.blog.guide,
+                                keyword: this.blog.keyword,
+                                writers: this.blog.writers}
+                this.$http.post("addmissonservlet",JSON.stringify(misson)).then(function(data){
                     console.log(data);
                     this.blog.submitted=true;
                 })
             },
         },
         created(){
-            this.$http.get('https://jsonplaceholder.typicode.com/posts/')
+            this.$http.get('getallstudents')
                 .then(function (data) {
                     this.students = data.body;
                 })

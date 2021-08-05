@@ -1,8 +1,6 @@
 package web;
 
-import dao.impl.ArticleDaoImpl;
-import pojo.User;
-import service.impl.ArticleServiceImpl;
+import service.impl.CommentServiceImpl;
 import utils.JsonConverter;
 
 import javax.servlet.ServletException;
@@ -20,10 +18,10 @@ import java.util.Map;
  *
  * @author LuoSue
  * @version 1.0
- * @date 2021-07-31-14
+ * @date 2021-08-05-22
  */
-@WebServlet("/showblogsevlet")
-public class ShowBlogServlet extends HttpServlet {
+@WebServlet("/showcommentservlet")
+public class ShowCommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
@@ -34,12 +32,11 @@ public class ShowBlogServlet extends HttpServlet {
         try {
             resp.setContentType("application/json;charset=utf-8");
             PrintWriter out = resp.getWriter();
-            User loginUser=(User)req.getSession().getAttribute("User");
-            //连接数据库,获取文章
-            List<Map<String,Object>> articles = new ArticleDaoImpl().queryallarticle(loginUser.getId());
+            //连接数据库,获取评论
+            List<Map<String,Object>> comments = new CommentServiceImpl().getComments();
             JsonConverter converter = new JsonConverter();
             //将文章转换为json类型
-            String output = converter.convertToJson(articles);
+            String output = converter.convertToJson(comments);
             out.print(output);
             System.out.println(output);
         } catch (Exception e) {

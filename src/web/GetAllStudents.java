@@ -1,8 +1,7 @@
 package web;
 
-import dao.impl.ArticleDaoImpl;
+import dao.impl.UserDaoImpl;
 import pojo.User;
-import service.impl.ArticleServiceImpl;
 import utils.JsonConverter;
 
 import javax.servlet.ServletException;
@@ -20,30 +19,29 @@ import java.util.Map;
  *
  * @author LuoSue
  * @version 1.0
- * @date 2021-07-31-14
+ * @date 2021-08-05-22
  */
-@WebServlet("/showblogsevlet")
-public class ShowBlogServlet extends HttpServlet {
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
-
+@WebServlet("/getallstudents")
+public class GetAllStudents extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             resp.setContentType("application/json;charset=utf-8");
             PrintWriter out = resp.getWriter();
-            User loginUser=(User)req.getSession().getAttribute("User");
-            //连接数据库,获取文章
-            List<Map<String,Object>> articles = new ArticleDaoImpl().queryallarticle(loginUser.getId());
+            //连接数据库,获取用户
+            List<User> users= new UserDaoImpl().querybyIdentity("student");
             JsonConverter converter = new JsonConverter();
-            //将文章转换为json类型
-            String output = converter.convertToJson(articles);
+            //将学生转换为json类型
+            String output = converter.studentJson(users);
             out.print(output);
             System.out.println(output);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doGet(req, resp);
     }
 }

@@ -4,7 +4,11 @@ package dao.impl;
 import dao.UserDao;
 import pojo.User;
 
+import java.util.List;
+
 public class UserDaoImpl extends BaseDao implements UserDao {
+
+
     @Override
     public User queryUserByUsername(String username) {
         String sql = "select `id`,`username`,`password`,`email`,`identity` from user where username = ?";
@@ -21,5 +25,11 @@ public class UserDaoImpl extends BaseDao implements UserDao {
     public int saveUser(User user) {
         String sql = "insert into user(`username`,`password`,`email`,`identity`) values(?,?,?,?)";
         return update(sql, user.getUsername(),user.getPassword(),user.getEmail(),user.getIdentity());
+    }
+
+    @Override
+    public List<User> querybyIdentity(String identity) {
+        String sql = "select username from user where identity = ?";
+        return  queryForList(User.class,sql,identity);
     }
 }

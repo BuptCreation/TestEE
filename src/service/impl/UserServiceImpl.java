@@ -6,6 +6,8 @@ import dao.impl.UserDaoImpl;
 import pojo.User;
 import service.UserService;
 
+import java.util.List;
+
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao = new UserDaoImpl();
@@ -31,4 +33,5 @@ public class UserServiceImpl implements UserService {
         return true;
 
     }
+
 }
