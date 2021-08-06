@@ -12013,8 +12013,3 @@
   return Vue;
 
 }));
-
-//创建路由器
-const router = new VueRouter({
-  routes:Routes
-})
