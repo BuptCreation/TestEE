@@ -28,6 +28,7 @@
                 <li ><a href="pages/Teacher/My.jsp">我的</a></li>
                 <li ><a href="pages/Teacher/Postblog.jsp">任务发布</a></li>
                 <li ><a href="pages/Teacher/Showblog.jsp">作品评论</a></li>
+                <li ><a href="pages/Teacher/Group.jsp">小组管理</a></li>
             </ul>
         </div>
     </div>

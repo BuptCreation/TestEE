@@ -297,7 +297,7 @@
             <dl class="list maki">
                 <dt>合作学生:</dt>
                 <dd v-for="student,index in filterStudents.slice(0,10)" >
-                    <a>{{student.username}}<input  :value="student.username name="writers" type="checkbox"  v-model="blog.writers"></a>
+                    <a>{{student.username}}<input  :value="student.username" name="writers" type="checkbox"  v-model="blog.writers"></a>
                 </dd>
             </dl>
             <a href="#" class="toggle">Toggle</a>
