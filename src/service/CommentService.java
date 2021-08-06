@@ -11,5 +11,5 @@ import java.util.Map;
  * @date 2021-08-05-22
  */
 public interface CommentService {
-    public List<Map<String, Object>> getComments() throws Exception;
+    public List<Map<String, Object>> getComments(String json) throws Exception;
 }

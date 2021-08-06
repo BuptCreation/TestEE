@@ -102,7 +102,7 @@
                     var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,context:this.context}
                     this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){
                         console.log(data);
-                        console.log(comment)
+                        this.loadComments();
                     })
                     //
                     // var list = JSON.parse(localStorage.getItem('cmts') || '[]')
@@ -116,6 +116,7 @@
             loadComments(){
                 //var list = JSON.parse(localStorage.getItem('cmts') || '[]')
                 //this.list = list
+                //loadcomment 要做判断 数据库中评论的title 要等于 这个title
                 this.$http.get("showcommentservlet")
                     .then(function (data) {
                         this.list = data.body.slice(0,10);
@@ -124,10 +125,12 @@
             }
         },
         created(){
-            this.loadComments()
             var blog=JSON.parse(localStorage.getItem('blog')||'[]')
             this.title=blog.title
             this.context=blog.content
+            var thisblog={title:this.title,context:this.context};
+            this.$http.post("showcommentservlet",JSON.stringify(thisblog));
+            this.loadComments();
         }
 
     })
