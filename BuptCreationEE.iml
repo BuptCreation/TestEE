@@ -33,5 +33,13 @@
     <orderEntry type="library" name="gson-2.8.7" level="project" />
     <orderEntry type="library" name="mongo-java-driver-3.9.0" level="project" />
     <orderEntry type="library" name="mongo-java-driver-3.9.0" level="project" />
+    <orderEntry type="library" name="websocket" level="project" />
+    <orderEntry type="library" name="javax.websocket-api-1.1" level="project" />
+    <orderEntry type="library" name="jackson-core-2.9.8-javadoc" level="project" />
+    <orderEntry type="library" name="jackson-core-2.9.8-javadoc  (2)" level="project" />
+    <orderEntry type="library" name="jackson-core-2.9.8-javadoc (2)" level="project" />
+    <orderEntry type="library" name="jackson-core-2.9.8-javadoc (3)" level="application" />
+    <orderEntry type="library" name="jackson-annotations-2.11.0" level="project" />
+    <orderEntry type="library" name="jackson-databind-2.11.4" level="project" />
   </component>
 </module>
