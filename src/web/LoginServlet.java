@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         // 调用 userService.login()登录处理业务
-        User loginUser = userService.login(new User(null, username, password, null, null));
+        User loginUser = userService.login(new User(null, username, password, null, null,1212020));
         // 如果等于null,说明登录 失败!
         if (loginUser == null) {
             //   跳回登录页面

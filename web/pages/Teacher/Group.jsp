@@ -106,7 +106,7 @@
             PostStudent(){
                 if (this.student.groupId !=''&&this.student.username!=''&&this.studentId!=''){
                     var student = {
-                        id: this.student.studentId,
+                        id: this.student.id,
                         username: this.student.username,
                         groupId: this.student.groupId,
                         teacherUsername: '<%=loginUser.getUsername()%>'
@@ -119,6 +119,7 @@
             },
             //学生加载
             LoadStudents(){
+
                 this.$http.get("https://jsonplaceholder.typicode.com/posts/").then(function(data){
                     this.groups=data.body;
                     console.log(this.groups);

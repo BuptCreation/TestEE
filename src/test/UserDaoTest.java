@@ -28,8 +28,8 @@ public class UserDaoTest {
         }
     }
 
-    @Test
-    public void saveUser() {
-        System.out.println( userDao.saveUser(new User(null,"wzg168", "123456", "wzg168@qq.com", "student")) );
-    }
+   // @Test
+    //public void saveUser() {
+       // System.out.println( userDao.saveUser(new User(null,"wzg168", "123456", "wzg168@qq.com", "student")) );
+    //}
 }
