@@ -31,9 +31,9 @@
         <ul class="list-group" v-for="group in groups" :key="group.id">
             <li class="list-group-item" v-for="student in group" :key="student.id">
 
-                <span class="badge">小组号：{{student.group}}</span>
-                学号：{{ student.studentId }}
-                 用户名：{{ student.studentName }}
+                <span class="badge">小组号：{{student.groupId}}</span>
+                学号：{{ student.id }}
+                 用户名：{{ student.username }}
             </li>
         </ul>
 
@@ -97,8 +97,8 @@
             teacherUsername:"",
             student:{
                 username:"",
-                id:"",
-                groupId:""
+                id: Number(),
+                groupId: Number()
             }
         },
         methods: {
@@ -106,12 +106,12 @@
             PostStudent(){
                 if (this.student.groupId !=''&&this.student.username!=''&&this.studentId!=''){
                     var student = {
-                        id: this.student.id,
+                        id: Number(this.student.id),
                         username: this.student.username,
-                        groupId: this.student.groupId,
+                        groupId: Number(this.student.groupId),
                         teacherUsername: '<%=loginUser.getUsername()%>'
                     }
-                    this.$http.post("https://jsonplaceholder.typicode.com/posts/",JSON.stringify(student)).then(function (data) {
+                    this.$http.post("addstudenttogroupservlet",JSON.stringify(student)).then(function (data) {
                         console.log(student)
                     })
 
@@ -119,8 +119,7 @@
             },
             //学生加载
             LoadStudents(){
-
-                this.$http.get("https://jsonplaceholder.typicode.com/posts/").then(function(data){
+                this.$http.get("showgroupsservlet").then(function(data){
                     this.groups=data.body;
                     console.log(this.groups);
                 })
@@ -159,7 +158,7 @@
             // }
         },
         created(){
-            // this.LoadStudents()
+            this.LoadStudents();
         }
 
     })
