@@ -28,6 +28,7 @@
                 <li ><a href="pages/Student/My.jsp">我的</a></li>
                 <li ><a href="pages/Student/Addblog.jsp">协同写作</a></li>
                 <li ><a href="pages/Student/Showblog.jsp">作品评论</a></li>
+                <li ><a href="pages/Student/ChatRoom.jsp">聊天室</a></li>
             </ul>
         </div>
     </div>
