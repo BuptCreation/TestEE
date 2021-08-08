@@ -35,6 +35,7 @@
                 学号：{{ student.id }}
                  用户名：{{ student.username }}
             </li>
+            <br/>
         </ul>
 
         <div>
