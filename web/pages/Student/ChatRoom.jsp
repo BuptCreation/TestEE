@@ -106,6 +106,7 @@
     <div id="username"><h3 style="text-align: center;">用户：张三<span>-在线</span></h3></div>
     <div id="Inchat"></div>
     <div id="left">
+<%--    用于展示正在与谁聊天    --%>
         <div id="content">
 
         </div>
@@ -159,6 +160,7 @@
         //获取host解决后端获取httpsession的空指针异常
         var host = window.location.host;
         var ws = new WebSocket("ws://"+host+"/chat");
+        //建立连接之后
         ws.onopen = function (evt) {
             //在建立连接之后 需要做什么?
             $("#username").html("<h3 style=\"text-align: center;\">用户："+ username +"<span>已连接到聊天室</span></h3>");
