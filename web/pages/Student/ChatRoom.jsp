@@ -24,53 +24,134 @@
     <link rel="stylesheet" href="static/css/bootstrap.css">
 </head>
 <style>
+<%--    美化排版--%>
+    .User{
+        padding: 7px;
+        float: left;
+    }
+    .UState{
+        padding: 7px;
+        float: right;
+    }
+    .Prompt{
+        padding: 7px;
+        align-content: center;
+        color: lightskyblue;
+    }
+.bubble-left span{
+    float: left;
+    background-color: #999999;
+    padding: 5px 8px;
+    display: inline-block;
+    border-radius: 4px;
+    margin:10px 0 10px 10px;
+    position: relative;
+
+}
+.bubble-left span::after{
+    content: '';
+    border: 8px solid #ffffff00;
+    border-right: 8px solid #999999;
+    position: absolute;
+    top: 6px;
+    left: -16px;
+}
+.bubble-right span{
+    float: right;
+    background-color: #c6feeb;
+    padding: 5px 8px;
+    display: inline-block;
+    border-radius: 4px;
+    margin:10px 0 10px 10px;
+    position: relative;
+    right: 16px;
+}
+.bubble-right span::after{
+    content: '';
+    border: 8px solid #ffffff00;
+    border-left: 8px solid #c6feeb;
+    position: absolute;
+    top: 6px;
+    right: -16px;
+}
+.submit {
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border: 2px solid #008CBA;
+}
+
+.submit:hover {
+    background-color: #008CBA;
+    color: white;
+}
+<%--    格式排版--%>
     #contains{
-        background-color: pink;
+        background-color: #666666;
         width: 1000px;
         height: 700px;
         margin: auto;
     }
     #username{
-        background-color: powderblue;
+        color: #ecf0f1;
+        background-color: #666666;
         width: 1000px;
-        height: 30px;
+        height: 40px;
+        border-radius: 50px 50px 0px 0px;
     }
     #Inchat{
-        background-color: rgb(5, 130, 146);
+        text-align: center;
+        background-color: #666666;
         width: 1000px;
-        height: 30px;
+        height: 50px;
     }
     #left{
-        background-color: salmon;
+        border: 1px solid #8c8c8c;
+        background-color: white;
         width: 700px;
         height: 640px;
         float: left;
         position: relative;
     }
     #content{
-        background-color: silver;
+        border: 1px solid #8c8c8c;
+        background-color: white;
         width: 700px;
         height: 400px;
         /*display: none;*/
         visibility: hidden;
     }
     #right{
-        background-color: rgb(107, 3, 3);
+        border: 1px solid #8c8c8c;
+        background-color: #ecf0f1;
         width: 300px;
         height: 640px;
         float: right;
     }
     #hyList{
+        border: 1px solid #8c8c8c;
         height: 270px;
         overflow-y: scroll;
         background: antiquewhite;
     }
     #xtList{
+        border: 1px solid #8c8c8c;
         height: 270px;
         overflow-y: scroll;
         background: antiquewhite;
     }
     #input{
+        border: 1px solid #8c8c8c;
         margin-bottom: 0px;
         position: absolute;
         bottom: 0px;
@@ -103,16 +184,24 @@
     User loginUser=(User)request.getSession().getAttribute("User");
 %>
 <div id = "contains">
-    <div id="username"><h3 style="text-align: center;">用户：张三<span>-在线</span></h3></div>
-    <div id="Inchat"></div>
+    <div id="username">
+        <div class="User"><h3>用户:</h3></div>
+        <div class="UState">服务器未连接到终端</div>
+    </div>
+
+    <div id="Inchat">
+
+        <div class="Prompt">没有聊天对象</div>
+    </div>
     <div id="left">
-<%--    用于展示正在与谁聊天    --%>
+<%--    聊天展示区    --%>
         <div id="content">
 
         </div>
+<%--输入区--%>
         <div id="input">
             <textarea type="text" id="input_text" style="width: 695px;height: 200px;"></textarea>
-            <button id="submit" style="float: right;">发送</button>
+            <button id="submit" class="submit" style="float: right;">发送</button>
         </div>
     </div>
     <div id="right">
@@ -126,6 +215,8 @@
         </div>
     </div>
 </div>
+<br/>
+<br/>
 </body>
 <%--jquery管理区域--%>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -136,9 +227,11 @@
     function showChat(name){
         toName = name;
         //现在聊天框
+       //立刻清空聊天框
         $("#content").html("");
+
         $("#content").css("visibility","visible");
-        $("#Inchat").html("当前正与"+toName+"聊天");
+        $("#Inchat").html("<div class=\"Prompt\">当前正与"+toName+"聊天</div>");
         //从sessionStorage中获取历史信息
         var chatData = sessionStorage.getItem(toName);
         if (chatData != null){
@@ -159,19 +252,19 @@
         //建立websocket连接
         //获取host解决后端获取httpsession的空指针异常
         var host = window.location.host;
-        var ws = new WebSocket("ws://"+host+"/chat");
+        var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
         //建立连接之后
         ws.onopen = function (evt) {
             //在建立连接之后 需要做什么?
-            $("#username").html("<h3 style=\"text-align: center;\">用户："+ username +"<span>已连接到聊天室</span></h3>");
+            $("#username").html("<div class=\"User\"><h3>用户:"+username+"</h3></div><div class=\"UState\" style=\"color: lawngreen \"><h3>在线</h3></div>");
         }
-        //接受消息
+        //接受消息后进行触发
         ws.onmessage = function (evt) {
             //获取服务端推送的消息
             var dataStr = evt.data;
             //将dataStr转换为json对象
             var res = JSON.parse(dataStr);
-
+            console.log(res);
             //判断是否是系统消息
             if(res.system){
                 //系统消息
@@ -192,13 +285,15 @@
                         broadcastListStr += "<p style='text-align: center'>"+ name +"上线了</p>";
                     }
                 }
+                console.log("渲染"+userlistStr);
                 //渲染好友列表和系统广播
                 $("#hyList").html(userlistStr);
                 $("#xtList").html(broadcastListStr);
 
             }else {
                 //不是系统消息
-                var str = "<span id='mes_left'>"+ res.message +"</span></br>";
+                var str = "<div class=\"bubble-left\"><span>"+ res.message +"</span></div></br></br></br>";
+                //如果消息就刚好是给我发消息的人
                 if (toName === res.fromName) {
                     $("#content").append(str);
                 }
@@ -211,7 +306,7 @@
             };
         }
         ws.onclose = function () {
-            $("#username").html("<h3 style=\"text-align: center;\">用户："+ username +"<span>-离线</span></h3>");
+            $("#username").html("<div class=\"User\"><h3>用户:"+username+"</h3></div><div class=\"UState\" style=\"color: lawngreen \"><h3>在线</h3></div>");
         }
 
         //发送消息
@@ -222,8 +317,9 @@
             $("#input_text").val("");
             var json = {"toName": toName ,"message": data};
             //将数据展示在聊天区
-            var str = "<span id='mes_right'>"+ data +"</span></br>";
+            var str = "<div class=\"bubble-right\"><span>"+ data +"</span></div></br></br></br>";
             $("#content").append(str);
+            //将聊天记录存储到局部寄存器
 
             var chatData = sessionStorage.getItem(toName);
             if (chatData != null){
@@ -246,7 +342,7 @@
     /*https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json*/
     L2Dwidget.init({ "model": { jsonPath:
                 "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
-            "scale": 1 }, "display": { "position": "right", "width": 110, "height": 150,
+            "scale": 1 }, "display": { "position": "right", "width": 210, "height": 250,
             "hOffset": 0, "vOffset": -20 }, "mobile": { "show": true, "scale": 0.5 },
         "react": { "opacityDefault": 0.8, "opacityOnHover": 0.1 } });
 </script>
