@@ -10,7 +10,15 @@ package pojo;
 public class Message {
     private String toName;
     private String message;
+    private boolean isGroup;
 
+    public boolean isGroup() {
+        return isGroup;
+    }
+
+    public void setGroup(boolean group) {
+        isGroup = group;
+    }
 
     public String getToName() {
         return toName;

@@ -206,6 +206,7 @@
     </div>
     <div id="right">
         <p id="hy" style="text-align: center;">好友列表</p>
+        <a style="text-align: center;display: block" onclick='showGroupChat()'>小组聊天室</a></br>
         <div id="hyList">
 
         </div>
@@ -223,17 +224,33 @@
 <script>
     var toName;
     var username;
+    var Group=true;
+    var UserGroup="1teacher168";//未初始化
+    var isMe=false;
     //点击好友名称展示相关消息
     function showChat(name){
+        Group=false;
         toName = name;
         //现在聊天框
        //立刻清空聊天框
         $("#content").html("");
-
         $("#content").css("visibility","visible");
         $("#Inchat").html("<div class=\"Prompt\">当前正与"+toName+"聊天</div>");
         //从sessionStorage中获取历史信息
         var chatData = sessionStorage.getItem(toName);
+        if (chatData != null){
+            $("#content").html(chatData);
+        }
+    }
+    function showGroupChat(name){
+        Group=true;
+        //现在聊天框
+        //立刻清空聊天框
+        $("#content").html("");
+        $("#content").css("visibility","visible");
+        $("#Inchat").html("<div class=\"Prompt\">当前正与"+"组内所有成员"+"聊天</div>");
+        //从sessionStorage中获取群聊的历史信息
+        var chatData = sessionStorage.getItem(UserGroup);
         if (chatData != null){
             $("#content").html(chatData);
         }
@@ -246,6 +263,7 @@
             //成功后的回调函数
             success:function (res) {
                 username = res;
+                // UserGroup =  session
             },
             async:false //同步请求，只有上面好了才会接着下面
         });
@@ -264,7 +282,7 @@
             var dataStr = evt.data;
             //将dataStr转换为json对象
             var res = JSON.parse(dataStr);
-            console.log(res);
+            console.log("得到消息");
             //判断是否是系统消息
             if(res.system){
                 //系统消息
@@ -285,28 +303,49 @@
                         broadcastListStr += "<p style='text-align: center'>"+ name +"上线了</p>";
                     }
                 }
-                console.log("渲染"+userlistStr);
+                console.log("系统消息"+userlistStr);
                 //渲染好友列表和系统广播
                 $("#hyList").html(userlistStr);
                 $("#xtList").html(broadcastListStr);
 
             }else {
                 //不是系统消息
-                var str = "<div class=\"bubble-left\"><span>"+ res.message +"</span></div></br></br></br>";
-                //如果消息就刚好是给我发消息的人
-                if (toName === res.fromName) {
-                    $("#content").append(str);
-                }
-                var chatData = sessionStorage.getItem(res.fromName);
-                if (chatData != null){
-                    str = chatData + str;
-                }
-                //保存聊天消息
-                sessionStorage.setItem(res.fromName,str);
+                    //判断是否是小组消息
+                    if(res.group==true){
+                        var str = "<div class=\"bubble-left\"><span>" + res.message + "</span></div></br></br></br>";
+                        //如果消息就刚好是给我们组发消息的人
+                        if (UserGroup == res.keyGroup) {
+                            if (isMe==true) {
+                                isMe=false;
+                            }else {
+                                $("#content").append(str);
+                            }
+                        }
+                        var chatData = sessionStorage.getItem(res.keyGroup);
+                        if (chatData != null) {
+                            str = chatData + str;
+                        }
+                        //保存聊天消息
+                        console.log("保存小组"+res.keyGroup+"的消息"+str);
+                        sessionStorage.setItem(res.keyGroup, str);
+                    }else {
+                        var str = "<div class=\"bubble-left\"><span>" + res.message + "</span></div></br></br></br>";
+                        //如果消息就刚好是给我发消息的人
+                        if (toName === res.fromName) {
+                            $("#content").append(str);
+                        }
+                        var chatData = sessionStorage.getItem(res.fromName);
+                        if (chatData != null) {
+                            str = chatData + str;
+                        }
+                        //保存聊天消息
+                        console.log("保存个人"+res.fromName+"的消息"+res);
+                        sessionStorage.setItem(res.fromName, str);
+                    }
             };
         }
         ws.onclose = function () {
-            $("#username").html("<div class=\"User\"><h3>用户:"+username+"</h3></div><div class=\"UState\" style=\"color: lawngreen \"><h3>在线</h3></div>");
+            $("#username").html("<div class=\"User\"><h3>用户:"+username+"</h3></div><div class=\"UState\" style=\"color: lawnred \"><h3>离线</h3></div>");
         }
 
         //发送消息
@@ -315,17 +354,35 @@
             var data = $("#input_text").val();
             //2.清空发送框
             $("#input_text").val("");
-            var json = {"toName": toName ,"message": data};
-            //将数据展示在聊天区
-            var str = "<div class=\"bubble-right\"><span>"+ data +"</span></div></br></br></br>";
-            $("#content").append(str);
-            //将聊天记录存储到局部寄存器
+            if (Group==false) {
+                console.log("发送消息给个人")
+                var json = {"toName": toName, "message": data,"group":false};
+                //将数据展示在聊天区
+                var str = "<div class=\"bubble-right\"><span>" + data + "</span></div></br></br></br>";
+                $("#content").append(str);
+                //将聊天记录存储到局部寄存器
 
-            var chatData = sessionStorage.getItem(toName);
-            if (chatData != null){
-                str = chatData + str;
+                var chatData = sessionStorage.getItem(toName);
+                if (chatData != null) {
+                    str = chatData + str;
+                }
+                sessionStorage.setItem(toName, str);
+            }else {
+                console.log("消息发送给小组");
+                var json = {"toName":UserGroup, "message": data,"group":true};
+                //将数据展示在聊天区
+                console.log(json);
+                var str = "<div class=\"bubble-right\"><span>" + data + "</span></div></br></br></br>";
+                $("#content").append(str);
+                //将聊天记录存储到局部寄存器
+
+                var chatData = sessionStorage.getItem(UserGroup);
+                if (chatData != null) {
+                    str = chatData + str;
+                }
+                sessionStorage.setItem(UserGroup, str);
+                isMe=true;
             }
-            sessionStorage.setItem(toName,str);
             //3.发送数据
             ws.send(JSON.stringify(json));
         })
