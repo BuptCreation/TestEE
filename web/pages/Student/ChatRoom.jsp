@@ -39,6 +39,7 @@
         color: lightskyblue;
     }
 .bubble-left span{
+    white-space: pre-line;
     float: left;
     background-color: #999999;
     padding: 5px 8px;
@@ -57,6 +58,7 @@
     left: -16px;
 }
 .bubble-right span{
+    white-space: pre-line;
     float: right;
     background-color: #c6feeb;
     padding: 5px 8px;
@@ -130,6 +132,7 @@
         height: 400px;
         /*display: none;*/
         visibility: hidden;
+        overflow-y: scroll;
     }
     #right{
         border: 1px solid #8c8c8c;
