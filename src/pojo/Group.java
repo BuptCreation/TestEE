@@ -12,9 +12,11 @@ import java.util.List;
  */
 public class Group {
     private int _id;
-    private String teacherName;
-    private List<Integer> studentsId = new ArrayList<Integer>();
-    private List<String> studentsName = new ArrayList<String>();
+    private int id; //学号
+    private String username;//学生姓名
+    private int groupId;//小组号
+    private int speeches;//群聊发言次数
+    private String teacherUsername;//教师姓名
 
     public int get_id() {
         return _id;
@@ -24,47 +26,67 @@ public class Group {
         this._id = _id;
     }
 
-    public String getTeacherName() {
-        return teacherName;
+    public int getId() {
+        return id;
     }
 
-    public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public List<Integer> getStudentsId() {
-        return studentsId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setStudentsId(List<Integer> studentsId) {
-        this.studentsId = studentsId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public List<String> getStudentsName() {
-        return studentsName;
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setStudentsName(List<String> studentsName) {
-        this.studentsName = studentsName;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public int getSpeeches() {
+        return speeches;
+    }
+
+    public void setSpeeches(int speeches) {
+        this.speeches = speeches;
+    }
+
+    public String getTeacherUsername() {
+        return teacherUsername;
+    }
+
+    public void setTeacherUsername(String teacherUsername) {
+        this.teacherUsername = teacherUsername;
     }
 
     public Group() {
     }
 
-    public Group(int _id, String teacherName, List<Integer> studentsId, List<String> studentsName) {
+    public Group(int _id, int id, String username, int groupId, int speeches, String teacherUsername) {
         this._id = _id;
-        this.teacherName = teacherName;
-        this.studentsId = studentsId;
-        this.studentsName = studentsName;
+        this.id = id;
+        this.username = username;
+        this.groupId = groupId;
+        this.speeches = speeches;
+        this.teacherUsername = teacherUsername;
     }
 
     @Override
     public String toString() {
         return "Group{" +
                 "_id=" + _id +
-                ", teacherName='" + teacherName + '\'' +
-                ", studentsId=" + studentsId +
-                ", studentsName=" + studentsName +
+                ", id=" + id +
+                ", username='" + username + '\'' +
+                ", groupId=" + groupId +
+                ", speeches=" + speeches +
+                ", teacherUsername='" + teacherUsername + '\'' +
                 '}';
     }
 }

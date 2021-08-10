@@ -39,7 +39,6 @@
         color: lightskyblue;
     }
 .bubble-left span{
-    white-space: pre-line;
     float: left;
     background-color: #999999;
     padding: 5px 8px;
@@ -225,12 +224,21 @@
 <%--jquery管理区域--%>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
+    var Count=0;
     var toName;
     var username;
     var Group=true;
     var UserGroup="1teacher168";//未初始化
     var isMe=false;
     //点击好友名称展示相关消息
+    window.onbeforeunload = function(event) {
+        var count = {count:Count,id:Number(<%=loginUser.getStudentNo()%>)};
+        $.post("updatecountservlet",JSON.stringify(count)).then(function(data) {
+            console.log(data);
+        });
+        //count归零
+        Count=0;
+    };
     function showChat(name){
         Group=false;
         toName = name;
@@ -264,16 +272,19 @@
             url:"getUsername",
             type:"get",
             //成功后的回调函数
+            <%
+        String keyGroup = (String)request.getSession().getAttribute("KeyGroup");
+    %>
             success:function (res) {
                 username = res;
-                // UserGroup =  session
+                UserGroup =  "<%=keyGroup%>";
             },
             async:false //同步请求，只有上面好了才会接着下面
         });
         //建立websocket连接
         //获取host解决后端获取httpsession的空指针异常
         var host = window.location.host;
-        var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
+        var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE"+"/chat");
         //建立连接之后
         ws.onopen = function (evt) {
             //在建立连接之后 需要做什么?
@@ -348,11 +359,21 @@
             };
         }
         ws.onclose = function () {
-            $("#username").html("<div class=\"User\"><h3>用户:"+username+"</h3></div><div class=\"UState\" style=\"color: lawnred \"><h3>离线</h3></div>");
+            //发送数据给后台统计
+
+            <%--var count = {count:Count,id:Number(<%=loginUser.getStudentNo()%>)};--%>
+            <%--$.post("https://jsonplaceholder.typicode.com/posts/",JSON.stringify(count)).then(function(data) {--%>
+            <%--     console.log(data);--%>
+            <%--});--%>
+            <%--    //count归零--%>
+            <%--    Count=0;--%>
+            $("#username").html("<div class=\"User\"><h3>用户:"+username+"</h3></div><div class=\"UState\" style=\"color: orangered \"><h3>离线</h3></div>");
         }
 
         //发送消息
         $("#submit").click(function () {
+            //0.说话次数加一
+            Count+=1;
             //1.获取输入的内容
             var data = $("#input_text").val();
             //2.清空发送框

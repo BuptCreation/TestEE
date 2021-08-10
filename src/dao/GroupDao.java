@@ -15,4 +15,6 @@ import java.util.Map;
 public interface GroupDao {
     public List<Map<String, Object>> queryGroup(String teacherName) throws Exception;
     public void saveGroup(String json) throws Exception;
+    public void updateSpeeches(String json) throws Exception;
+    public int querySpeeches(int id) throws Exception;
 }
