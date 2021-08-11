@@ -52,11 +52,11 @@
 <script>
     var messages;
     $(function(){
-        $.getJSON("https://jsonplaceholder.typicode.com/posts/",function (data) {
+        $.getJSON("shownewsservlet",function (data) {
             $.each(data,function (i,message) {
                 var str= " <li>\n" +
                     "                            <div>\n" +
-                    "                                <time>"+message.title+"</time> \n" +message.body +
+                    "                                <time>"+message.title+"</time> \n" +message.content + message.extraInfo +
                     "                            </div>\n" +
                     "                        </li>";
                 $(".messages").append(str);
