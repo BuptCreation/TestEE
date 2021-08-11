@@ -8,8 +8,8 @@ package pojo;
  * @date 2021-08-05-21
  */
 public class Message {
-    private User toName;
-    private User message;
+    private String toName;
+    private String message;
     private boolean isGroup;
 
     public boolean isGroup() {
@@ -20,19 +20,19 @@ public class Message {
         isGroup = group;
     }
 
-    public User getToName() {
+    public String getToName() {
         return toName;
     }
 
-    public void setToName(User toName) {
+    public void setToName(String toName) {
         this.toName = toName;
     }
 
-    public User getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(User message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 }
