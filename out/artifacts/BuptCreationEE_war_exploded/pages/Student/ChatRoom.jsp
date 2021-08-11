@@ -284,11 +284,7 @@
         //建立websocket连接
         //获取host解决后端获取httpsession的空指针异常
         var host = window.location.host;
-<<<<<<< HEAD
-        var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE"+"/chat");
-=======
         var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
->>>>>>> origin/master
         //建立连接之后
         ws.onopen = function (evt) {
             //在建立连接之后 需要做什么?

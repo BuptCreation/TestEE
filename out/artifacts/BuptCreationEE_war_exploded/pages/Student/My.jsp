@@ -11,8 +11,6 @@
     <title>学生首页</title>
     <!--    基础路径-->
     <base href="../../">
-<<<<<<< HEAD
-=======
     <!--提示表单样式CSS  -->
     <link rel="stylesheet" href="static/css/prompt-style.css">
     <!--    vue-基础包导入-->
@@ -20,7 +18,6 @@
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
     <!--    vue-resource 包导入-->
     <script src="https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js"></script>
->>>>>>> origin/master
 </head>
 <body>
     <%@include file="headleader.jsp"%>
@@ -29,10 +26,6 @@
     <%
         User loginUser=(User)request.getSession().getAttribute("User");
     %>
-<<<<<<< HEAD
-    <h3>欢迎你登陆！<%=loginUser.getUsername()%></h3>
-</body>
-=======
     <!--  -->
     <section class="intro">
         <div class="container">
@@ -59,11 +52,13 @@
 <script>
     var messages;
     $(function(){
-        $.getJSON("https://jsonplaceholder.typicode.com/posts/",function (data) {
+        $.getJSON("shownewsservlet",function (data) {
             $.each(data,function (i,message) {
                 var str= " <li>\n" +
                     "                            <div>\n" +
-                    "                                <time>"+message.title+"</time> \n" +message.body +
+                    "                                <time>"+message.title+"</time> \n" +message.content +
+                    "                                \n"+
+                                                        message.extraInfo + 
                     "                            </div>\n" +
                     "                        </li>";
                 $(".messages").append(str);
@@ -106,5 +101,4 @@
 <%-- --%>
 </body>
 
->>>>>>> origin/master
 </html>
