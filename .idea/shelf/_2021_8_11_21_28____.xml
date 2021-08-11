@@ -1,0 +1,209 @@
+<changelist name="在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]" date="1628688530637" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/shelved.patch" />
+  <option name="DESCRIPTION" value="在进行更新之前于 2021/8/11 21:28 取消提交了变更 [默认变更列表]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/GetAllStudents.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/GetAllStudents.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/GetAllStudents.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/LoginServlet.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/LoginServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/LoginServlet.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/pojo/User.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/AddBlogServlet.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/AddBlogServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/AddBlogServlet.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/Comment.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/Comment.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/Comment.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/pojo/Comment.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/pojo/Comment.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/Comment1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/dao/impl/UserDaoImpl.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/dao/impl/UserDaoImpl.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/UserDaoImpl.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/ChatRoomUser.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/ChatRoomUser.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ChatRoomUser.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/GetAllStudents.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/GetAllStudents.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/GetAllStudents1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/ws/ChatEndpoint.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/ws/ChatEndpoint.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ChatEndpoint.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/ShowGroupsServlet.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/ShowGroupsServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ShowGroupsServlet.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/service/impl/UserServiceImpl.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/service/impl/UserServiceImpl.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/UserServiceImpl.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/AddStudentToGroupServlet.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/AddStudentToGroupServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/AddStudentToGroupServlet.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/service/UserService.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/service/UserService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/UserService.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/ShowCommentServlet.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/ShowCommentServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ShowCommentServlet.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/AddStudentToGroupServlet.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/AddStudentToGroupServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/AddStudentToGroupServlet1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/service/impl/UserServiceImpl.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/service/impl/UserServiceImpl.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/UserServiceImpl1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/dao/ArticleDao.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/dao/ArticleDao.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ArticleDao.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/AddBlogServlet.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/AddBlogServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/AddBlogServlet1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/dao/UserDao.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/dao/UserDao.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/UserDao.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/dao/impl/ArticleDaoImpl.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/dao/impl/ArticleDaoImpl.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ArticleDaoImpl.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/test/UserDaoTest.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/test/UserDaoTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/UserDaoTest.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/AddCommentServlet.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/AddCommentServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/AddCommentServlet.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/utils/JsonConverter.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/utils/JsonConverter.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/JsonConverter.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/dao/ArticleDao.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/dao/ArticleDao.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ArticleDao1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/service/impl/CommentServiceImpl.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/service/impl/CommentServiceImpl.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/CommentServiceImpl.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/ShowCommentServlet.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/ShowCommentServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ShowCommentServlet1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/pojo/Group.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/pojo/Group.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/Group.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/RegistServlet.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/RegistServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/RegistServlet.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/dao/UserDao.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/dao/UserDao.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/UserDao1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/ChatRoomUser.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/ChatRoomUser.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ChatRoomUser1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/ShowGroupsServlet.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/ShowGroupsServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ShowGroupsServlet1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/AddCommentServlet.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/AddCommentServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/AddCommentServlet1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/utils/JsonConverter.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/utils/JsonConverter.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/JsonConverter1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/service/UserService.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/service/UserService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/UserService1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/dao/impl/UserDaoImpl.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/dao/impl/UserDaoImpl.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/UserDaoImpl1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/dao/impl/ArticleDaoImpl.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/dao/impl/ArticleDaoImpl.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ArticleDaoImpl1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/Group.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/Group.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/Group1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/test/UserServiceTest.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/test/UserServiceTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/UserServiceTest.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/service/impl/CommentServiceImpl.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/service/impl/CommentServiceImpl.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/CommentServiceImpl1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/ws/ChatEndpoint.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/ws/ChatEndpoint.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_11_21_28_取消提交了变更_[默认变更列表]/ChatEndpoint1.class" />
+  </binary>
+</changelist>
