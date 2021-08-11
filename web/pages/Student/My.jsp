@@ -96,7 +96,7 @@
     })
 </script>
     <!-- 提示表单样式js-->
-<%--    <script  src="static/script/prompt-script.js"></script>--%>
+<%-- --%>
 </body>
 
 </html>
