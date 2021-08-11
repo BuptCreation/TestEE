@@ -12,7 +12,7 @@ import com.mongodb.client.MongoDatabase;
 import dao.UserDao;
 import dao.impl.UserDaoImpl;
 import org.bson.Document;
-import pojo.String;
+import pojo.User;
 import service.UserService;
 import utils.*;
 
@@ -23,12 +23,12 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao = new UserDaoImpl();
 
     @Override
-    public void registUser(String user) {
+    public void registUser(User user) {
         userDao.saveUser(user);
     }
 
     @Override
-    public String login(String user) {
+    public User login(User user) {
         return userDao.queryUserByUsernameAndPassword(user.getUsername(), user.getPassword());
     }
 

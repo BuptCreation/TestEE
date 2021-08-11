@@ -3,9 +3,9 @@ package pojo;
 public class ResultGroupMessage {
     private boolean isGroup=true;
     private boolean isSystem=false;
-    private String KeyGroup;
+    private User KeyGroup;
     private Object message;
-    public String getKeyGroup() {
+    public User getKeyGroup() {
         return KeyGroup;
     }
 
@@ -25,7 +25,7 @@ public class ResultGroupMessage {
         isSystem = system;
     }
 
-    public void setKeyGroup(String keyGroup) {
+    public void setKeyGroup(User keyGroup) {
         KeyGroup = keyGroup;
     }
 

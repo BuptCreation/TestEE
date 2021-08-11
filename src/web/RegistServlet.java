@@ -2,7 +2,7 @@ package web;
 
 
 
-import pojo.String;
+import pojo.User;
 import service.UserService;
 import service.impl.UserServiceImpl;
 
@@ -37,7 +37,7 @@ public class RegistServlet extends HttpServlet {
             } else {
                 //      可用
 //                调用Sservice保存到数据库
-                userService.registUser(new String(null, username, password, email, identity,studentNo));
+                userService.registUser(new User(null, username, password, email, identity,studentNo));
 //
 //        跳到注册成功页面 regist_success.html
                 req.getRequestDispatcher("/pages/user/regist_success.html").forward(req, resp);

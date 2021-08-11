@@ -10,7 +10,7 @@ package pojo;
  */
 public class ResultMessage {
     private boolean isSystem;
-    private String fromName;
+    private User fromName;
     private Object message;
 
     public boolean isSystem() {
@@ -21,11 +21,11 @@ public class ResultMessage {
         isSystem = system;
     }
 
-    public String getFromName() {
+    public User getFromName() {
         return fromName;
     }
 
-    public void setFromName(String fromName) {
+    public void setFromName(User fromName) {
         this.fromName = fromName;
     }
 

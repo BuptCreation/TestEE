@@ -1,4 +1,4 @@
-<%@ page import="pojo.String" %><%--
+<%@ page import="pojo.User" %><%--
   Created by IntelliJ IDEA.
   User: tigers
   Date: 2021/8/7
@@ -183,7 +183,7 @@
 <br/>
 <br/>
 <%
-    String loginUser=(String)request.getSession().getAttribute("User");
+    User loginUser=(User)request.getSession().getAttribute("User");
 %>
 <div id = "contains">
     <div id="username">

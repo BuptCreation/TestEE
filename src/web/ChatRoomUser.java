@@ -1,7 +1,7 @@
 package web;
 
 
-import pojo.String;
+import pojo.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +15,7 @@ import java.io.IOException;
 public class ChatRoomUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String loginUser=(String)req.getSession().getAttribute("User");
+        User loginUser=(User)req.getSession().getAttribute("User");
         java.lang.String username=loginUser.getUsername();
         resp.setContentType("text/html;charset=UTF-8");
         resp.getWriter().write(username);
