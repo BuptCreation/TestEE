@@ -1,6 +1,13 @@
 package web;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import dao.ArticleDao;
+import dao.NewsDao;
+import dao.impl.ArticleDaoImpl;
 import dao.impl.CommentDaoImpl;
+import dao.impl.NewsDaoImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

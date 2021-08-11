@@ -13,6 +13,7 @@ import utils.MongoDaoImpl;
 import utils.MongoHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -30,9 +31,13 @@ public class NewsDaoImpl implements NewsDao {
         try {
             MongoDao mongoDao = new MongoDaoImpl();
             MongoDatabase db = MongoHelper.getMongoDataBase();
+
             BasicDBObject studentNoObj = new BasicDBObject("studentNo",studentNo);
+            BasicDBObject isCommentObj = new BasicDBObject("isComment",true);
+            BasicDBObject andObj = new BasicDBObject("$and", Arrays.asList(studentNoObj,isCommentObj));
+
             String table = "buptnews";
-            list = mongoDao.queryByDoc(db,table,studentNoObj);
+            list = mongoDao.queryByDoc(db,table,andObj);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -68,13 +73,16 @@ public class NewsDaoImpl implements NewsDao {
     }
 
     @Override
-    public void updateNews(int studentNo) {
+    public void updateNews(int studentNo,int count,String title) {
         try {
             MongoDao mongoDao = new MongoDaoImpl();
             MongoDatabase db = MongoHelper.getMongoDataBase();
             String table = "buptnews";
             BasicDBObject studentNoObj = new BasicDBObject("studentNo",studentNo);
-            BasicDBObject isCommentObj = new BasicDBObject("isComment",true);
+            BasicDBObject isCommentObj = new BasicDBObject("isComment",true).
+                    append("extraInfo","您现在已经拥有: "+count+"条评论").
+                    append("title","消息提醒").
+                    append("content","您的文章"+title+"有评论");
             mongoDao.update(db,table,studentNoObj,isCommentObj);
         } catch (Exception e) {
             e.printStackTrace();

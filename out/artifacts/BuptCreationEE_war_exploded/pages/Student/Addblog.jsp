@@ -1,4 +1,4 @@
-<%@ page import="pojo.User" %><%--
+<%@ page import="pojo.String" %><%--
   Created by IntelliJ IDEA.
   User: tigers
   Date: 2021/7/26
@@ -92,7 +92,7 @@
 
 <%--从session中获得user--%>
 <%
-    User loginUser=(User)request.getSession().getAttribute("User");
+    String loginUser=(String)request.getSession().getAttribute("User");
 %>
 <!--写作部分-->
 <div class="app-blog">
@@ -155,13 +155,13 @@
                 categories:[],
                 author:"<%=loginUser.getUsername()%>",
                 submitted:false,
-                id: "<%=loginUser.getId()%>"
+                studentNo: "<%=loginUser.getStudentNo()%>"
             },
             authors:["Hemiah","Hemry","Buky"]
         },
         methods:{
             Post:function(){
-                var article = {title: this.blog.title,content:this.blog.content,author:this.blog.author,id:this.blog.id}
+                var article = {title: this.blog.title,content:this.blog.content,author:this.blog.author,studentNo:this.blog.studentNo}
                 this.$http.post("addblogsevlet",JSON.stringify(article)).then(function(data){
                     console.log(data);
                     $("#messageDiv").html(data);

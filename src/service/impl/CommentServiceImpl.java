@@ -1,6 +1,8 @@
 package service.impl;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -15,6 +17,7 @@ import utils.MongoDaoImpl;
 import utils.MongoHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,9 +35,13 @@ public class CommentServiceImpl implements CommentService {
         String table = "buptcomment";
         MongoDatabase db = MongoHelper.getMongoDataBase();
         MongoCollection<Document> collection = db.getCollection(table);
-        Gson gson = new Gson();
-        Comment comment = gson.fromJson(json,Comment.class);
-        FindIterable<Document> iterable = collection.find(new BasicDBObject("title", comment.getTitle()));
+
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+        String title = jsonObject.get("title").getAsString();
+
+        BasicDBObject titleObj = new BasicDBObject("title",title);
+
+        FindIterable<Document> iterable = collection.find(titleObj);
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         MongoCursor<Document> cursor = iterable.iterator();
         while (cursor.hasNext()) {

@@ -75,17 +75,4 @@ public class News {
         this.studentNo = studentNo;
     }
 
-    @Override
-    public String toString() {
-        return "News{" +
-                "type='" + type + '\'' +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", isComment=" + isComment +
-                ", extraInfo='" + extraInfo + '\'' +
-                ", studentNo=" + studentNo +
-                '}';
-    }
-
-
 }

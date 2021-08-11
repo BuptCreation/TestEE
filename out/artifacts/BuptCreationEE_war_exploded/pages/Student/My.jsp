@@ -1,4 +1,4 @@
-<%@ page import="pojo.User" %><%--
+<%@ page import="pojo.String" %><%--
   Created by IntelliJ IDEA.
   User: tigers
   Date: 2021/7/26
@@ -24,7 +24,7 @@
     <%--从session中获得user    --%>
 
     <%
-        User loginUser=(User)request.getSession().getAttribute("User");
+        String loginUser=(String)request.getSession().getAttribute("User");
     %>
     <!--  -->
     <section class="intro">
@@ -56,9 +56,7 @@
             $.each(data,function (i,message) {
                 var str= " <li>\n" +
                     "                            <div>\n" +
-                    "                                <time>"+message.title+"</time> \n" +message.content +
-                    "                                \n"+
-                                                        message.extraInfo + 
+                    "                                <time>"+message.title+"</time> \n" +message.content + message.extraInfo +
                     "                            </div>\n" +
                     "                        </li>";
                 $(".messages").append(str);

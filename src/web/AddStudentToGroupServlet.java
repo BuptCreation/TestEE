@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dao.impl.GroupDaoImpl;
-import pojo.User;
+import pojo.String;
 import service.UserService;
 import service.impl.UserServiceImpl;
 
@@ -35,27 +35,27 @@ public class AddStudentToGroupServlet extends HttpServlet {
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     req.getInputStream(), "utf-8"));
             StringBuffer sb = new StringBuffer("");
-            String temp;
+            java.lang.String temp;
             while ((temp = br.readLine()) != null) {
                 sb.append(temp);
             }
             br.close();
             //获取到的json字符串
             System.out.println(sb);
-            String acceptjson = sb.toString();
+            java.lang.String acceptjson = sb.toString();
             JsonObject jsonObject = JsonParser.parseString(acceptjson).getAsJsonObject();
             //保存到组中
             GroupDaoImpl groupDao = new GroupDaoImpl();
             groupDao.saveGroup(acceptjson);
             //保存用户数据
-            User user = new User();
+            String user = new String();
             user.setStudentNo(jsonObject.get("id").getAsInt());
             user.setUsername("bupt"+jsonObject.get("id").getAsString());
             user.setPassword("123456");
             //user.setEmail("123456");
             user.setIdentity("student");
             userService.registUser(user);
-            String userinfo = new Gson().toJson(user);
+            java.lang.String userinfo = new Gson().toJson(user);
             System.out.println("注册成功！"+"欢迎用户"+userinfo);
         } catch (Exception e) {
             e.printStackTrace();

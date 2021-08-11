@@ -1,4 +1,4 @@
-<%@ page import="pojo.User" %><%--
+<%@ page import="pojo.String" %><%--
   Created by IntelliJ IDEA.
   User: tigers
   Date: 2021/8/6
@@ -71,7 +71,7 @@
     </div>
 </div>
 <%
-    User loginUser=(User)request.getSession().getAttribute("User");
+    String loginUser=(String)request.getSession().getAttribute("User");
 %>
 <script type="text/javascript">
     var vm = new Vue({

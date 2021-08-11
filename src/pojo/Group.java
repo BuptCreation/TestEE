@@ -79,14 +79,14 @@ public class Group {
     }
 
     @Override
-    public String toString() {
+    public java.lang.String toString() {
         return "Group{" +
                 "_id=" + _id +
                 ", id=" + id +
-                ", username='" + username + '\'' +
+                ", username=" + username +
                 ", groupId=" + groupId +
                 ", speeches=" + speeches +
-                ", teacherUsername='" + teacherUsername + '\'' +
+                ", teacherUsername=" + teacherUsername +
                 '}';
     }
 }

@@ -17,18 +17,8 @@ public class MongoHelper {
     private static MongoClient mongoClient = new MongoClient(ServerAddress, PORT);
 
     // 模拟连接池(阻塞队列)
-    private static LinkedBlockingQueue<MongoDatabase> mongoDatabases = new LinkedBlockingQueue<MongoDatabase>(10);
+    private static LinkedBlockingQueue<MongoDatabase> mongoDatabases = new LinkedBlockingQueue<MongoDatabase>();
 
-    static {
-        initMongoDatabases();
-    }
-
-    private static void initMongoDatabases() {
-        for (int i = 0; i < 10; i++) {
-            MongoDatabase mDatabase = mongoClient.getDatabase(DBName);
-            mongoDatabases.add(mDatabase);
-        }
-    }
 
     public static void closeMongoClient(MongoDatabase mongoDatabase) {
         mongoDatabases.add(mongoDatabase);
@@ -36,8 +26,12 @@ public class MongoHelper {
 
     public static MongoDatabase getMongoDataBase() {
         try {
-            MongoDatabase mDatabase = mongoDatabases.take();
-            return mDatabase;
+            MongoDatabase mDatabase = mongoClient.getDatabase(DBName);
+            mongoDatabases.add(mDatabase);
+            System.out.println("线程池中现有: "+mongoDatabases.remainingCapacity());
+            MongoDatabase Database = mongoDatabases.take();
+            System.out.println("线程池中仍有: "+mongoDatabases.remainingCapacity());
+            return Database;
         } catch (InterruptedException e) {
             e.printStackTrace();
             return null;

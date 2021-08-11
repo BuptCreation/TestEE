@@ -9,17 +9,17 @@ package pojo;
  */
 public class Comment {
 
-    private User user;
-    private int id;
-    private String content;
-    private String title;
-    private String context;
+    private String user; //发表的用户
+    private int id; //发表事件
+    private java.lang.String content; //内容
+    private java.lang.String title; //标题
+    private java.lang.String context; //
 
-    public User getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -31,31 +31,31 @@ public class Comment {
         this.id = id;
     }
 
-    public String getContent() {
+    public java.lang.String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(java.lang.String content) {
         this.content = content;
     }
 
-    public String getTitle() {
+    public java.lang.String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(java.lang.String title) {
         this.title = title;
     }
 
-    public String getContext() {
+    public java.lang.String getContext() {
         return context;
     }
 
-    public void setContext(String context) {
+    public void setContext(java.lang.String context) {
         this.context = context;
     }
 
-    public Comment(User user, int id, String content, String title, String context) {
+    public Comment(String user, int id, java.lang.String content, java.lang.String title, java.lang.String context) {
         this.user = user;
         this.id = id;
         this.content = content;
@@ -66,7 +66,7 @@ public class Comment {
     public Comment(){};
 
     @Override
-    public String toString() {
+    public java.lang.String toString() {
         return "Comment{" +
                 "user=" + user +
                 ", id=" + id +

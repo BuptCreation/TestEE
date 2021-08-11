@@ -1,7 +1,6 @@
 package web;
 
-import pojo.User;
-import service.impl.GroupServiceImpl;
+import pojo.String;
 import service.impl.NewsServiceImpl;
 
 import javax.servlet.ServletException;
@@ -26,9 +25,9 @@ public class ShowNewsServlet extends HttpServlet {
         try {
             resp.setContentType("application/json;charset=utf-8");
             PrintWriter out = resp.getWriter();
-            User loginUser=(User)req.getSession().getAttribute("User");
+            String loginUser=(String)req.getSession().getAttribute("User");
             //连接数据库,获取消息
-            String NewsList = new NewsServiceImpl().loadNews(loginUser.getStudentNo());
+            java.lang.String NewsList = new NewsServiceImpl().loadNews(loginUser.getStudentNo());
             out.print(NewsList);
             System.out.println(NewsList);
         } catch (Exception e) {

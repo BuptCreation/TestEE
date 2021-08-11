@@ -2,7 +2,7 @@ package web;
 
 
 
-import pojo.User;
+import pojo.String;
 import service.UserService;
 import service.impl.UserServiceImpl;
 
@@ -21,11 +21,11 @@ public class RegistServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //  1、获取请求的参数
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
-        String email = req.getParameter("email");
-        String code = req.getParameter("code");
-        String identity = req.getParameter("identity");
+        java.lang.String username = req.getParameter("username");
+        java.lang.String password = req.getParameter("password");
+        java.lang.String email = req.getParameter("email");
+        java.lang.String code = req.getParameter("code");
+        java.lang.String identity = req.getParameter("identity");
         int studentNo = Integer.parseInt(req.getParameter("studentNo"));
 //        2、检查 验证码是否正确  === 写死,要求验证码为:abcde
         if ("abcde".equalsIgnoreCase(code)) {
@@ -37,7 +37,7 @@ public class RegistServlet extends HttpServlet {
             } else {
                 //      可用
 //                调用Sservice保存到数据库
-                userService.registUser(new User(null, username, password, email, identity,studentNo));
+                userService.registUser(new String(null, username, password, email, identity,studentNo));
 //
 //        跳到注册成功页面 regist_success.html
                 req.getRequestDispatcher("/pages/user/regist_success.html").forward(req, resp);
