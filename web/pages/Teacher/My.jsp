@@ -21,7 +21,7 @@
     <%
         User loginUser=(User)request.getSession().getAttribute("User");
     %>
-    <h3>欢迎你登陆！<%=loginUser.getUsername()%></h3>
+    <h3>欢迎登陆！<%=loginUser.getUsername()%></h3>
     <main class="page-content">
         <div class="card">
             <div class="content">
