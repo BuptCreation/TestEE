@@ -1,0 +1,29 @@
+<changelist name="在进行更新之前于_2021_8_7_10_27_取消提交了变更_[默认变更列表]1" date="1628303266997" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_7_10_27_取消提交了变更_[默认变更列表]1/shelved.patch" />
+  <option name="DESCRIPTION" value="在进行更新之前于 2021/8/7 10:27 取消提交了变更 [默认变更列表]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/User.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/User.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_7_10_27_取消提交了变更_[默认变更列表]1/User.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/LoginServlet.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/LoginServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_7_10_27_取消提交了变更_[默认变更列表]1/LoginServlet.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/test/UserDaoTest.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/test/UserDaoTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_7_10_27_取消提交了变更_[默认变更列表]1/UserDaoTest.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/test/UserServiceTest.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/test/UserServiceTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_7_10_27_取消提交了变更_[默认变更列表]1/UserServiceTest.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/RegistServlet.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/RegistServlet.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_7_10_27_取消提交了变更_[默认变更列表]1/RegistServlet.class" />
+  </binary>
+</changelist>
