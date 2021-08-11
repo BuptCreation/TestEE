@@ -18,6 +18,8 @@
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
     <!--    vue-resource 包导入-->
     <script src="https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js"></script>
+    <%--bootstrap导入    --%>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
     <%@include file="headleader.jsp"%>
@@ -41,6 +43,7 @@
                         <li>
                             <div>
                                 <time>2005</time> In mattis elit vitae odio posuere, nec maximus massa varius. Suspendisse varius volutpat mattis. Vestibulum id magna est.
+                                <button onclick=goComment("2005",)>评论</button>
                             </div>
                         </li>
                     </ul>
@@ -51,17 +54,33 @@
 
 <script>
     var messages;
+    function goComment(title,body,permission){
+        console.log("点击事件触发")
+        commentblog={title:title,content:body,permission:permission}
+        localStorage.setItem('blog',JSON.stringify(commentblog))
+        window.location.href="pages/Student/Comment.jsp"
+    }
     $(function(){
         $.getJSON("shownewsservlet",function (data) {
             $.each(data,function (i,message) {
-                var str= " <li>\n" +
-                    "                            <div>\n" +
-                    "                                <time>"+message.title+"</time> \n" +message.content +
-                    "                                \n"+
-                                                        message.extraInfo + 
-                    "                            </div>\n" +
-                    "                        </li>";
-                $(".messages").append(str);
+                console.log(message);
+                if (message.type=="comment") {
+                    var str = " <li>\n" +
+                        "                            <div>\n" +
+                        "                               "+"<time><span  class=\"label label-info\">作品互评</span></time>"+"您已经被分配到评论文章{"+message.title + "}点击按钮进行评论 \n"+"<br/>"+
+                        "<button class=\"btn btn-info btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"true"+"\")'><span class=\"glyphicon glyphicon-pencil\"></span>评论</button>"+
+                        "                            </div>\n" +
+                        "       </li>";
+                    $(".messages").append(str);
+                }else if (message.type=="评论我"){
+                    var str = " <li>\n" +
+                        "                            <div>\n" +
+                        "                               "+"<time><span  class=\"label label-success\">作品互评</span></time>"+"您已经被分配到评论文章{"+message.title + "}点击按钮进行评论 \n"+"<br/>"+
+                        "<button class=\"btn btn-info btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"true"+"\")'><span class=\"glyphicon glyphicon-pencil\"></span>评论</button>"+
+                        "                            </div>\n" +
+                        "       </li>";
+                    $(".messages").append(str);
+                }
             })
         }).then( function () {
             "use strict";
