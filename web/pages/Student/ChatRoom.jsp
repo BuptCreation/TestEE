@@ -1,4 +1,4 @@
-<%@ page import="pojo.User" %><%--
+<%@ page import="pojo.String" %><%--
   Created by IntelliJ IDEA.
   User: tigers
   Date: 2021/8/7
@@ -183,7 +183,7 @@
 <br/>
 <br/>
 <%
-    User loginUser=(User)request.getSession().getAttribute("User");
+    String loginUser=(String)request.getSession().getAttribute("User");
 %>
 <div id = "contains">
     <div id="username">
@@ -273,7 +273,7 @@
             type:"get",
             //成功后的回调函数
             <%
-        String keyGroup = (String)request.getSession().getAttribute("KeyGroup");
+        java.lang.String keyGroup = (java.lang.String)request.getSession().getAttribute("KeyGroup");
     %>
             success:function (res) {
                 username = res;

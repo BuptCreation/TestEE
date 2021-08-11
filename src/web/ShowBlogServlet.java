@@ -1,8 +1,7 @@
 package web;
 
 import dao.impl.ArticleDaoImpl;
-import pojo.User;
-import service.impl.ArticleServiceImpl;
+import pojo.String;
 import utils.JsonConverter;
 
 import javax.servlet.ServletException;
@@ -34,12 +33,12 @@ public class ShowBlogServlet extends HttpServlet {
         try {
             resp.setContentType("application/json;charset=utf-8");
             PrintWriter out = resp.getWriter();
-            User loginUser=(User)req.getSession().getAttribute("User");
+            String loginUser=(String)req.getSession().getAttribute("User");
             //连接数据库,获取文章
-            List<Map<String,Object>> articles = new ArticleDaoImpl().queryallarticle(loginUser.getId());
+            List<Map<java.lang.String,Object>> articles = new ArticleDaoImpl().queryallarticle(loginUser.getStudentNo());
             JsonConverter converter = new JsonConverter();
             //将文章转换为json类型
-            String output = converter.convertToJson(articles);
+            java.lang.String output = converter.convertToJson(articles);
             out.print(output);
             System.out.println(output);
         } catch (Exception e) {

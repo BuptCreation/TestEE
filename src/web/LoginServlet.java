@@ -2,7 +2,7 @@ package web;
 
 
 
-import pojo.User;
+import pojo.String;
 import service.UserService;
 import service.impl.UserServiceImpl;
 
@@ -21,10 +21,10 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //  1、获取请求的参数
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
+        java.lang.String username = req.getParameter("username");
+        java.lang.String password = req.getParameter("password");
         // 调用 userService.login()登录处理业务
-        User loginUser = userService.login(new User(null, username, password, null, null,0));
+        String loginUser = userService.login(new String(null, username, password, null, null,0));
         // 如果等于null,说明登录 失败!
         if (loginUser == null) {
             //   跳回登录页面
@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
                     //跳到学生端欢迎登陆主页
                     System.out.println(loginUser);
                     int studentId = loginUser.getStudentNo();
-                    String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);
+                    java.lang.String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);
                     //user->group 并且把groupid+teacherusername
                     req.getSession().setAttribute("KeyGroup",KeyGroup);
                     resp.sendRedirect("pages/Student/Welcome.jsp");

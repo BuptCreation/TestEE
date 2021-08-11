@@ -16,4 +16,7 @@ public interface ArticleDao {
     public Article queryonearticle(int id);
     public List<Map<String, Object>>queryallarticle(int id) throws Exception;
     public void savearticle(String json) throws Exception;
+    public int queryCommentCount(String title) throws Exception;
+    public void updateCommentCount(String title,int commentCount);
+    public int quertStudentNo(String title);
 }

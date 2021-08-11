@@ -8,10 +8,11 @@ package pojo;
  * @date 2021-07-21
  */
 public class Article {
-    private int id;
-    private String title;
-    private String author;
-    private String content;
+    private int id; //学号
+    private String title; //标题
+    private String author; //作者
+    private String content; //内容
+    private int commentCount; //评论数
 
     public int getId() {
         return id;
@@ -45,23 +46,22 @@ public class Article {
         this.content = content;
     }
 
-    @Override
-    public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", content='" + content + '\'' +
-                '}';
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 
     public Article() {
     }
 
-    public Article(int id, String title, String author, String content) {
+    public Article(int id, String title, String author, String content, int commentCount) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.content = content;
+        this.commentCount = commentCount;
     }
 }

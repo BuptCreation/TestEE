@@ -3,7 +3,6 @@ package test;
 import dao.UserDao;
 import dao.impl.UserDaoImpl;
 import org.junit.Test;
-import pojo.User;
 
 public class UserDaoTest {
 

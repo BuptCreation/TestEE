@@ -1,6 +1,8 @@
 package dao.impl;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -12,10 +14,7 @@ import org.bson.types.ObjectId;
 import pojo.Article;
 import utils.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 类<code>Doc</code>用于：TODO
@@ -65,6 +64,66 @@ public class ArticleDaoImpl implements ArticleDao {
         Document document = Document.parse(json);
         mongoDao.insert(db, table, document);
         System.out.println("插入成功！");
+    }
+
+    @Override
+    public int queryCommentCount(String title) throws Exception {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "buptarticle";
+        MongoCollection<Document> collection = db.getCollection(table);
+
+        BasicDBObject titleObj = new BasicDBObject("title", title);
+
+        FindIterable<Document> iterable = collection.find(titleObj);
+        Map<String, Object> jsonStrToMap = null;
+        MongoCursor<Document> cursor = iterable.iterator();
+        while (cursor.hasNext()) {
+            Document user = cursor.next();
+            String jsonString = user.toJson();
+            jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);// 这里用到我自己写的方法,主要是包json字符串转换成map格式,为后面做准备,方法放在后面
+        }
+        String json = new Gson().toJson(jsonStrToMap);
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+        return jsonObject.get("commentCount").getAsInt();
+    }
+
+    @Override
+    public void updateCommentCount(String title,int commentCount) {
+        try {
+            MongoDao mongoDao = new MongoDaoImpl();
+            MongoDatabase db = MongoHelper.getMongoDataBase();
+            String table = "buptarticle";
+
+            BasicDBObject titleObj = new BasicDBObject("title", title);
+            BasicDBObject updateObj = new BasicDBObject("commentCount",commentCount);
+
+            mongoDao.updateOne(db,table,titleObj,updateObj);
+
+            System.out.println("更新成功！文章现有评论为: " + commentCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public int quertStudentNo(String title) {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "buptarticle";
+        MongoCollection<Document> collection = db.getCollection(table);
+
+        BasicDBObject titleObj = new BasicDBObject("title", title);
+
+        FindIterable<Document> iterable = collection.find(titleObj);
+        Map<String, Object> jsonStrToMap = null;
+        MongoCursor<Document> cursor = iterable.iterator();
+        while (cursor.hasNext()) {
+            Document user = cursor.next();
+            String jsonString = user.toJson();
+            jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);// 这里用到我自己写的方法,主要是包json字符串转换成map格式,为后面做准备,方法放在后面
+        }
+        String json = new Gson().toJson(jsonStrToMap);
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+        return jsonObject.get("id").getAsInt();
     }
 
 

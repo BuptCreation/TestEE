@@ -1,6 +1,12 @@
 package web;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import dao.ArticleDao;
+import dao.NewsDao;
 import dao.impl.ArticleDaoImpl;
+import dao.impl.NewsDaoImpl;
 import service.impl.CommentServiceImpl;
 import utils.JsonConverter;
 
@@ -25,7 +31,7 @@ import java.util.Map;
  */
 @WebServlet("/showcommentservlet")
 public class ShowCommentServlet extends HttpServlet {
-    public String json;
+    public String json = null;
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -58,6 +64,19 @@ public class ShowCommentServlet extends HttpServlet {
             out.print(output);
             System.out.println("返回数据"+json);
             System.out.println("输出数据"+output);
+
+            //处理文章评论相关信息
+            JsonArray jsonArray = JsonParser.parseString(output).getAsJsonArray();
+            int count = jsonArray.size();
+            JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+            String title = jsonObject.get("title").getAsString();
+            //更新文章评论数
+            ArticleDao articleDao = new ArticleDaoImpl();
+            articleDao.updateCommentCount(title,count);
+            //更新消息为已经评论
+            NewsDao newsDao = new NewsDaoImpl();
+            int studentNo = articleDao.quertStudentNo(title);
+            newsDao.updateNews(studentNo,count,title);
         } catch (Exception e) {
             e.printStackTrace();
         }

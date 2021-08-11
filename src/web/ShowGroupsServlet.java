@@ -1,6 +1,6 @@
 package web;
 
-import pojo.User;
+import pojo.String;
 import service.impl.GroupServiceImpl;
 
 import javax.servlet.ServletException;
@@ -25,9 +25,9 @@ public class ShowGroupsServlet extends HttpServlet {
         try {
             resp.setContentType("application/json;charset=utf-8");
             PrintWriter out = resp.getWriter();
-            User loginUser=(User)req.getSession().getAttribute("User");
+            String loginUser=(String)req.getSession().getAttribute("User");
             //连接数据库,获取小组
-            String groups = new GroupServiceImpl().loadGroup(loginUser.getUsername());
+            java.lang.String groups = new GroupServiceImpl().loadGroup(loginUser.getUsername());
             out.print(groups);
             System.out.println(groups);
         } catch (Exception e) {

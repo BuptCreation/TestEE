@@ -1,9 +1,5 @@
 package test;
 
-import com.google.gson.Gson;
-import org.junit.Test;
-import pojo.User;
-
 /**
  * 类<code>Doc</code>用于
  *

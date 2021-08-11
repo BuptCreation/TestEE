@@ -1,4 +1,4 @@
-<%@ page import="pojo.User" %><%--
+<%@ page import="pojo.String" %><%--
   Created by IntelliJ IDEA.
   User: tigers
   Date: 2021/7/27
@@ -246,7 +246,7 @@
     <h2>协同写作任务发布</h2>
     <%--从session中获得user--%>
     <%
-        User loginUser=(User)request.getSession().getAttribute("User");
+        String loginUser=(String)request.getSession().getAttribute("User");
     %>
 <%--    教师编辑，发布端--%>
     <form method="post" id="form" v-if="!blog.submitted">

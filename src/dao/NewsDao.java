@@ -14,5 +14,5 @@ public interface NewsDao {
     public List<Map<String, Object>> getNews(int studentNo);
     public void addNews(String json);
     public void deleteNews();
-    public void updateNews(int studentNo);
+    public void updateNews(int studentNo,int count,String title);
 }
