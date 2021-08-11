@@ -1,8 +1,5 @@
 package pojo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 类<code>Doc</code>用于：TODO
  *
@@ -13,10 +10,10 @@ import java.util.List;
 public class Group {
     private int _id;
     private int id; //学号
-    private String username;//学生姓名
+    private User username;//学生姓名
     private int groupId;//小组号
     private int speeches;//群聊发言次数
-    private String teacherUsername;//教师姓名
+    private User teacherUsername;//教师姓名
 
     public int get_id() {
         return _id;
@@ -34,11 +31,11 @@ public class Group {
         this.id = id;
     }
 
-    public String getUsername() {
+    public User getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(User username) {
         this.username = username;
     }
 
@@ -58,18 +55,18 @@ public class Group {
         this.speeches = speeches;
     }
 
-    public String getTeacherUsername() {
+    public User getTeacherUsername() {
         return teacherUsername;
     }
 
-    public void setTeacherUsername(String teacherUsername) {
+    public void setTeacherUsername(User teacherUsername) {
         this.teacherUsername = teacherUsername;
     }
 
     public Group() {
     }
 
-    public Group(int _id, int id, String username, int groupId, int speeches, String teacherUsername) {
+    public Group(int _id, int id, User username, int groupId, int speeches, User teacherUsername) {
         this._id = _id;
         this.id = id;
         this.username = username;

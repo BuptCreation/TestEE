@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dao.impl.GroupDaoImpl;
-import pojo.String;
+import pojo.User;
 import service.UserService;
 import service.impl.UserServiceImpl;
 
@@ -48,7 +48,7 @@ public class AddStudentToGroupServlet extends HttpServlet {
             GroupDaoImpl groupDao = new GroupDaoImpl();
             groupDao.saveGroup(acceptjson);
             //保存用户数据
-            String user = new String();
+            User user = new User();
             user.setStudentNo(jsonObject.get("id").getAsInt());
             user.setUsername("bupt"+jsonObject.get("id").getAsString());
             user.setPassword("123456");

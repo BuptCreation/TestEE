@@ -125,9 +125,9 @@
             }
         },
         created(){
-            var blog=JSON.parse(localStorage.getItem('blog')||'[]')
+            var blog = JSON.parse(localStorage.getItem('blog')||'[]')
             this.title=blog.title
-            this.context=blog.content
+            this.context=blog.context
             var thisblog={title:this.title,context:this.context};
             this.$http.post("showcommentservlet",JSON.stringify(thisblog));
             this.loadComments();

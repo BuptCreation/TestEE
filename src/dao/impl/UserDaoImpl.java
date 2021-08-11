@@ -2,7 +2,7 @@ package dao.impl;
 
 
 import dao.UserDao;
-import pojo.String;
+import pojo.User;
 
 import java.util.List;
 
@@ -10,26 +10,26 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
 
     @Override
-    public String queryUserByUsername(java.lang.String username) {
+    public User queryUserByUsername(java.lang.String username) {
         java.lang.String sql = "select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ?";
-        return queryForOne(String.class, sql, username);
+        return queryForOne(User.class, sql, username);
     }
 
     @Override
-    public String queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password) {
+    public User queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password) {
         java.lang.String sql = "select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ? and password = ?";
-        return queryForOne(String.class, sql, username,password);
+        return queryForOne(User.class, sql, username,password);
     }
 
     @Override
-    public int saveUser(String user) {
+    public int saveUser(User user) {
         java.lang.String sql = "insert into user(`username`,`password`,`email`,`identity`,`studentNo`) values(?,?,?,?,?)";
         return update(sql, user.getUsername(),user.getPassword(),user.getEmail(),user.getIdentity(),user.getStudentNo());
     }
 
     @Override
-    public List<String> querybyIdentity(java.lang.String identity) {
+    public List<User> querybyIdentity(java.lang.String identity) {
         java.lang.String sql = "select username from user where identity = ?";
-        return  queryForList(String.class,sql,identity);
+        return  queryForList(User.class,sql,identity);
     }
 }

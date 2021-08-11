@@ -8,34 +8,34 @@ package pojo;
  * @date 2021-08-11-13
  */
 public class News {
-    private String type;//消息类型
-    private String title;//文章标题
-    private String content;//文章内容
+    private User type;//消息类型
+    private User title;//文章标题
+    private User content;//文章内容
     private boolean isComment;//是否评论文章
-    private String extraInfo;//额外消息
+    private User extraInfo;//额外消息
     private int studentNo; //对应的学生学号
 
-    public String getType() {
+    public User getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(User type) {
         this.type = type;
     }
 
-    public String getTitle() {
+    public User getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(User title) {
         this.title = title;
     }
 
-    public String getContent() {
+    public User getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(User content) {
         this.content = content;
     }
 
@@ -47,11 +47,11 @@ public class News {
         isComment = comment;
     }
 
-    public String getExtraInfo() {
+    public User getExtraInfo() {
         return extraInfo;
     }
 
-    public void setExtraInfo(String extraInfo) {
+    public void setExtraInfo(User extraInfo) {
         this.extraInfo = extraInfo;
     }
 
@@ -66,7 +66,7 @@ public class News {
     public News() {
     }
 
-    public News(String type, String title, String content, boolean isComment, String extraInfo, int studentNo) {
+    public News(User type, User title, User content, boolean isComment, User extraInfo, int studentNo) {
         this.type = type;
         this.title = title;
         this.content = content;

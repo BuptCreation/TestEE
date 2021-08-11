@@ -2,7 +2,7 @@ package ws;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pojo.Message;
-import pojo.String;
+import pojo.User;
 import utils.MessageUtils;
 
 import javax.servlet.http.HttpSession;
@@ -36,7 +36,7 @@ public class ChatEndpoint {
             this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
 //        System.out.println(httpSession.getAttribute("User"));
             //将当前对象存储到容器中
-            String loginUser = (String) httpSession.getAttribute("User");
+            User loginUser = (User) httpSession.getAttribute("User");
             //将登陆的用户加入group
             int groupid=1;
             java.lang.String groupteacherUsername="teacher168";
@@ -115,7 +115,7 @@ public class ChatEndpoint {
                 //获取消息数据
                 java.lang.String data = mess.getMessage();
                 //获取当前登陆的用户
-                String loginUser = (String) httpSession.getAttribute("User");
+                User loginUser = (User) httpSession.getAttribute("User");
                 java.lang.String resultMessage = MessageUtils.getMessage(false, loginUser.getUsername(), data);
                 //获得对应的Session
                 System.out.println("发送给"+toName+"用户"+resultMessage);
@@ -141,7 +141,7 @@ public class ChatEndpoint {
     public void onClose(Session session){
             //从容器中删除指定用户
         //获取当前登陆的用户
-        String loginUser = (String)httpSession.getAttribute("User");
+        User loginUser = (User)httpSession.getAttribute("User");
         //根据名字删除
         onlineGroups.get(KeyGroup).remove(loginUser.getUsername());
         onlineUsers.remove(loginUser.getUsername());

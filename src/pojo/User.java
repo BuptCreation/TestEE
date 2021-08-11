@@ -1,6 +1,6 @@
 package pojo;
 
-public class String {
+public class User {
     private Integer id; //默认id
     private java.lang.String username; //用户名
     private java.lang.String password; //密码
@@ -68,13 +68,13 @@ public class String {
         this.identity = identity;
     }
 
-    public String(){}
+    public User(){}
 
-    public String(java.lang.String identity) {
+    public User(java.lang.String identity) {
         this.identity = identity;
     }
 
-    public String(Integer id, java.lang.String username, java.lang.String password, java.lang.String email, java.lang.String identity, int studentNo) {
+    public User(Integer id, java.lang.String username, java.lang.String password, java.lang.String email, java.lang.String identity, int studentNo) {
         this.id = id;
         this.username = username;
         this.password = password;

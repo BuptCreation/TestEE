@@ -2,7 +2,7 @@ package web;
 
 
 
-import pojo.String;
+import pojo.User;
 import service.UserService;
 import service.impl.UserServiceImpl;
 
@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
         java.lang.String username = req.getParameter("username");
         java.lang.String password = req.getParameter("password");
         // 调用 userService.login()登录处理业务
-        String loginUser = userService.login(new String(null, username, password, null, null,0));
+        User loginUser = userService.login(new User(null, username, password, null, null,0));
         // 如果等于null,说明登录 失败!
         if (loginUser == null) {
             //   跳回登录页面

@@ -1,7 +1,7 @@
 package web;
 
 import dao.impl.UserDaoImpl;
-import pojo.String;
+import pojo.User;
 import utils.JsonConverter;
 
 import javax.servlet.ServletException;
@@ -28,7 +28,7 @@ public class GetAllStudents extends HttpServlet {
             resp.setContentType("application/json;charset=utf-8");
             PrintWriter out = resp.getWriter();
             //连接数据库,获取用户
-            List<String> users= new UserDaoImpl().querybyIdentity("student");
+            List<User> users= new UserDaoImpl().querybyIdentity("student");
             JsonConverter converter = new JsonConverter();
             //将学生转换为json类型
             java.lang.String output = converter.studentJson(users);

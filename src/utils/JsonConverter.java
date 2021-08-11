@@ -2,7 +2,7 @@ package utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import pojo.String;
+import pojo.User;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class JsonConverter {
         Gson gson = new Gson();
         return gson.toJson(articles);
     }
-    public java.lang.String studentJson(List<String> users){
+    public java.lang.String studentJson(List<User> users){
         Gson gson = new Gson();
         return gson.toJson(users);
     }

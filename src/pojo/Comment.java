@@ -9,17 +9,17 @@ package pojo;
  */
 public class Comment {
 
-    private String user; //发表的用户
+    private User user; //发表的用户
     private int id; //发表事件
     private java.lang.String content; //内容
     private java.lang.String title; //标题
     private java.lang.String context; //
 
-    public String getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -55,7 +55,7 @@ public class Comment {
         this.context = context;
     }
 
-    public Comment(String user, int id, java.lang.String content, java.lang.String title, java.lang.String context) {
+    public Comment(User user, int id, java.lang.String content, java.lang.String title, java.lang.String context) {
         this.user = user;
         this.id = id;
         this.content = content;

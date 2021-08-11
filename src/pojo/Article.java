@@ -9,9 +9,9 @@ package pojo;
  */
 public class Article {
     private int id; //学号
-    private String title; //标题
-    private String author; //作者
-    private String content; //内容
+    private User title; //标题
+    private User author; //作者
+    private User content; //内容
     private int commentCount; //评论数
 
     public int getId() {
@@ -22,27 +22,27 @@ public class Article {
         this.id = id;
     }
 
-    public String getTitle() {
+    public User getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(User title) {
         this.title = title;
     }
 
-    public String getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
-    public String getContent() {
+    public User getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(User content) {
         this.content = content;
     }
 
@@ -57,7 +57,7 @@ public class Article {
     public Article() {
     }
 
-    public Article(int id, String title, String author, String content, int commentCount) {
+    public Article(int id, User title, User author, User content, int commentCount) {
         this.id = id;
         this.title = title;
         this.author = author;
