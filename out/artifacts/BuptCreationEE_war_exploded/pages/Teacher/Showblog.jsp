@@ -1,4 +1,4 @@
-<%--
+<%@ page import="pojo.User" %><%--
   Created by IntelliJ IDEA.
   User: tigers
   Date: 2021/8/1
@@ -27,13 +27,15 @@
 <%--背景--%>
 <div id="top-image"></div>
 <div id="app">
-
+    <%
+        User loginUser=(User)request.getSession().getAttribute("User");
+    %>
 <div  v-for="blog in blogs">
     <div class="blog" >
     <h1>{{blog.title}}</h1>
-    <h4>{{blog.body|snippet}}</h4>
+    <h4>{{blog.content|snippet}}</h4>
     <h4>关键词:编使劲编</h4>
-    <h2 style="float: right">作者:开发者</h2>
+    <h2 style="float: right">作者:{{blog.author}}</h2>
         <button v-on:click="goComment(blog.title,blog.body)">评论</button>
         <br/>
     </div>
@@ -59,15 +61,20 @@
             loadComments(){
                 // var list = JSON.parse(localStorage.getItem('cmts') || '[]')
                 // this.list = list
-                this.$http.get("https://jsonplaceholder.typicode.com/posts/")
+                this.$http.get("showgroupblogservlet")
                     .then(function (data) {
+                        console.log(data);
                         this.blogs = data.body.slice(0,10);
-                        console.log(this.blogs);
 
                     })
             }
+
         },
         created(){
+            <%--this.teacherUsername = "<%= loginUser.getUsername()%>"--%>
+            <%--// var userName = {teacherUsername: this.teacherUsername }--%>
+            <%--// console.log(userName.teacherUsername);--%>
+            <%--// this.$http.post("showgroupblogservlet",JSON.stringify(userName));--%>
             this.loadComments()
         }
 

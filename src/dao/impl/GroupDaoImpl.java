@@ -103,7 +103,9 @@ public class GroupDaoImpl implements GroupDao {
         FindIterable<Document> iterable = collection.find(query).projection(new BasicDBObject("username",1)).sort(groupIdObj);
         for (Document user : iterable) {
             String jsonString = user.toJson();
-            list.add(jsonString);
+            JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
+            String studentname = jsonObject.get("username").getAsString();
+            list.add(studentname);
         }
         return list;
     }

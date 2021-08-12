@@ -33,9 +33,9 @@
 <div  v-for="blog in blogs">
     <div class="blog" >
     <h1>{{blog.title}}</h1>
-    <h4>{{blog.body|snippet}}</h4>
+    <h4>{{blog.content|snippet}}</h4>
     <h4>关键词:编使劲编</h4>
-    <h2 style="float: right">作者:开发者</h2>
+    <h2 style="float: right">作者:{{blog.author}}</h2>
         <button v-on:click="goComment(blog.title,blog.body)">评论</button>
         <br/>
     </div>
@@ -71,11 +71,10 @@
 
         },
         created(){
-            this.teacherUsername = "<%= loginUser.getUsername()%>"
-            var userName = {teacherUsername: this.teacherUsername }
-            console.log(userName.teacherUsername);
-            this.$http.post("showgroupblogservlet",JSON.stringify(userName)).then(function(data){
-            });
+            <%--this.teacherUsername = "<%= loginUser.getUsername()%>"--%>
+            <%--// var userName = {teacherUsername: this.teacherUsername }--%>
+            <%--// console.log(userName.teacherUsername);--%>
+            <%--// this.$http.post("showgroupblogservlet",JSON.stringify(userName));--%>
             this.loadComments()
         }
 

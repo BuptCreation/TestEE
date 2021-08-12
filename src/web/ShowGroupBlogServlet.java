@@ -4,9 +4,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dao.impl.ArticleDaoImpl;
 import dao.impl.GroupDaoImpl;
+import pojo.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,12 +27,37 @@ import java.util.List;
  */
 @WebServlet("/showgroupblogservlet")
 public class ShowGroupBlogServlet extends HttpServlet {
-    String teacherName = null;
+    public String teacherName;
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        try {
+//            BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream(), "utf-8"));
+//            StringBuffer sb = new StringBuffer("");
+//            String temp;
+//            while ((temp = br.readLine()) != null) {
+//                sb.append(temp);
+//            }
+//            br.close();
+//            //获取到的json字符串
+//            String acceptjson = sb.toString();
+//            JsonObject jsonObject = JsonParser.parseString(acceptjson).getAsJsonObject();
+//            teacherName = jsonObject.get("teacherUsername").getAsString();
+//            System.out.println(teacherName);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        super.doGet(req,resp);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
             resp.setContentType("application/json;charset=utf-8");
             PrintWriter out = resp.getWriter();
+            User loginUser=(User)req.getSession().getAttribute("User");
+            teacherName = loginUser.getUsername();
+            System.out.println("现在老师名字为:"+teacherName);
             //连接数据库,获取老师所管理的所有小组的学生姓名
             List<String> authors = new GroupDaoImpl().queryAuthor(teacherName);
             System.out.println(authors);
@@ -40,28 +67,6 @@ public class ShowGroupBlogServlet extends HttpServlet {
             System.out.println(articales);
             System.out.println("查找成功！");
         }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            System.out.println("doPost调用");
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    req.getInputStream(), "utf-8"));
-            StringBuffer sb = new StringBuffer("");
-            String temp;
-            while ((temp = br.readLine()) != null) {
-                sb.append(temp);
-            }
-            br.close();
-            //获取到的json字符串
-            String acceptjson = sb.toString();
-            JsonObject jsonObject = JsonParser.parseString(acceptjson).getAsJsonObject();
-            teacherName = jsonObject.get("teacherUsername").getAsString();
-            System.out.println(teacherName);
-        } catch (Exception e) {
             e.printStackTrace();
         }
     }

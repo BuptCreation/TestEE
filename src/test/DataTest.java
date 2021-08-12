@@ -3,11 +3,20 @@ package test;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import dao.ArticleDao;
 import dao.NewsDao;
 import dao.impl.ArticleDaoImpl;
 import dao.impl.NewsDaoImpl;
+import org.bson.Document;
 import org.junit.Test;
+import utils.MongoHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 类<code>Doc</code>用于：TODO
@@ -50,5 +59,23 @@ public class DataTest {
                 e.printStackTrace();
             }
         }
+    }
+    @Test
+    public void QueryTest1(){
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "buptgroup";
+
+        BasicDBObject query = new BasicDBObject("teacherUsername","teacher168");
+        BasicDBObject groupIdObj = new BasicDBObject("groupId",1);
+        List<String> list = new ArrayList<String>();
+        MongoCollection<Document> collection = db.getCollection(table);
+        FindIterable<Document> iterable = collection.find(query).projection(new BasicDBObject("username",1)).sort(groupIdObj);
+        for (Document user : iterable) {
+            String jsonString = user.toJson();
+            JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
+            String studentname = jsonObject.get("username").getAsString();
+            list.add(studentname);
+        }
+        System.out.println(list);
     }
 }
