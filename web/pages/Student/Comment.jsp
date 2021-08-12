@@ -65,7 +65,7 @@
                 {{ item.content }}
             </li>
         </ul>
-    <div v-if="permission">
+    <div v-show="permission === 'true'">
         <div class="form-group">
             <label>评论人：</label>
             <input type="text" class="form-control" v-model="user">
