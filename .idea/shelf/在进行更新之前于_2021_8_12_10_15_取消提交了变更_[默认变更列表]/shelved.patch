@@ -1,0 +1,822 @@
+Index: src/web/LoginServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\n\r\n\r\nimport pojo.User;\r\nimport service.UserService;\r\nimport service.impl.UserServiceImpl;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\n\r\n@WebServlet(value = {\"/login\"})\r\npublic class LoginServlet extends HttpServlet {\r\n\r\n    private UserService userService = new UserServiceImpl();\r\n\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        //  1、获取请求的参数\r\n        java.lang.String username = req.getParameter(\"username\");\r\n        java.lang.String password = req.getParameter(\"password\");\r\n        // 调用 userService.login()登录处理业务\r\n        User loginUser = userService.login(new User(null, username, password, null, null,0));\r\n        // 如果等于null,说明登录 失败!\r\n        if (loginUser == null) {\r\n            //   跳回登录页面\r\n            req.getRequestDispatcher(\"/pages/user/login.html\").forward(req, resp);\r\n        } else {\r\n            // 登录 成功\r\n            System.out.println(\"用户登陆成功\");\r\n            //传送json数据给谁谁\r\n            //将数据存储到session\r\n            req.getSession().setAttribute(\"User\",loginUser);\r\n            try {\r\n                if (loginUser.getIdentity().equals(\"student\")) {\r\n                    //跳到学生端欢迎登陆主页\r\n                    System.out.println(loginUser);\r\n                    int studentId = loginUser.getStudentNo();\r\n                    java.lang.String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);\r\n                    //user->group 并且把groupid+teacherusername\r\n                    req.getSession().setAttribute(\"KeyGroup\",KeyGroup);\r\n                    resp.sendRedirect(\"pages/Student/Welcome.jsp\");\r\n                }\r\n                else{\r\n                    //跳到教师端主页\r\n                    resp.sendRedirect(\"pages/Teacher/Welcome.jsp\");\r\n                }\r\n            } catch (Exception e) {\r\n                e.printStackTrace();\r\n            }\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/LoginServlet.java b/src/web/LoginServlet.java
+--- a/src/web/LoginServlet.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/web/LoginServlet.java	(date 1628692349456)
+@@ -21,8 +21,8 @@
+     @Override
+     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+         //  1、获取请求的参数
+-        java.lang.String username = req.getParameter("username");
+-        java.lang.String password = req.getParameter("password");
++        String username = req.getParameter("username");
++        String password = req.getParameter("password");
+         // 调用 userService.login()登录处理业务
+         User loginUser = userService.login(new User(null, username, password, null, null,0));
+         // 如果等于null,说明登录 失败!
+@@ -40,7 +40,7 @@
+                     //跳到学生端欢迎登陆主页
+                     System.out.println(loginUser);
+                     int studentId = loginUser.getStudentNo();
+-                    java.lang.String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);
++                    String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);
+                     //user->group 并且把groupid+teacherusername
+                     req.getSession().setAttribute("KeyGroup",KeyGroup);
+                     resp.sendRedirect("pages/Student/Welcome.jsp");
+Index: src/pojo/Group.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-06-21\r\n */\r\npublic class Group {\r\n    private int _id;\r\n    private int id; //学号\r\n    private User username;//学生姓名\r\n    private int groupId;//小组号\r\n    private int speeches;//群聊发言次数\r\n    private User teacherUsername;//教师姓名\r\n\r\n    public int get_id() {\r\n        return _id;\r\n    }\r\n\r\n    public void set_id(int _id) {\r\n        this._id = _id;\r\n    }\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public User getUsername() {\r\n        return username;\r\n    }\r\n\r\n    public void setUsername(User username) {\r\n        this.username = username;\r\n    }\r\n\r\n    public int getGroupId() {\r\n        return groupId;\r\n    }\r\n\r\n    public void setGroupId(int groupId) {\r\n        this.groupId = groupId;\r\n    }\r\n\r\n    public int getSpeeches() {\r\n        return speeches;\r\n    }\r\n\r\n    public void setSpeeches(int speeches) {\r\n        this.speeches = speeches;\r\n    }\r\n\r\n    public User getTeacherUsername() {\r\n        return teacherUsername;\r\n    }\r\n\r\n    public void setTeacherUsername(User teacherUsername) {\r\n        this.teacherUsername = teacherUsername;\r\n    }\r\n\r\n    public Group() {\r\n    }\r\n\r\n    public Group(int _id, int id, User username, int groupId, int speeches, User teacherUsername) {\r\n        this._id = _id;\r\n        this.id = id;\r\n        this.username = username;\r\n        this.groupId = groupId;\r\n        this.speeches = speeches;\r\n        this.teacherUsername = teacherUsername;\r\n    }\r\n\r\n    @Override\r\n    public java.lang.String toString() {\r\n        return \"Group{\" +\r\n                \"_id=\" + _id +\r\n                \", id=\" + id +\r\n                \", username=\" + username +\r\n                \", groupId=\" + groupId +\r\n                \", speeches=\" + speeches +\r\n                \", teacherUsername=\" + teacherUsername +\r\n                '}';\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/Group.java b/src/pojo/Group.java
+--- a/src/pojo/Group.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/pojo/Group.java	(date 1628689600554)
+@@ -10,10 +10,10 @@
+ public class Group {
+     private int _id;
+     private int id; //学号
+-    private User username;//学生姓名
++    private String username;//学生姓名
+     private int groupId;//小组号
+     private int speeches;//群聊发言次数
+-    private User teacherUsername;//教师姓名
++    private String teacherUsername;//教师姓名
+ 
+     public int get_id() {
+         return _id;
+@@ -31,11 +31,11 @@
+         this.id = id;
+     }
+ 
+-    public User getUsername() {
++    public String getUsername() {
+         return username;
+     }
+ 
+-    public void setUsername(User username) {
++    public void setUsername(String username) {
+         this.username = username;
+     }
+ 
+@@ -55,18 +55,18 @@
+         this.speeches = speeches;
+     }
+ 
+-    public User getTeacherUsername() {
++    public String getTeacherUsername() {
+         return teacherUsername;
+     }
+ 
+-    public void setTeacherUsername(User teacherUsername) {
++    public void setTeacherUsername(String teacherUsername) {
+         this.teacherUsername = teacherUsername;
+     }
+ 
+     public Group() {
+     }
+ 
+-    public Group(int _id, int id, User username, int groupId, int speeches, User teacherUsername) {
++    public Group(int _id, int id, String username, int groupId, int speeches, String teacherUsername) {
+         this._id = _id;
+         this.id = id;
+         this.username = username;
+@@ -76,7 +76,7 @@
+     }
+ 
+     @Override
+-    public java.lang.String toString() {
++    public String toString() {
+         return "Group{" +
+                 "_id=" + _id +
+                 ", id=" + id +
+Index: src/ws/ChatEndpoint.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ws;\r\n\r\nimport com.fasterxml.jackson.databind.ObjectMapper;\r\nimport pojo.Message;\r\nimport pojo.User;\r\nimport utils.MessageUtils;\r\n\r\nimport javax.servlet.http.HttpSession;\r\nimport javax.websocket.*;\r\nimport javax.websocket.server.ServerEndpoint;\r\nimport java.io.IOException;\r\nimport java.util.Map;\r\nimport java.util.Set;\r\nimport java.util.concurrent.ConcurrentHashMap;\r\n\r\n//相对于springboot缺少了Bean注入\r\n@ServerEndpoint(value=\"/chat\",configurator = GetHttpSessionConfigurator.class)\r\npublic class ChatEndpoint {\r\n\r\n    //用来存储每个客户端对象对应的ChatEndpoint对象 string为用户名 ChatEndpoint对应一个终端\r\n    private static Map<java.lang.String,ChatEndpoint> onlineUsers = new ConcurrentHashMap<>();\r\n    //!!      用来存储各个组\r\n    private static Map<java.lang.String,Map<java.lang.String,ChatEndpoint>> onlineGroups = new ConcurrentHashMap<>();\r\n    //声明session对象 通过该对象可以发送消息给指定的用户，由于每一个ChatEndpoint都需要一个session\r\n    private Session session;\r\n    //声明小组用来存储该session属于哪一个组\r\n    private java.lang.String KeyGroup;\r\n    //声明一个httpSession对象\r\n    private HttpSession httpSession;\r\n    @OnOpen\r\n    public void onOpen(Session session, EndpointConfig config){\r\n            //将局部的session对象赋值给成员session\r\n        try {\r\n            this.session = session;\r\n            //获取httpsession对象\r\n            this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());\r\n//        System.out.println(httpSession.getAttribute(\"User\"));\r\n            //将当前对象存储到容器中\r\n            User loginUser = (User) httpSession.getAttribute(\"User\");\r\n            //将登陆的用户加入group\r\n            int groupid=1;\r\n            java.lang.String groupteacherUsername=\"teacher168\";\r\n            KeyGroup=groupid+groupteacherUsername;//为了确定唯一的group,必须如此做，将id与用户名相加\r\n            Map<java.lang.String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);\r\n            if (Group==null) {\r\n                //创建新的group\r\n               Group =new ConcurrentHashMap<>();\r\n            }\r\n            //把当前用户放到他对应的组中\r\n            Group.put(loginUser.getUsername(),this);\r\n            //将Group与Key对应塞回onlineGroups\r\n            onlineGroups.put(KeyGroup,Group);\r\n\r\n            onlineUsers.put(loginUser.getUsername(), this);\r\n            //然后将当前在线的该组的所有用户的用户名推送给所有用户\r\n            //1.获取消息\r\n            java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup)) ;\r\n\r\n//            String message = MessageUtils.getMessage(true, null, getNames());\r\n            //2.调用方法进行系统推送\r\n            System.out.println(onlineGroups.get(KeyGroup));\r\n//            broadcastAllUsers(message);\r\n            broadcastGroupUsers(Groupmessage,KeyGroup);\r\n            System.out.println(\"推送\"+KeyGroup+\"登陆消息\" + Groupmessage);\r\n        }catch (Exception e){\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n    private void broadcastAllUsers(java.lang.String message){\r\n        //要将该消息推送给所有客户端\r\n        Set<java.lang.String> names=onlineUsers.keySet();\r\n        for (java.lang.String name : names){\r\n            ChatEndpoint chatEndpoint= onlineUsers.get(name);\r\n            //Remote中有sendText方法可以用来传递数据\r\n            try {\r\n                chatEndpoint.session.getBasicRemote().sendText(message);\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n            }\r\n        }\r\n    }\r\n    private void broadcastGroupUsers(java.lang.String message, java.lang.String KeyGroup){\r\n        //小组成员\r\n        Map<java.lang.String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);\r\n        Set<java.lang.String> names=Group.keySet();\r\n        for (java.lang.String name : names){\r\n            ChatEndpoint chatEndpoint = Group.get(name);\r\n\r\n            try {\r\n                chatEndpoint.session.getBasicRemote().sendText(message);\r\n            }catch (IOException e){\r\n                e.printStackTrace();\r\n            }\r\n        }\r\n    }\r\n\r\n    private Set<java.lang.String> getNames(){\r\n        return onlineUsers.keySet();\r\n    }\r\n    private Set<java.lang.String> getGroupNames(java.lang.String KeyGroup){\r\n        return onlineGroups.get(KeyGroup).keySet();\r\n    }\r\n    @OnMessage\r\n    public void onMessage(java.lang.String message, Session session){\r\n        //将JSON数据message转换成message对象\r\n        try {\r\n            ObjectMapper mapper = new ObjectMapper();\r\n            Message mess = mapper.readValue(message, Message.class);\r\n            System.out.println(\"收到数据\"+mess.isGroup()+mess.getToName());\r\n            if (false == mess.isGroup()) {\r\n                //不是群发消息\r\n                System.out.println(\"不是群发消息\");\r\n                //获取要将数据发送给的指定用户\r\n                java.lang.String toName = mess.getToName();\r\n                //获取消息数据\r\n                java.lang.String data = mess.getMessage();\r\n                //获取当前登陆的用户\r\n                User loginUser = (User) httpSession.getAttribute(\"User\");\r\n                java.lang.String resultMessage = MessageUtils.getMessage(false, loginUser.getUsername(), data);\r\n                //获得对应的Session\r\n                System.out.println(\"发送给\"+toName+\"用户\"+resultMessage);\r\n                onlineUsers.get(toName).session.getBasicRemote().sendText(resultMessage);\r\n            }else {\r\n                //群发消息\r\n                System.out.println(\"是群发消息\");\r\n                //获取要将数据发送给的指定小组\r\n                java.lang.String KeyGroup = mess.getToName();\r\n                //获取消息\r\n                java.lang.String data = mess.getMessage();\r\n                java.lang.String resultMessage = MessageUtils.getGroupMessage(false,KeyGroup,data);\r\n                System.out.println(\"发送给\"+KeyGroup+\"小组\"+resultMessage);\r\n                //获取对应的session发送数据 sendToGroup\r\n                broadcastGroupUsers(resultMessage,KeyGroup);\r\n            }\r\n\r\n        }catch (Exception e){\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n    @OnClose\r\n    public void onClose(Session session){\r\n            //从容器中删除指定用户\r\n        //获取当前登陆的用户\r\n        User loginUser = (User)httpSession.getAttribute(\"User\");\r\n        //根据名字删除\r\n        onlineGroups.get(KeyGroup).remove(loginUser.getUsername());\r\n        onlineUsers.remove(loginUser.getUsername());\r\n        java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup)) ;\r\n\r\n//            String message = MessageUtils.getMessage(true, null, getNames());\r\n        //2.调用方法进行系统推送\r\n        System.out.println(onlineGroups.get(KeyGroup));\r\n//            broadcastAllUsers(message);\r\n        broadcastGroupUsers(Groupmessage,KeyGroup);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/ws/ChatEndpoint.java b/src/ws/ChatEndpoint.java
+--- a/src/ws/ChatEndpoint.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/ws/ChatEndpoint.java	(date 1628689884868)
+@@ -18,13 +18,13 @@
+ public class ChatEndpoint {
+ 
+     //用来存储每个客户端对象对应的ChatEndpoint对象 string为用户名 ChatEndpoint对应一个终端
+-    private static Map<java.lang.String,ChatEndpoint> onlineUsers = new ConcurrentHashMap<>();
++    private static Map<String,ChatEndpoint> onlineUsers = new ConcurrentHashMap<>();
+     //!!      用来存储各个组
+-    private static Map<java.lang.String,Map<java.lang.String,ChatEndpoint>> onlineGroups = new ConcurrentHashMap<>();
++    private static Map<String,Map<String,ChatEndpoint>> onlineGroups = new ConcurrentHashMap<>();
+     //声明session对象 通过该对象可以发送消息给指定的用户，由于每一个ChatEndpoint都需要一个session
+     private Session session;
+     //声明小组用来存储该session属于哪一个组
+-    private java.lang.String KeyGroup;
++    private String KeyGroup;
+     //声明一个httpSession对象
+     private HttpSession httpSession;
+     @OnOpen
+@@ -39,9 +39,9 @@
+             User loginUser = (User) httpSession.getAttribute("User");
+             //将登陆的用户加入group
+             int groupid=1;
+-            java.lang.String groupteacherUsername="teacher168";
++            String groupteacherUsername="teacher168";
+             KeyGroup=groupid+groupteacherUsername;//为了确定唯一的group,必须如此做，将id与用户名相加
+-            Map<java.lang.String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);
++            Map<String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);
+             if (Group==null) {
+                 //创建新的group
+                Group =new ConcurrentHashMap<>();
+@@ -54,7 +54,7 @@
+             onlineUsers.put(loginUser.getUsername(), this);
+             //然后将当前在线的该组的所有用户的用户名推送给所有用户
+             //1.获取消息
+-            java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup)) ;
++            String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup)) ;
+ 
+ //            String message = MessageUtils.getMessage(true, null, getNames());
+             //2.调用方法进行系统推送
+@@ -66,10 +66,10 @@
+             e.printStackTrace();
+         }
+     }
+-    private void broadcastAllUsers(java.lang.String message){
++    private void broadcastAllUsers(String message){
+         //要将该消息推送给所有客户端
+-        Set<java.lang.String> names=onlineUsers.keySet();
+-        for (java.lang.String name : names){
++        Set<String> names=onlineUsers.keySet();
++        for (String name : names){
+             ChatEndpoint chatEndpoint= onlineUsers.get(name);
+             //Remote中有sendText方法可以用来传递数据
+             try {
+@@ -79,11 +79,11 @@
+             }
+         }
+     }
+-    private void broadcastGroupUsers(java.lang.String message, java.lang.String KeyGroup){
++    private void broadcastGroupUsers(String message, String KeyGroup){
+         //小组成员
+-        Map<java.lang.String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);
+-        Set<java.lang.String> names=Group.keySet();
+-        for (java.lang.String name : names){
++        Map<String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);
++        Set<String> names=Group.keySet();
++        for (String name : names){
+             ChatEndpoint chatEndpoint = Group.get(name);
+ 
+             try {
+@@ -94,14 +94,14 @@
+         }
+     }
+ 
+-    private Set<java.lang.String> getNames(){
++    private Set<String> getNames(){
+         return onlineUsers.keySet();
+     }
+-    private Set<java.lang.String> getGroupNames(java.lang.String KeyGroup){
++    private Set<String> getGroupNames(String KeyGroup){
+         return onlineGroups.get(KeyGroup).keySet();
+     }
+     @OnMessage
+-    public void onMessage(java.lang.String message, Session session){
++    public void onMessage(String message, Session session){
+         //将JSON数据message转换成message对象
+         try {
+             ObjectMapper mapper = new ObjectMapper();
+@@ -111,12 +111,12 @@
+                 //不是群发消息
+                 System.out.println("不是群发消息");
+                 //获取要将数据发送给的指定用户
+-                java.lang.String toName = mess.getToName();
++                String toName = mess.getToName();
+                 //获取消息数据
+-                java.lang.String data = mess.getMessage();
++                String data = mess.getMessage();
+                 //获取当前登陆的用户
+                 User loginUser = (User) httpSession.getAttribute("User");
+-                java.lang.String resultMessage = MessageUtils.getMessage(false, loginUser.getUsername(), data);
++                String resultMessage = MessageUtils.getMessage(false, loginUser.getUsername(), data);
+                 //获得对应的Session
+                 System.out.println("发送给"+toName+"用户"+resultMessage);
+                 onlineUsers.get(toName).session.getBasicRemote().sendText(resultMessage);
+@@ -124,10 +124,10 @@
+                 //群发消息
+                 System.out.println("是群发消息");
+                 //获取要将数据发送给的指定小组
+-                java.lang.String KeyGroup = mess.getToName();
++                String KeyGroup = mess.getToName();
+                 //获取消息
+-                java.lang.String data = mess.getMessage();
+-                java.lang.String resultMessage = MessageUtils.getGroupMessage(false,KeyGroup,data);
++                String data = mess.getMessage();
++                String resultMessage = MessageUtils.getGroupMessage(false,KeyGroup,data);
+                 System.out.println("发送给"+KeyGroup+"小组"+resultMessage);
+                 //获取对应的session发送数据 sendToGroup
+                 broadcastGroupUsers(resultMessage,KeyGroup);
+Index: src/web/ShowBlogServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\nimport dao.impl.ArticleDaoImpl;\r\nimport pojo.User;\r\nimport utils.JsonConverter;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\nimport java.io.PrintWriter;\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-07-31-14\r\n */\r\n@WebServlet(\"/showblogsevlet\")\r\npublic class ShowBlogServlet extends HttpServlet {\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        super.doGet(req, resp);\r\n    }\r\n\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        try {\r\n            resp.setContentType(\"application/json;charset=utf-8\");\r\n            PrintWriter out = resp.getWriter();\r\n            User loginUser=(User)req.getSession().getAttribute(\"User\");\r\n            //连接数据库,获取文章\r\n            List<Map<java.lang.String,Object>> articles = new ArticleDaoImpl().queryallarticle(loginUser.getStudentNo());\r\n            JsonConverter converter = new JsonConverter();\r\n            //将文章转换为json类型\r\n            java.lang.String output = converter.convertToJson(articles);\r\n            out.print(output);\r\n            System.out.println(output);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/ShowBlogServlet.java b/src/web/ShowBlogServlet.java
+--- a/src/web/ShowBlogServlet.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/web/ShowBlogServlet.java	(date 1628692349452)
+@@ -35,10 +35,10 @@
+             PrintWriter out = resp.getWriter();
+             User loginUser=(User)req.getSession().getAttribute("User");
+             //连接数据库,获取文章
+-            List<Map<java.lang.String,Object>> articles = new ArticleDaoImpl().queryallarticle(loginUser.getStudentNo());
++            List<Map<String,Object>> articles = new ArticleDaoImpl().queryallarticle(loginUser.getStudentNo());
+             JsonConverter converter = new JsonConverter();
+             //将文章转换为json类型
+-            java.lang.String output = converter.convertToJson(articles);
++            String output = converter.convertToJson(articles);
+             out.print(output);
+             System.out.println(output);
+         } catch (Exception e) {
+Index: src/dao/UserDao.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package dao;\r\n\r\n\r\nimport pojo.User;\r\n\r\nimport java.util.List;\r\n\r\npublic interface UserDao {\r\n\r\n\r\n\r\n    /**\r\n     * 根据用户名查询用户信息\r\n     * @param username 用户名\r\n     * @return 如果返回null,说明没有这个用户。反之亦然\r\n     */\r\n    public User queryUserByUsername(java.lang.String username);\r\n\r\n    /**\r\n     * 根据 用户名和密码查询用户信息\r\n     * @param username\r\n     * @param password\r\n     * @return 如果返回null,说明用户名或密码错误,反之亦然\r\n     */\r\n    public User queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password);\r\n\r\n    /**\r\n     * 保存用户信息\r\n     * @param user\r\n     * @return 返回-1表示操作失败，其他是sql语句影响的行数\r\n     */\r\n    public int saveUser(User user);\r\n\r\n    public List<User> querybyIdentity(java.lang.String identity);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/dao/UserDao.java b/src/dao/UserDao.java
+--- a/src/dao/UserDao.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/dao/UserDao.java	(date 1628689365463)
+@@ -14,7 +14,7 @@
+      * @param username 用户名
+      * @return 如果返回null,说明没有这个用户。反之亦然
+      */
+-    public User queryUserByUsername(java.lang.String username);
++    public User queryUserByUsername(String username);
+ 
+     /**
+      * 根据 用户名和密码查询用户信息
+@@ -22,7 +22,7 @@
+      * @param password
+      * @return 如果返回null,说明用户名或密码错误,反之亦然
+      */
+-    public User queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password);
++    public User queryUserByUsernameAndPassword(String username, String password);
+ 
+     /**
+      * 保存用户信息
+@@ -31,5 +31,5 @@
+      */
+     public int saveUser(User user);
+ 
+-    public List<User> querybyIdentity(java.lang.String identity);
++    public List<User> querybyIdentity(String identity);
+ }
+Index: src/utils/JsonConverter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package utils;\r\n\r\nimport com.google.gson.Gson;\r\nimport com.google.gson.GsonBuilder;\r\nimport pojo.User;\r\n\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-07-31-16\r\n */\r\npublic class JsonConverter {\r\n    private final Gson gson;\r\n\r\n    public JsonConverter() {\r\n\r\n        gson = new GsonBuilder().create();\r\n    }\r\n    public java.lang.String convertToJson(List<Map<java.lang.String, Object>> articles){\r\n        Gson gson = new Gson();\r\n        return gson.toJson(articles);\r\n    }\r\n    public java.lang.String studentJson(List<User> users){\r\n        Gson gson = new Gson();\r\n        return gson.toJson(users);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/utils/JsonConverter.java b/src/utils/JsonConverter.java
+--- a/src/utils/JsonConverter.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/utils/JsonConverter.java	(date 1628692349432)
+@@ -21,11 +21,11 @@
+ 
+         gson = new GsonBuilder().create();
+     }
+-    public java.lang.String convertToJson(List<Map<java.lang.String, Object>> articles){
++    public String convertToJson(List<Map<String, Object>> articles){
+         Gson gson = new Gson();
+         return gson.toJson(articles);
+     }
+-    public java.lang.String studentJson(List<User> users){
++    public String studentJson(List<User> users){
+         Gson gson = new Gson();
+         return gson.toJson(users);
+     }
+Index: src/dao/impl/UserDaoImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package dao.impl;\r\n\r\n\r\nimport dao.UserDao;\r\nimport pojo.User;\r\n\r\nimport java.util.List;\r\n\r\npublic class UserDaoImpl extends BaseDao implements UserDao {\r\n\r\n\r\n    @Override\r\n    public User queryUserByUsername(java.lang.String username) {\r\n        java.lang.String sql = \"select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ?\";\r\n        return queryForOne(User.class, sql, username);\r\n    }\r\n\r\n    @Override\r\n    public User queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password) {\r\n        java.lang.String sql = \"select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ? and password = ?\";\r\n        return queryForOne(User.class, sql, username,password);\r\n    }\r\n\r\n    @Override\r\n    public int saveUser(User user) {\r\n        java.lang.String sql = \"insert into user(`username`,`password`,`email`,`identity`,`studentNo`) values(?,?,?,?,?)\";\r\n        return update(sql, user.getUsername(),user.getPassword(),user.getEmail(),user.getIdentity(),user.getStudentNo());\r\n    }\r\n\r\n    @Override\r\n    public List<User> querybyIdentity(java.lang.String identity) {\r\n        java.lang.String sql = \"select username from user where identity = ?\";\r\n        return  queryForList(User.class,sql,identity);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/dao/impl/UserDaoImpl.java b/src/dao/impl/UserDaoImpl.java
+--- a/src/dao/impl/UserDaoImpl.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/dao/impl/UserDaoImpl.java	(date 1628689365450)
+@@ -10,26 +10,26 @@
+ 
+ 
+     @Override
+-    public User queryUserByUsername(java.lang.String username) {
+-        java.lang.String sql = "select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ?";
++    public User queryUserByUsername(String username) {
++        String sql = "select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ?";
+         return queryForOne(User.class, sql, username);
+     }
+ 
+     @Override
+-    public User queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password) {
+-        java.lang.String sql = "select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ? and password = ?";
++    public User queryUserByUsernameAndPassword(String username, String password) {
++        String sql = "select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ? and password = ?";
+         return queryForOne(User.class, sql, username,password);
+     }
+ 
+     @Override
+     public int saveUser(User user) {
+-        java.lang.String sql = "insert into user(`username`,`password`,`email`,`identity`,`studentNo`) values(?,?,?,?,?)";
++        String sql = "insert into user(`username`,`password`,`email`,`identity`,`studentNo`) values(?,?,?,?,?)";
+         return update(sql, user.getUsername(),user.getPassword(),user.getEmail(),user.getIdentity(),user.getStudentNo());
+     }
+ 
+     @Override
+-    public List<User> querybyIdentity(java.lang.String identity) {
+-        java.lang.String sql = "select username from user where identity = ?";
++    public List<User> querybyIdentity(String identity) {
++        String sql = "select username from user where identity = ?";
+         return  queryForList(User.class,sql,identity);
+     }
+ }
+Index: src/pojo/Comment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-05-21\r\n */\r\npublic class Comment {\r\n\r\n    private User user; //发表的用户\r\n    private int id; //发表事件\r\n    private java.lang.String content; //内容\r\n    private java.lang.String title; //标题\r\n    private java.lang.String context; //\r\n\r\n    public User getUser() {\r\n        return user;\r\n    }\r\n\r\n    public void setUser(User user) {\r\n        this.user = user;\r\n    }\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public java.lang.String getContent() {\r\n        return content;\r\n    }\r\n\r\n    public void setContent(java.lang.String content) {\r\n        this.content = content;\r\n    }\r\n\r\n    public java.lang.String getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public void setTitle(java.lang.String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public java.lang.String getContext() {\r\n        return context;\r\n    }\r\n\r\n    public void setContext(java.lang.String context) {\r\n        this.context = context;\r\n    }\r\n\r\n    public Comment(User user, int id, java.lang.String content, java.lang.String title, java.lang.String context) {\r\n        this.user = user;\r\n        this.id = id;\r\n        this.content = content;\r\n        this.title = title;\r\n        this.context = context;\r\n    }\r\n\r\n    public Comment(){};\r\n\r\n    @Override\r\n    public java.lang.String toString() {\r\n        return \"Comment{\" +\r\n                \"user=\" + user +\r\n                \", id=\" + id +\r\n                \", content='\" + content + '\\'' +\r\n                \", title='\" + title + '\\'' +\r\n                \", context='\" + context + '\\'' +\r\n                '}';\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/Comment.java b/src/pojo/Comment.java
+--- a/src/pojo/Comment.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/pojo/Comment.java	(date 1628689600562)
+@@ -11,9 +11,9 @@
+ 
+     private User user; //发表的用户
+     private int id; //发表事件
+-    private java.lang.String content; //内容
+-    private java.lang.String title; //标题
+-    private java.lang.String context; //
++    private String content; //内容
++    private String title; //标题
++    private String context; //
+ 
+     public User getUser() {
+         return user;
+@@ -31,31 +31,31 @@
+         this.id = id;
+     }
+ 
+-    public java.lang.String getContent() {
++    public String getContent() {
+         return content;
+     }
+ 
+-    public void setContent(java.lang.String content) {
++    public void setContent(String content) {
+         this.content = content;
+     }
+ 
+-    public java.lang.String getTitle() {
++    public String getTitle() {
+         return title;
+     }
+ 
+-    public void setTitle(java.lang.String title) {
++    public void setTitle(String title) {
+         this.title = title;
+     }
+ 
+-    public java.lang.String getContext() {
++    public String getContext() {
+         return context;
+     }
+ 
+-    public void setContext(java.lang.String context) {
++    public void setContext(String context) {
+         this.context = context;
+     }
+ 
+-    public Comment(User user, int id, java.lang.String content, java.lang.String title, java.lang.String context) {
++    public Comment(User user, int id, String content, String title, String context) {
+         this.user = user;
+         this.id = id;
+         this.content = content;
+@@ -66,7 +66,7 @@
+     public Comment(){};
+ 
+     @Override
+-    public java.lang.String toString() {
++    public String toString() {
+         return "Comment{" +
+                 "user=" + user +
+                 ", id=" + id +
+Index: src/pojo/Article.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-07-21\r\n */\r\npublic class Article {\r\n    private int id; //学号\r\n    private User title; //标题\r\n    private User author; //作者\r\n    private User content; //内容\r\n    private int commentCount; //评论数\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public User getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public void setTitle(User title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public User getAuthor() {\r\n        return author;\r\n    }\r\n\r\n    public void setAuthor(User author) {\r\n        this.author = author;\r\n    }\r\n\r\n    public User getContent() {\r\n        return content;\r\n    }\r\n\r\n    public void setContent(User content) {\r\n        this.content = content;\r\n    }\r\n\r\n    public int getCommentCount() {\r\n        return commentCount;\r\n    }\r\n\r\n    public void setCommentCount(int commentCount) {\r\n        this.commentCount = commentCount;\r\n    }\r\n\r\n    public Article() {\r\n    }\r\n\r\n    public Article(int id, User title, User author, User content, int commentCount) {\r\n        this.id = id;\r\n        this.title = title;\r\n        this.author = author;\r\n        this.content = content;\r\n        this.commentCount = commentCount;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/Article.java b/src/pojo/Article.java
+--- a/src/pojo/Article.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/pojo/Article.java	(date 1628690824345)
+@@ -9,9 +9,9 @@
+  */
+ public class Article {
+     private int id; //学号
+-    private User title; //标题
+-    private User author; //作者
+-    private User content; //内容
++    private String title; //标题
++    private String author; //作者
++    private String content; //内容
+     private int commentCount; //评论数
+ 
+     public int getId() {
+@@ -22,27 +22,27 @@
+         this.id = id;
+     }
+ 
+-    public User getTitle() {
++    public String getTitle() {
+         return title;
+     }
+ 
+-    public void setTitle(User title) {
++    public void setTitle(String title) {
+         this.title = title;
+     }
+ 
+-    public User getAuthor() {
++    public String getAuthor() {
+         return author;
+     }
+ 
+-    public void setAuthor(User author) {
++    public void setAuthor(String author) {
+         this.author = author;
+     }
+ 
+-    public User getContent() {
++    public String getContent() {
+         return content;
+     }
+ 
+-    public void setContent(User content) {
++    public void setContent(String content) {
+         this.content = content;
+     }
+ 
+@@ -57,7 +57,7 @@
+     public Article() {
+     }
+ 
+-    public Article(int id, User title, User author, User content, int commentCount) {
++    public Article(int id, String title, String author, String content, int commentCount) {
+         this.id = id;
+         this.title = title;
+         this.author = author;
+Index: src/service/impl/CommentServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package service.impl;\r\n\r\nimport com.google.gson.Gson;\r\nimport com.google.gson.JsonObject;\r\nimport com.google.gson.JsonParser;\r\nimport com.mongodb.BasicDBObject;\r\nimport com.mongodb.client.FindIterable;\r\nimport com.mongodb.client.MongoCollection;\r\nimport com.mongodb.client.MongoCursor;\r\nimport com.mongodb.client.MongoDatabase;\r\nimport org.bson.Document;\r\nimport pojo.Comment;\r\nimport service.CommentService;\r\nimport utils.JsonStrToMap;\r\nimport utils.MongoDao;\r\nimport utils.MongoDaoImpl;\r\nimport utils.MongoHelper;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.Arrays;\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-05-22\r\n */\r\npublic class CommentServiceImpl implements CommentService {\r\n    @Override\r\n    public List<Map<String, Object>> getComments(String json) throws Exception {\r\n        MongoDao mongoDao = new MongoDaoImpl();\r\n        String table = \"buptcomment\";\r\n        MongoDatabase db = MongoHelper.getMongoDataBase();\r\n        MongoCollection<Document> collection = db.getCollection(table);\r\n\r\n        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();\r\n        String title = jsonObject.get(\"title\").getAsString();\r\n\r\n        BasicDBObject titleObj = new BasicDBObject(\"title\",title);\r\n\r\n        FindIterable<Document> iterable = collection.find(titleObj);\r\n        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();\r\n        MongoCursor<Document> cursor = iterable.iterator();\r\n        while (cursor.hasNext()) {\r\n            Document user = cursor.next();\r\n            String jsonString = user.toJson();\r\n            Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);\r\n            list.add(jsonStrToMap);\r\n        }\r\n        return list;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/service/impl/CommentServiceImpl.java b/src/service/impl/CommentServiceImpl.java
+--- a/src/service/impl/CommentServiceImpl.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/service/impl/CommentServiceImpl.java	(date 1628692349444)
+@@ -31,7 +31,6 @@
+ public class CommentServiceImpl implements CommentService {
+     @Override
+     public List<Map<String, Object>> getComments(String json) throws Exception {
+-        MongoDao mongoDao = new MongoDaoImpl();
+         String table = "buptcomment";
+         MongoDatabase db = MongoHelper.getMongoDataBase();
+         MongoCollection<Document> collection = db.getCollection(table);
+Index: src/service/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package service;\r\n\r\n\r\nimport pojo.User;\r\n\r\npublic interface UserService {\r\n    /**\r\n     * 注册用户\r\n     * @param user\r\n     */\r\n    public void registUser(User user);\r\n\r\n    /**\r\n     * 登录\r\n     * @param user\r\n     * @return 如果返回null，说明登录失败，返回有值，是登录成功\r\n     */\r\n    public User login(User user);\r\n\r\n    /**\r\n     * 检查 用户名是否可用\r\n     * @param username\r\n     * @return 返回true表示用户名已存在，返回false表示用户名可用\r\n     */\r\n    public boolean existsUsername(java.lang.String username);\r\n\r\n    /**\r\n     * 查找学生所对应的小组好以及教师名字\r\n     * @param studentId\r\n     * @return 如果返回Null，说明没有找到\r\n     */\r\n    public java.lang.String queryGroupIdAndTeacherName(int studentId)throws Exception;\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/service/UserService.java b/src/service/UserService.java
+--- a/src/service/UserService.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/service/UserService.java	(date 1628689600558)
+@@ -22,12 +22,12 @@
+      * @param username
+      * @return 返回true表示用户名已存在，返回false表示用户名可用
+      */
+-    public boolean existsUsername(java.lang.String username);
++    public boolean existsUsername(String username);
+ 
+     /**
+      * 查找学生所对应的小组好以及教师名字
+      * @param studentId
+      * @return 如果返回Null，说明没有找到
+      */
+-    public java.lang.String queryGroupIdAndTeacherName(int studentId)throws Exception;
++    public String queryGroupIdAndTeacherName(int studentId)throws Exception;
+ }
+Index: src/pojo/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\npublic class User {\r\n    private Integer id; //默认id\r\n    private java.lang.String username; //用户名\r\n    private java.lang.String password; //密码\r\n    private java.lang.String email; //邮箱\r\n    private java.lang.String identity; //身份，用于确认是教师还是学生\r\n    private int studentNo; //学号\r\n\r\n    public Integer getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(Integer id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public java.lang.String getUsername() {\r\n        return username;\r\n    }\r\n\r\n    public void setUsername(java.lang.String username) {\r\n        this.username = username;\r\n    }\r\n\r\n    public java.lang.String getPassword() {\r\n        return password;\r\n    }\r\n\r\n    public void setPassword(java.lang.String password) {\r\n        this.password = password;\r\n    }\r\n\r\n    public java.lang.String getEmail() {\r\n        return email;\r\n    }\r\n\r\n    public void setEmail(java.lang.String email) {\r\n        this.email = email;\r\n    }\r\n\r\n    public int getStudentNo() {\r\n        return studentNo;\r\n    }\r\n\r\n    public void setStudentNo(int studentNo) {\r\n        this.studentNo = studentNo;\r\n    }\r\n\r\n    @Override\r\n    public java.lang.String toString() {\r\n        return \"User{\" +\r\n                \"id=\" + id +\r\n                \", username='\" + username + '\\'' +\r\n                \", password='\" + password + '\\'' +\r\n                \", email='\" + email + '\\'' +\r\n                \", identity='\" + identity + '\\'' +\r\n                \", studentNo='\" + studentNo + '\\'' +\r\n                '}';\r\n    }\r\n\r\n    public java.lang.String getIdentity() {\r\n        return identity;\r\n    }\r\n\r\n    public void setIdentity(java.lang.String identity) {\r\n        this.identity = identity;\r\n    }\r\n\r\n    public User(){}\r\n\r\n    public User(java.lang.String identity) {\r\n        this.identity = identity;\r\n    }\r\n\r\n    public User(Integer id, java.lang.String username, java.lang.String password, java.lang.String email, java.lang.String identity, int studentNo) {\r\n        this.id = id;\r\n        this.username = username;\r\n        this.password = password;\r\n        this.email = email;\r\n        this.identity = identity;\r\n        this.studentNo = studentNo;\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/User.java b/src/pojo/User.java
+--- a/src/pojo/User.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/pojo/User.java	(date 1628689365454)
+@@ -2,10 +2,10 @@
+ 
+ public class User {
+     private Integer id; //默认id
+-    private java.lang.String username; //用户名
+-    private java.lang.String password; //密码
+-    private java.lang.String email; //邮箱
+-    private java.lang.String identity; //身份，用于确认是教师还是学生
++    private String username; //用户名
++    private String password; //密码
++    private String email; //邮箱
++    private String identity; //身份，用于确认是教师还是学生
+     private int studentNo; //学号
+ 
+     public Integer getId() {
+@@ -16,27 +16,27 @@
+         this.id = id;
+     }
+ 
+-    public java.lang.String getUsername() {
++    public String getUsername() {
+         return username;
+     }
+ 
+-    public void setUsername(java.lang.String username) {
++    public void setUsername(String username) {
+         this.username = username;
+     }
+ 
+-    public java.lang.String getPassword() {
++    public String getPassword() {
+         return password;
+     }
+ 
+-    public void setPassword(java.lang.String password) {
++    public void setPassword(String password) {
+         this.password = password;
+     }
+ 
+-    public java.lang.String getEmail() {
++    public String getEmail() {
+         return email;
+     }
+ 
+-    public void setEmail(java.lang.String email) {
++    public void setEmail(String email) {
+         this.email = email;
+     }
+ 
+@@ -49,7 +49,7 @@
+     }
+ 
+     @Override
+-    public java.lang.String toString() {
++    public String toString() {
+         return "User{" +
+                 "id=" + id +
+                 ", username='" + username + '\'' +
+@@ -60,21 +60,21 @@
+                 '}';
+     }
+ 
+-    public java.lang.String getIdentity() {
++    public String getIdentity() {
+         return identity;
+     }
+ 
+-    public void setIdentity(java.lang.String identity) {
++    public void setIdentity(String identity) {
+         this.identity = identity;
+     }
+ 
+     public User(){}
+ 
+-    public User(java.lang.String identity) {
++    public User(String identity) {
+         this.identity = identity;
+     }
+ 
+-    public User(Integer id, java.lang.String username, java.lang.String password, java.lang.String email, java.lang.String identity, int studentNo) {
++    public User(Integer id, String username, String password, String email, String identity, int studentNo) {
+         this.id = id;
+         this.username = username;
+         this.password = password;
+Index: src/web/GetAllStudents.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\nimport dao.impl.UserDaoImpl;\r\nimport pojo.User;\r\nimport utils.JsonConverter;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\nimport java.io.PrintWriter;\r\nimport java.util.List;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-05-22\r\n */\r\n@WebServlet(\"/getallstudents\")\r\npublic class GetAllStudents extends HttpServlet {\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        try {\r\n            resp.setContentType(\"application/json;charset=utf-8\");\r\n            PrintWriter out = resp.getWriter();\r\n            //连接数据库,获取用户\r\n            List<User> users= new UserDaoImpl().querybyIdentity(\"student\");\r\n            JsonConverter converter = new JsonConverter();\r\n            //将学生转换为json类型\r\n            java.lang.String output = converter.studentJson(users);\r\n            out.print(output);\r\n            System.out.println(output);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        super.doGet(req, resp);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/GetAllStudents.java b/src/web/GetAllStudents.java
+--- a/src/web/GetAllStudents.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/web/GetAllStudents.java	(date 1628692349440)
+@@ -31,7 +31,7 @@
+             List<User> users= new UserDaoImpl().querybyIdentity("student");
+             JsonConverter converter = new JsonConverter();
+             //将学生转换为json类型
+-            java.lang.String output = converter.studentJson(users);
++            String output = converter.studentJson(users);
+             out.print(output);
+             System.out.println(output);
+         } catch (Exception e) {
+Index: src/web/ShowGroupsServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\nimport pojo.User;\r\nimport service.impl.GroupServiceImpl;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\nimport java.io.PrintWriter;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-07-16\r\n */\r\n@WebServlet(\"/showgroupsservlet\")\r\npublic class ShowGroupsServlet extends HttpServlet {\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        try {\r\n            resp.setContentType(\"application/json;charset=utf-8\");\r\n            PrintWriter out = resp.getWriter();\r\n            User loginUser=(User)req.getSession().getAttribute(\"User\");\r\n            //连接数据库,获取小组\r\n            java.lang.String groups = new GroupServiceImpl().loadGroup(loginUser.getUsername());\r\n            out.print(groups);\r\n            System.out.println(groups);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        super.doGet(req, resp);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/ShowGroupsServlet.java b/src/web/ShowGroupsServlet.java
+--- a/src/web/ShowGroupsServlet.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/web/ShowGroupsServlet.java	(date 1628692349464)
+@@ -27,7 +27,7 @@
+             PrintWriter out = resp.getWriter();
+             User loginUser=(User)req.getSession().getAttribute("User");
+             //连接数据库,获取小组
+-            java.lang.String groups = new GroupServiceImpl().loadGroup(loginUser.getUsername());
++            String groups = new GroupServiceImpl().loadGroup(loginUser.getUsername());
+             out.print(groups);
+             System.out.println(groups);
+         } catch (Exception e) {
+Index: src/pojo/News.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-11-13\r\n */\r\npublic class News {\r\n    private User type;//消息类型\r\n    private User title;//文章标题\r\n    private User content;//文章内容\r\n    private boolean isComment;//是否评论文章\r\n    private User extraInfo;//额外消息\r\n    private int studentNo; //对应的学生学号\r\n\r\n    public User getType() {\r\n        return type;\r\n    }\r\n\r\n    public void setType(User type) {\r\n        this.type = type;\r\n    }\r\n\r\n    public User getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public void setTitle(User title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public User getContent() {\r\n        return content;\r\n    }\r\n\r\n    public void setContent(User content) {\r\n        this.content = content;\r\n    }\r\n\r\n    public boolean isComment() {\r\n        return isComment;\r\n    }\r\n\r\n    public void setComment(boolean comment) {\r\n        isComment = comment;\r\n    }\r\n\r\n    public User getExtraInfo() {\r\n        return extraInfo;\r\n    }\r\n\r\n    public void setExtraInfo(User extraInfo) {\r\n        this.extraInfo = extraInfo;\r\n    }\r\n\r\n    public int getStudentNo() {\r\n        return studentNo;\r\n    }\r\n\r\n    public void setStudentNo(int studentNo) {\r\n        this.studentNo = studentNo;\r\n    }\r\n\r\n    public News() {\r\n    }\r\n\r\n    public News(User type, User title, User content, boolean isComment, User extraInfo, int studentNo) {\r\n        this.type = type;\r\n        this.title = title;\r\n        this.content = content;\r\n        this.isComment = isComment;\r\n        this.extraInfo = extraInfo;\r\n        this.studentNo = studentNo;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/News.java b/src/pojo/News.java
+--- a/src/pojo/News.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/pojo/News.java	(date 1628689600549)
+@@ -8,34 +8,34 @@
+  * @date 2021-08-11-13
+  */
+ public class News {
+-    private User type;//消息类型
+-    private User title;//文章标题
+-    private User content;//文章内容
++    private String type;//消息类型
++    private String title;//文章标题
++    private String content;//文章内容
+     private boolean isComment;//是否评论文章
+-    private User extraInfo;//额外消息
++    private String extraInfo;//额外消息
+     private int studentNo; //对应的学生学号
+ 
+-    public User getType() {
++    public String getType() {
+         return type;
+     }
+ 
+-    public void setType(User type) {
++    public void setType(String type) {
+         this.type = type;
+     }
+ 
+-    public User getTitle() {
++    public String getTitle() {
+         return title;
+     }
+ 
+-    public void setTitle(User title) {
++    public void setTitle(String title) {
+         this.title = title;
+     }
+ 
+-    public User getContent() {
++    public String getContent() {
+         return content;
+     }
+ 
+-    public void setContent(User content) {
++    public void setContent(String content) {
+         this.content = content;
+     }
+ 
+@@ -47,11 +47,11 @@
+         isComment = comment;
+     }
+ 
+-    public User getExtraInfo() {
++    public String getExtraInfo() {
+         return extraInfo;
+     }
+ 
+-    public void setExtraInfo(User extraInfo) {
++    public void setExtraInfo(String extraInfo) {
+         this.extraInfo = extraInfo;
+     }
+ 
+@@ -66,7 +66,7 @@
+     public News() {
+     }
+ 
+-    public News(User type, User title, User content, boolean isComment, User extraInfo, int studentNo) {
++    public News(String type, String title, String content, boolean isComment, String extraInfo, int studentNo) {
+         this.type = type;
+         this.title = title;
+         this.content = content;
+Index: src/web/AddStudentToGroupServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\n\r\nimport com.google.gson.Gson;\r\nimport com.google.gson.JsonObject;\r\nimport com.google.gson.JsonParser;\r\nimport dao.impl.GroupDaoImpl;\r\nimport pojo.User;\r\nimport service.UserService;\r\nimport service.impl.UserServiceImpl;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.BufferedReader;\r\nimport java.io.IOException;\r\nimport java.io.InputStreamReader;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-07-16\r\n */\r\n@WebServlet(\"/addstudenttogroupservlet\")\r\npublic class AddStudentToGroupServlet extends HttpServlet {\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        UserService userService = new UserServiceImpl();\r\n        //用于保存所获取到的数据流\r\n        try {\r\n            BufferedReader br = new BufferedReader(new InputStreamReader(\r\n                    req.getInputStream(), \"utf-8\"));\r\n            StringBuffer sb = new StringBuffer(\"\");\r\n            java.lang.String temp;\r\n            while ((temp = br.readLine()) != null) {\r\n                sb.append(temp);\r\n            }\r\n            br.close();\r\n            //获取到的json字符串\r\n            System.out.println(sb);\r\n            java.lang.String acceptjson = sb.toString();\r\n            JsonObject jsonObject = JsonParser.parseString(acceptjson).getAsJsonObject();\r\n            //保存到组中\r\n            GroupDaoImpl groupDao = new GroupDaoImpl();\r\n            groupDao.saveGroup(acceptjson);\r\n            //保存用户数据\r\n            User user = new User();\r\n            user.setStudentNo(jsonObject.get(\"id\").getAsInt());\r\n            user.setUsername(\"bupt\"+jsonObject.get(\"id\").getAsString());\r\n            user.setPassword(\"123456\");\r\n            //user.setEmail(\"123456\");\r\n            user.setIdentity(\"student\");\r\n            userService.registUser(user);\r\n            java.lang.String userinfo = new Gson().toJson(user);\r\n            System.out.println(\"注册成功！\"+\"欢迎用户\"+userinfo);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        super.doPost(req, resp);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/AddStudentToGroupServlet.java b/src/web/AddStudentToGroupServlet.java
+--- a/src/web/AddStudentToGroupServlet.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/web/AddStudentToGroupServlet.java	(date 1628692349460)
+@@ -35,14 +35,14 @@
+             BufferedReader br = new BufferedReader(new InputStreamReader(
+                     req.getInputStream(), "utf-8"));
+             StringBuffer sb = new StringBuffer("");
+-            java.lang.String temp;
++            String temp;
+             while ((temp = br.readLine()) != null) {
+                 sb.append(temp);
+             }
+             br.close();
+             //获取到的json字符串
+             System.out.println(sb);
+-            java.lang.String acceptjson = sb.toString();
++            String acceptjson = sb.toString();
+             JsonObject jsonObject = JsonParser.parseString(acceptjson).getAsJsonObject();
+             //保存到组中
+             GroupDaoImpl groupDao = new GroupDaoImpl();
+@@ -55,7 +55,7 @@
+             //user.setEmail("123456");
+             user.setIdentity("student");
+             userService.registUser(user);
+-            java.lang.String userinfo = new Gson().toJson(user);
++            String userinfo = new Gson().toJson(user);
+             System.out.println("注册成功！"+"欢迎用户"+userinfo);
+         } catch (Exception e) {
+             e.printStackTrace();
+Index: src/web/ShowNewsServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\nimport pojo.User;\r\nimport service.impl.NewsServiceImpl;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\nimport java.io.PrintWriter;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-11-14\r\n */\r\n@WebServlet(\"/shownewsservlet\")\r\npublic class ShowNewsServlet extends HttpServlet {\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        try {\r\n            resp.setContentType(\"application/json;charset=utf-8\");\r\n            PrintWriter out = resp.getWriter();\r\n            User loginUser=(User)req.getSession().getAttribute(\"User\");\r\n            //连接数据库,获取消息\r\n            java.lang.String NewsList = new NewsServiceImpl().loadNews(loginUser.getStudentNo());\r\n            out.print(NewsList);\r\n            System.out.println(NewsList);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        super.doGet(req, resp);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/ShowNewsServlet.java b/src/web/ShowNewsServlet.java
+--- a/src/web/ShowNewsServlet.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/web/ShowNewsServlet.java	(date 1628692349436)
+@@ -27,7 +27,7 @@
+             PrintWriter out = resp.getWriter();
+             User loginUser=(User)req.getSession().getAttribute("User");
+             //连接数据库,获取消息
+-            java.lang.String NewsList = new NewsServiceImpl().loadNews(loginUser.getStudentNo());
++            String NewsList = new NewsServiceImpl().loadNews(loginUser.getStudentNo());
+             out.print(NewsList);
+             System.out.println(NewsList);
+         } catch (Exception e) {
+Index: src/web/ChatRoomUser.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\n\r\nimport pojo.User;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport javax.xml.ws.RequestWrapper;\r\nimport java.io.IOException;\r\n\r\n@WebServlet(\"/getUsername\")\r\npublic class ChatRoomUser extends HttpServlet {\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        User loginUser=(User)req.getSession().getAttribute(\"User\");\r\n        java.lang.String username=loginUser.getUsername();\r\n        resp.setContentType(\"text/html;charset=UTF-8\");\r\n        resp.getWriter().write(username);\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/ChatRoomUser.java b/src/web/ChatRoomUser.java
+--- a/src/web/ChatRoomUser.java	(revision 92e9a466e6a967a049a8b9a974e5dfecbfba9276)
++++ b/src/web/ChatRoomUser.java	(date 1628692577038)
+@@ -8,7 +8,6 @@
+ import javax.servlet.http.HttpServlet;
+ import javax.servlet.http.HttpServletRequest;
+ import javax.servlet.http.HttpServletResponse;
+-import javax.xml.ws.RequestWrapper;
+ import java.io.IOException;
+ 
+ @WebServlet("/getUsername")
+@@ -16,7 +15,7 @@
+     @Override
+     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+         User loginUser=(User)req.getSession().getAttribute("User");
+-        java.lang.String username=loginUser.getUsername();
++        String username=loginUser.getUsername();
+         resp.setContentType("text/html;charset=UTF-8");
+         resp.getWriter().write(username);
+     }

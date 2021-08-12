@@ -17,4 +17,5 @@ public interface GroupDao {
     public void saveGroup(String json) throws Exception;
     public void updateSpeeches(String json) throws Exception;
     public int querySpeeches(int id) throws Exception;
+    public List<String> queryAuthor(String teachername);
 }

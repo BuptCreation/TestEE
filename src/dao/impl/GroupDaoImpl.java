@@ -41,9 +41,7 @@ public class GroupDaoImpl implements GroupDao {
         MongoCollection<Document> collection = db.getCollection(table);
         FindIterable<Document> iterable = collection.find(teacherNameObj).sort(groupIdObj);
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        MongoCursor<Document> cursor = iterable.iterator();
-        while (cursor.hasNext()) {
-            Document user = cursor.next();
+        for (Document user : iterable) {
             String jsonString = user.toJson();
             Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
             list.add(jsonStrToMap);
@@ -78,22 +76,36 @@ public class GroupDaoImpl implements GroupDao {
 
     @Override
     public int querySpeeches(int id) throws Exception {
-        MongoDao mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "buptgroup";
         BasicDBObject query = new BasicDBObject("id",id);
         MongoCollection<Document> collection = db.getCollection(table);
         FindIterable<Document> iterable = collection.find(query);
         Map<String, Object> jsonStrToMap = null;
-        MongoCursor<Document> cursor = iterable.iterator();
-        while (cursor.hasNext()) {
-            Document user = cursor.next();
+        for (Document user : iterable) {
             String jsonString = user.toJson();
             jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);// 这里用到我自己写的方法,主要是包json字符串转换成map格式,为后面做准备,方法放在后面
         }
         String json = new Gson().toJson(jsonStrToMap);
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         return jsonObject.get("speeches").getAsInt();
+    }
+
+    @Override
+    public List<String> queryAuthor(String teachername) {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "buptgroup";
+
+        BasicDBObject query = new BasicDBObject("teacherUsername",teachername);
+        BasicDBObject groupIdObj = new BasicDBObject("groupId",1);
+        List<String> list = new ArrayList<String>();
+        MongoCollection<Document> collection = db.getCollection(table);
+        FindIterable<Document> iterable = collection.find(query).projection(new BasicDBObject("username",1)).sort(groupIdObj);
+        for (Document user : iterable) {
+            String jsonString = user.toJson();
+            list.add(jsonString);
+        }
+        return list;
     }
 
 

@@ -15,4 +15,5 @@ public interface NewsDao {
     public void addNews(String json);
     public void deleteNews();
     public void updateNews(int studentNo,int count,String title);
+    public void initNews(int studentNo);
 }

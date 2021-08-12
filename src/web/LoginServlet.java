@@ -2,6 +2,7 @@ package web;
 
 
 
+import dao.impl.NewsDaoImpl;
 import pojo.User;
 import service.UserService;
 import service.impl.UserServiceImpl;
@@ -21,8 +22,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //  1、获取请求的参数
-        java.lang.String username = req.getParameter("username");
-        java.lang.String password = req.getParameter("password");
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
         // 调用 userService.login()登录处理业务
         User loginUser = userService.login(new User(null, username, password, null, null,0));
         // 如果等于null,说明登录 失败!
@@ -40,9 +41,12 @@ public class LoginServlet extends HttpServlet {
                     //跳到学生端欢迎登陆主页
                     System.out.println(loginUser);
                     int studentId = loginUser.getStudentNo();
-                    java.lang.String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);
+                    String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);
                     //user->group 并且把groupid+teacherusername
                     req.getSession().setAttribute("KeyGroup",KeyGroup);
+                    //判断消息是否为空,为空则初始化消息
+                    if(new NewsDaoImpl().getNews(studentId).size() == 0)
+                        new NewsDaoImpl().initNews(studentId);
                     resp.sendRedirect("pages/Student/Welcome.jsp");
                 }
                 else{

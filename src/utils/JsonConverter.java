@@ -21,11 +21,11 @@ public class JsonConverter {
 
         gson = new GsonBuilder().create();
     }
-    public java.lang.String convertToJson(List<Map<java.lang.String, Object>> articles){
+    public String convertToJson(List<Map<String, Object>> articles){
         Gson gson = new Gson();
         return gson.toJson(articles);
     }
-    public java.lang.String studentJson(List<User> users){
+    public String studentJson(List<User> users){
         Gson gson = new Gson();
         return gson.toJson(users);
     }

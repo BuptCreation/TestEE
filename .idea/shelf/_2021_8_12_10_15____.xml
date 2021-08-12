@@ -1,0 +1,54 @@
+<changelist name="在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]" date="1628734501030" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]/shelved.patch" />
+  <option name="DESCRIPTION" value="在进行更新之前于 2021/8/12 10:15 取消提交了变更 [默认变更列表]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/service/impl/CommentServiceImpl.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/service/impl/CommentServiceImpl.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]/CommentServiceImpl.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/pojo/Article.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/pojo/Article.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]/Article.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/pojo/Group.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/pojo/Group.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]/Group.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/News.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/News.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]/News.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/web/ChatRoomUser.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/web/ChatRoomUser.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]/ChatRoomUser.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/ChatRoomUser.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/web/ChatRoomUser.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]/ChatRoomUser1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/BuptCreationEE/pojo/News.class" />
+    <option name="AFTER_PATH" value="out/production/BuptCreationEE/pojo/News.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]/News1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/Article.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/Article.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]/Article1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/Group.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/pojo/Group.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]/Group1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/service/impl/CommentServiceImpl.class" />
+    <option name="AFTER_PATH" value="out/artifacts/BuptCreationEE_war_exploded/WEB-INF/classes/service/impl/CommentServiceImpl.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2021_8_12_10_15_取消提交了变更_[默认变更列表]/CommentServiceImpl1.class" />
+  </binary>
+</changelist>

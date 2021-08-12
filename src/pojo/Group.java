@@ -10,10 +10,10 @@ package pojo;
 public class Group {
     private int _id;
     private int id; //学号
-    private User username;//学生姓名
+    private String username;//学生姓名
     private int groupId;//小组号
     private int speeches;//群聊发言次数
-    private User teacherUsername;//教师姓名
+    private String teacherUsername;//教师姓名
 
     public int get_id() {
         return _id;
@@ -31,11 +31,11 @@ public class Group {
         this.id = id;
     }
 
-    public User getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(User username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -55,18 +55,18 @@ public class Group {
         this.speeches = speeches;
     }
 
-    public User getTeacherUsername() {
+    public String getTeacherUsername() {
         return teacherUsername;
     }
 
-    public void setTeacherUsername(User teacherUsername) {
+    public void setTeacherUsername(String teacherUsername) {
         this.teacherUsername = teacherUsername;
     }
 
     public Group() {
     }
 
-    public Group(int _id, int id, User username, int groupId, int speeches, User teacherUsername) {
+    public Group(int _id, int id, String username, int groupId, int speeches, String teacherUsername) {
         this._id = _id;
         this.id = id;
         this.username = username;
@@ -76,7 +76,7 @@ public class Group {
     }
 
     @Override
-    public java.lang.String toString() {
+    public String toString() {
         return "Group{" +
                 "_id=" + _id +
                 ", id=" + id +

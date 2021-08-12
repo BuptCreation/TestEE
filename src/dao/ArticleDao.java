@@ -19,4 +19,5 @@ public interface ArticleDao {
     public int queryCommentCount(String title) throws Exception;
     public void updateCommentCount(String title,int commentCount);
     public int quertStudentNo(String title);
+    public String queryArticleByAuthor(List<String> author);
 }

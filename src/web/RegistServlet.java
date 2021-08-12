@@ -21,11 +21,11 @@ public class RegistServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //  1、获取请求的参数
-        java.lang.String username = req.getParameter("username");
-        java.lang.String password = req.getParameter("password");
-        java.lang.String email = req.getParameter("email");
-        java.lang.String code = req.getParameter("code");
-        java.lang.String identity = req.getParameter("identity");
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        String email = req.getParameter("email");
+        String code = req.getParameter("code");
+        String identity = req.getParameter("identity");
         int studentNo = Integer.parseInt(req.getParameter("studentNo"));
 //        2、检查 验证码是否正确  === 写死,要求验证码为:abcde
         if ("abcde".equalsIgnoreCase(code)) {

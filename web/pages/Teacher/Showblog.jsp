@@ -1,4 +1,4 @@
-<%--
+<%@ page import="pojo.User" %><%--
   Created by IntelliJ IDEA.
   User: tigers
   Date: 2021/8/1
@@ -27,7 +27,9 @@
 <%--背景--%>
 <div id="top-image"></div>
 <div id="app">
-
+    <%
+        User loginUser=(User)request.getSession().getAttribute("User");
+    %>
 <div  v-for="blog in blogs">
     <div class="blog" >
     <h1>{{blog.title}}</h1>
@@ -59,15 +61,19 @@
             loadComments(){
                 // var list = JSON.parse(localStorage.getItem('cmts') || '[]')
                 // this.list = list
-                this.$http.get("https://jsonplaceholder.typicode.com/posts/")
+                this.$http.get("showgroupblogservlet")
                     .then(function (data) {
                         this.blogs = data.body.slice(0,10);
                         console.log(this.blogs);
 
                     })
             }
+
         },
         created(){
+            this.teacherUsername = "<%= loginUser.getUsername()%>"
+            var userName = {teacherUsername: this.teacherUsername }
+            this.$http.post("showgroupblogservlet",JSON.stringify(userName));
             this.loadComments()
         }
 
