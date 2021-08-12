@@ -46,6 +46,12 @@
                                 <button onclick=goComment("2005",)>评论</button>
                             </div>
                         </li>
+                        <li>
+                                                 <div>
+                                                     <time><span  class="label label-info">作品互评</span></time>您已经被分配到评论文章message.title点击按钮进行评论<br/>
+                            <button class="btn btn-info btn-lg" onclick=goComment("123","123","false")><span class="glyphicon glyphicon-pencil"></span>评论</button>
+                                                 </div>
+                               </li>
                     </ul>
                 </section>
                 &darr;</h1>
@@ -62,9 +68,13 @@
     }
     $(function(){
         $.getJSON("shownewsservlet",function (data) {
+            //1.给用户引导；固定 2。给用户提示信息
+
             $.each(data,function (i,message) {
                 console.log(message);
                 if (message.type=="comment") {
+                    //用户的message（type:信息类型）
+                    //个人主页，收到提示  提示他去评论对应作品
                     var str = " <li>\n" +
                         "                            <div>\n" +
                         "                               "+"<time><span  class=\"label label-info\">作品互评</span></time>"+"您已经被分配到评论文章{"+message.title + "}点击按钮进行评论 \n"+"<br/>"+
@@ -72,14 +82,17 @@
                         "                            </div>\n" +
                         "       </li>";
                     $(".messages").append(str);
-                }else if (message.type=="评论我"){
+                }else if (message.type=="commentfinish"){
+                    //个人主页，收到提示 我的作品已经被人评论完了
                     var str = " <li>\n" +
                         "                            <div>\n" +
-                        "                               "+"<time><span  class=\"label label-success\">作品互评</span></time>"+"您已经被分配到评论文章{"+message.title + "}点击按钮进行评论 \n"+"<br/>"+
-                        "<button class=\"btn btn-info btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"true"+"\")'><span class=\"glyphicon glyphicon-pencil\"></span>评论</button>"+
+                        "                               "+"<time><span  class=\"label label-success\">作品互评</span></time>"+"您的文章{"+message.title + "}已经互评完毕，点击按钮查看结果 \n"+"<br/>"+
+                        "<button class=\"btn btn-info btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"false"+"\")'><span class=\"glyphicon glyphicon-pencil\"></span>评论</button>"+
                         "                            </div>\n" +
                         "       </li>";
                     $(".messages").append(str);
+                }else if (message.type=="实时消息"){
+
                 }
             })
         }).then( function () {

@@ -126,5 +126,24 @@ public class ArticleDaoImpl implements ArticleDao {
         return jsonObject.get("id").getAsInt();
     }
 
+    @Override
+    public String queryArticleByAuthor(List<String> author) {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "buptarticle";
+        int size = author.size();
+        MongoCollection<Document> collection = db.getCollection(table);
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        for (String s : author) {
+            BasicDBObject query = new BasicDBObject("author", s);
+            FindIterable<Document> iterable = collection.find(query);
+            for (Document user : iterable) {
+                String jsonString = user.toJson();
+                Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
+                list.add(jsonStrToMap);
+            }
+        }
+        return new Gson().toJson(list);
+    }
+
 
 }

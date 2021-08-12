@@ -2,10 +2,10 @@ package pojo;
 
 public class User {
     private Integer id; //默认id
-    private java.lang.String username; //用户名
-    private java.lang.String password; //密码
-    private java.lang.String email; //邮箱
-    private java.lang.String identity; //身份，用于确认是教师还是学生
+    private String username; //用户名
+    private String password; //密码
+    private String email; //邮箱
+    private String identity; //身份，用于确认是教师还是学生
     private int studentNo; //学号
 
     public Integer getId() {
@@ -16,27 +16,27 @@ public class User {
         this.id = id;
     }
 
-    public java.lang.String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(java.lang.String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public java.lang.String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(java.lang.String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public java.lang.String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(java.lang.String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -49,7 +49,7 @@ public class User {
     }
 
     @Override
-    public java.lang.String toString() {
+    public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
@@ -60,21 +60,21 @@ public class User {
                 '}';
     }
 
-    public java.lang.String getIdentity() {
+    public String getIdentity() {
         return identity;
     }
 
-    public void setIdentity(java.lang.String identity) {
+    public void setIdentity(String identity) {
         this.identity = identity;
     }
 
     public User(){}
 
-    public User(java.lang.String identity) {
+    public User(String identity) {
         this.identity = identity;
     }
 
-    public User(Integer id, java.lang.String username, java.lang.String password, java.lang.String email, java.lang.String identity, int studentNo) {
+    public User(Integer id, String username, String password, String email, String identity, int studentNo) {
         this.id = id;
         this.username = username;
         this.password = password;
