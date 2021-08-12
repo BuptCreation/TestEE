@@ -34,7 +34,7 @@
             <h1><!--  -->
                 <section class="intro">
                     <div class="container">
-                        <h1>欢迎你登陆！<%=loginUser.getUsername()%> 查看你的最新消息吧&darr;</h1>
+                        <h1 align="center">欢迎你登陆！<%=loginUser.getUsername()%> 查看你的最新消息吧&darr;</h1>
                     </div>
                 </section>
 
@@ -42,7 +42,7 @@
                     <ul class="messages">
                         <li>
                             <div>
-                                <time>2005</time> In mattis elit vitae odio posuere, nec maximus massa varius. Suspendisse varius volutpat mattis. Vestibulum id magna est.
+                                <time>2021</time> 我们将使用一段拉丁文测试数据In mattis elit vitae odio posuere, nec maximus massa varius. Suspendisse varius volutpat mattis. Vestibulum id magna est.
                                 <button onclick=goComment("2005",)>评论</button>
                             </div>
                         </li>
@@ -69,9 +69,7 @@
     $(function(){
         $.getJSON("shownewsservlet",function (data) {
             //1.给用户引导；固定 2。给用户提示信息
-
             $.each(data,function (i,message) {
-                console.log(message);
                 if (message.type=="comment") {
                     //用户的message（type:信息类型）
                     //个人主页，收到提示  提示他去评论对应作品
@@ -82,17 +80,37 @@
                         "                            </div>\n" +
                         "       </li>";
                     $(".messages").append(str);
-                }else if (message.type=="commentfinish"){
+                }else if (message.type=="commentfinished"){
                     //个人主页，收到提示 我的作品已经被人评论完了
                     var str = " <li>\n" +
                         "                            <div>\n" +
                         "                               "+"<time><span  class=\"label label-success\">作品互评</span></time>"+"您的文章{"+message.title + "}已经互评完毕，点击按钮查看结果 \n"+"<br/>"+
-                        "<button class=\"btn btn-info btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"false"+"\")'><span class=\"glyphicon glyphicon-pencil\"></span>评论</button>"+
+                        "<button class=\"btn btn-success btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"false"+"\")'><span class=\"glyphicon glyphicon-search\"></span>查看</button>"+
                         "                            </div>\n" +
                         "       </li>";
                     $(".messages").append(str);
-                }else if (message.type=="实时消息"){
-
+                }else if (message.type=="group"){
+                    //个人主页，收到提示 小组消息 上面那种组合方式真的垃圾下面换种好康的
+                    var strVar="";
+                    strVar += "<li>";
+                    strVar += "      <div>";
+                    strVar += "          <time><span  class=\"label label-default\">小组消息<\/span><\/time> ";
+                    strVar += "<span class=\"glyphicon glyphicon-user\">"+message.content;
+                    strVar += "<time><span class=\"glyphicon glyphicon-plus\">附加消息:"+message.extraInfo;
+                    strVar += "      <\/div>";
+                    strVar += "<\/li>";
+                    $(".messages").append(strVar);
+                }else if (message.type=="chatroom") {
+                    //个人主页，收到提示 小组消息 上面那种组合方式真的垃圾下面换种好康的
+                    var strVar = "";
+                    strVar += "<li>";
+                    strVar += "      <div>";
+                    strVar += "          <time><span  class=\"label label-primary\">聊天提醒<\/span><\/time> ";
+                    strVar += "<span class=\"glyphicon glyphicon-comment\">" + message.content;
+                    strVar += "<time><span class=\"glyphicon glyphicon-plus\">附加消息:" + message.extraInfo;
+                    strVar += "      <\/div>";
+                    strVar += "<\/li>";
+                    $(".messages").append(strVar);
                 }
             })
         }).then( function () {
@@ -130,7 +148,7 @@
     })
 </script>
     <!-- 提示表单样式js-->
-<%-- --%>
+<%--手动美化包 --%>
 </body>
 
 </html>

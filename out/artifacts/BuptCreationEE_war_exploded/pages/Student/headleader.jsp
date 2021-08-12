@@ -25,7 +25,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li ><a href="pages/Student/My.jsp">我的</a></li>
+                <li ><a href="pages/Student/My.jsp">我的&nbsp;</a></li>
                 <li ><a href="pages/Student/Addblog.jsp">协同写作</a></li>
                 <li ><a href="pages/Student/Showblog.jsp">作品评论</a></li>
                 <li ><a href="pages/Student/ChatRoom.jsp">聊天室</a></li>
@@ -40,6 +40,11 @@
     $('.nav').find('a').each(function () {
         if (this.href == document.location.href || document.location.href.search(this.href) >= 0) {
             $(this).parent().addClass('active'); // this.className = 'active';
+        }
+    });
+    $('.nav').find('a').each(function () {
+        if (this.href == document.location.host+"/BuptCreationEE_war_exploded/pages/Student/My.jsp") {
+            $(this).append("<span class=\"badge\">6</span>");
         }
     });
 </script>

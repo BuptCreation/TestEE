@@ -47,6 +47,7 @@ public class ShowGroupBlogServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            System.out.println("doPost调用");
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     req.getInputStream(), "utf-8"));
             StringBuffer sb = new StringBuffer("");

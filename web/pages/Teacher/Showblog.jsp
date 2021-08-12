@@ -63,8 +63,8 @@
                 // this.list = list
                 this.$http.get("showgroupblogservlet")
                     .then(function (data) {
+                        console.log(data);
                         this.blogs = data.body.slice(0,10);
-                        console.log(this.blogs);
 
                     })
             }
@@ -73,7 +73,9 @@
         created(){
             this.teacherUsername = "<%= loginUser.getUsername()%>"
             var userName = {teacherUsername: this.teacherUsername }
-            this.$http.post("showgroupblogservlet",JSON.stringify(userName));
+            console.log(userName.teacherUsername);
+            this.$http.post("showgroupblogservlet",JSON.stringify(userName)).then(function(data){
+            });
             this.loadComments()
         }
 
