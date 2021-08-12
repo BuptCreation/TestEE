@@ -1,4 +1,4 @@
-<%@ page import="pojo.User" %><%--
+<%@ page import="pojo.String" %><%--
   Created by IntelliJ IDEA.
   User: tigers
   Date: 2021/7/29
@@ -31,7 +31,7 @@
 </head>
 <%--从session中获得user    把名字填入评论人--%>
 <%
-    User loginUser=(User)request.getSession().getAttribute("User");
+    String loginUser=(String) request.getSession().getAttribute("User");
 %>
     <%@include file="headleader.jsp"%>
 <%--背景--%>
