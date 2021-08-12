@@ -1,0 +1,1342 @@
+Index: src/pojo/String.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/String.java b/src/pojo/User.java
+rename from src/pojo/String.java
+rename to src/pojo/User.java
+--- a/src/pojo/String.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/pojo/User.java	(date 1628688522788)
+@@ -1,6 +1,6 @@
+ package pojo;
+ 
+-public class String {
++public class User {
+     private Integer id; //默认id
+     private java.lang.String username; //用户名
+     private java.lang.String password; //密码
+@@ -68,13 +68,13 @@
+         this.identity = identity;
+     }
+ 
+-    public String(){}
++    public User(){}
+ 
+-    public String(java.lang.String identity) {
++    public User(java.lang.String identity) {
+         this.identity = identity;
+     }
+ 
+-    public String(Integer id, java.lang.String username, java.lang.String password, java.lang.String email, java.lang.String identity, int studentNo) {
++    public User(Integer id, java.lang.String username, java.lang.String password, java.lang.String email, java.lang.String identity, int studentNo) {
+         this.id = id;
+         this.username = username;
+         this.password = password;
+Index: src/test/UserServiceTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package test;\r\n\r\n\r\nimport org.junit.Test;\r\nimport pojo.String;\r\nimport service.UserService;\r\nimport service.impl.UserServiceImpl;\r\n\r\npublic class UserServiceTest {\r\n\r\n    UserService userService = new UserServiceImpl();\r\n\r\n    @Test\r\n    public void registUser() {\r\n        userService.registUser(new String(null, \"student168\", \"666666\", \"bbj168@qq.com\", \"student\",211));\r\n        userService.registUser(new String(null, \"teacher168\", \"666666\", \"abc168@qq.com\", \"teacher\",211));\r\n    }\r\n\r\n    @Test\r\n    public void login() {\r\n        System.out.println( userService.login(new String(null, \"wzg168\", \"123456\", null, \"student\",211)) );\r\n    }\r\n\r\n    @Test\r\n    public void existsUsername() {\r\n        if (userService.existsUsername(\"wzg16888\")) {\r\n            System.out.println(\"用户名已存在！\");\r\n        } else {\r\n            System.out.println(\"用户名可用！\");\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/UserServiceTest.java b/src/test/UserServiceTest.java
+--- a/src/test/UserServiceTest.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/test/UserServiceTest.java	(date 1628688522762)
+@@ -2,7 +2,7 @@
+ 
+ 
+ import org.junit.Test;
+-import pojo.String;
++import pojo.User;
+ import service.UserService;
+ import service.impl.UserServiceImpl;
+ 
+@@ -12,13 +12,13 @@
+ 
+     @Test
+     public void registUser() {
+-        userService.registUser(new String(null, "student168", "666666", "bbj168@qq.com", "student",211));
+-        userService.registUser(new String(null, "teacher168", "666666", "abc168@qq.com", "teacher",211));
++        userService.registUser(new User(null, "student168", "666666", "bbj168@qq.com", "student",211));
++        userService.registUser(new User(null, "teacher168", "666666", "abc168@qq.com", "teacher",211));
+     }
+ 
+     @Test
+     public void login() {
+-        System.out.println( userService.login(new String(null, "wzg168", "123456", null, "student",211)) );
++        System.out.println( userService.login(new User(null, "wzg168", "123456", null, "student",211)) );
+     }
+ 
+     @Test
+Index: src/web/LoginServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\n\r\n\r\nimport pojo.String;\r\nimport service.UserService;\r\nimport service.impl.UserServiceImpl;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\n\r\n@WebServlet(value = {\"/login\"})\r\npublic class LoginServlet extends HttpServlet {\r\n\r\n    private UserService userService = new UserServiceImpl();\r\n\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        //  1、获取请求的参数\r\n        java.lang.String username = req.getParameter(\"username\");\r\n        java.lang.String password = req.getParameter(\"password\");\r\n        // 调用 userService.login()登录处理业务\r\n        String loginUser = userService.login(new String(null, username, password, null, null,0));\r\n        // 如果等于null,说明登录 失败!\r\n        if (loginUser == null) {\r\n            //   跳回登录页面\r\n            req.getRequestDispatcher(\"/pages/user/login.html\").forward(req, resp);\r\n        } else {\r\n            // 登录 成功\r\n            System.out.println(\"用户登陆成功\");\r\n            //传送json数据给谁谁\r\n            //将数据存储到session\r\n            req.getSession().setAttribute(\"User\",loginUser);\r\n            try {\r\n                if (loginUser.getIdentity().equals(\"student\")) {\r\n                    //跳到学生端欢迎登陆主页\r\n                    System.out.println(loginUser);\r\n                    int studentId = loginUser.getStudentNo();\r\n                    java.lang.String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);\r\n                    //user->group 并且把groupid+teacherusername\r\n                    req.getSession().setAttribute(\"KeyGroup\",KeyGroup);\r\n                    resp.sendRedirect(\"pages/Student/Welcome.jsp\");\r\n                }\r\n                else{\r\n                    //跳到教师端主页\r\n                    resp.sendRedirect(\"pages/Teacher/Welcome.jsp\");\r\n                }\r\n            } catch (Exception e) {\r\n                e.printStackTrace();\r\n            }\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/LoginServlet.java b/src/web/LoginServlet.java
+--- a/src/web/LoginServlet.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/web/LoginServlet.java	(date 1628688522783)
+@@ -2,7 +2,7 @@
+ 
+ 
+ 
+-import pojo.String;
++import pojo.User;
+ import service.UserService;
+ import service.impl.UserServiceImpl;
+ 
+@@ -24,7 +24,7 @@
+         java.lang.String username = req.getParameter("username");
+         java.lang.String password = req.getParameter("password");
+         // 调用 userService.login()登录处理业务
+-        String loginUser = userService.login(new String(null, username, password, null, null,0));
++        User loginUser = userService.login(new User(null, username, password, null, null,0));
+         // 如果等于null,说明登录 失败!
+         if (loginUser == null) {
+             //   跳回登录页面
+Index: src/pojo/Group.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-06-21\r\n */\r\npublic class Group {\r\n    private int _id;\r\n    private int id; //学号\r\n    private String username;//学生姓名\r\n    private int groupId;//小组号\r\n    private int speeches;//群聊发言次数\r\n    private String teacherUsername;//教师姓名\r\n\r\n    public int get_id() {\r\n        return _id;\r\n    }\r\n\r\n    public void set_id(int _id) {\r\n        this._id = _id;\r\n    }\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getUsername() {\r\n        return username;\r\n    }\r\n\r\n    public void setUsername(String username) {\r\n        this.username = username;\r\n    }\r\n\r\n    public int getGroupId() {\r\n        return groupId;\r\n    }\r\n\r\n    public void setGroupId(int groupId) {\r\n        this.groupId = groupId;\r\n    }\r\n\r\n    public int getSpeeches() {\r\n        return speeches;\r\n    }\r\n\r\n    public void setSpeeches(int speeches) {\r\n        this.speeches = speeches;\r\n    }\r\n\r\n    public String getTeacherUsername() {\r\n        return teacherUsername;\r\n    }\r\n\r\n    public void setTeacherUsername(String teacherUsername) {\r\n        this.teacherUsername = teacherUsername;\r\n    }\r\n\r\n    public Group() {\r\n    }\r\n\r\n    public Group(int _id, int id, String username, int groupId, int speeches, String teacherUsername) {\r\n        this._id = _id;\r\n        this.id = id;\r\n        this.username = username;\r\n        this.groupId = groupId;\r\n        this.speeches = speeches;\r\n        this.teacherUsername = teacherUsername;\r\n    }\r\n\r\n    @Override\r\n    public java.lang.String toString() {\r\n        return \"Group{\" +\r\n                \"_id=\" + _id +\r\n                \", id=\" + id +\r\n                \", username=\" + username +\r\n                \", groupId=\" + groupId +\r\n                \", speeches=\" + speeches +\r\n                \", teacherUsername=\" + teacherUsername +\r\n                '}';\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/Group.java b/src/pojo/Group.java
+--- a/src/pojo/Group.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/pojo/Group.java	(date 1628688522812)
+@@ -1,8 +1,5 @@
+ package pojo;
+ 
+-import java.util.ArrayList;
+-import java.util.List;
+-
+ /**
+  * 类<code>Doc</code>用于：TODO
+  *
+@@ -13,10 +10,10 @@
+ public class Group {
+     private int _id;
+     private int id; //学号
+-    private String username;//学生姓名
++    private User username;//学生姓名
+     private int groupId;//小组号
+     private int speeches;//群聊发言次数
+-    private String teacherUsername;//教师姓名
++    private User teacherUsername;//教师姓名
+ 
+     public int get_id() {
+         return _id;
+@@ -34,11 +31,11 @@
+         this.id = id;
+     }
+ 
+-    public String getUsername() {
++    public User getUsername() {
+         return username;
+     }
+ 
+-    public void setUsername(String username) {
++    public void setUsername(User username) {
+         this.username = username;
+     }
+ 
+@@ -58,18 +55,18 @@
+         this.speeches = speeches;
+     }
+ 
+-    public String getTeacherUsername() {
++    public User getTeacherUsername() {
+         return teacherUsername;
+     }
+ 
+-    public void setTeacherUsername(String teacherUsername) {
++    public void setTeacherUsername(User teacherUsername) {
+         this.teacherUsername = teacherUsername;
+     }
+ 
+     public Group() {
+     }
+ 
+-    public Group(int _id, int id, String username, int groupId, int speeches, String teacherUsername) {
++    public Group(int _id, int id, User username, int groupId, int speeches, User teacherUsername) {
+         this._id = _id;
+         this.id = id;
+         this.username = username;
+Index: src/web/RegistServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\n\r\n\r\nimport pojo.String;\r\nimport service.UserService;\r\nimport service.impl.UserServiceImpl;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\n\r\n@WebServlet(value = {\"/regist\"})\r\npublic class RegistServlet extends HttpServlet {\r\n\r\n    private UserService userService = new UserServiceImpl();\r\n\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        //  1、获取请求的参数\r\n        java.lang.String username = req.getParameter(\"username\");\r\n        java.lang.String password = req.getParameter(\"password\");\r\n        java.lang.String email = req.getParameter(\"email\");\r\n        java.lang.String code = req.getParameter(\"code\");\r\n        java.lang.String identity = req.getParameter(\"identity\");\r\n        int studentNo = Integer.parseInt(req.getParameter(\"studentNo\"));\r\n//        2、检查 验证码是否正确  === 写死,要求验证码为:abcde\r\n        if (\"abcde\".equalsIgnoreCase(code)) {\r\n//        3、检查 用户名是否可用\r\n            if (userService.existsUsername(username)) {\r\n                System.out.println(\"用户名[\" + username + \"]已存在!\");\r\n//        跳回注册页面\r\n                req.getRequestDispatcher(\"/pages/user/regist.html\").forward(req, resp);\r\n            } else {\r\n                //      可用\r\n//                调用Sservice保存到数据库\r\n                userService.registUser(new String(null, username, password, email, identity,studentNo));\r\n//\r\n//        跳到注册成功页面 regist_success.html\r\n                req.getRequestDispatcher(\"/pages/user/regist_success.html\").forward(req, resp);\r\n            }\r\n        } else {\r\n            System.out.println(\"验证码[\" + code + \"]错误\");\r\n            req.getRequestDispatcher(\"/pages/user/regist.html\").forward(req, resp);\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/RegistServlet.java b/src/web/RegistServlet.java
+--- a/src/web/RegistServlet.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/web/RegistServlet.java	(date 1628688522777)
+@@ -2,7 +2,7 @@
+ 
+ 
+ 
+-import pojo.String;
++import pojo.User;
+ import service.UserService;
+ import service.impl.UserServiceImpl;
+ 
+@@ -37,7 +37,7 @@
+             } else {
+                 //      可用
+ //                调用Sservice保存到数据库
+-                userService.registUser(new String(null, username, password, email, identity,studentNo));
++                userService.registUser(new User(null, username, password, email, identity,studentNo));
+ //
+ //        跳到注册成功页面 regist_success.html
+                 req.getRequestDispatcher("/pages/user/regist_success.html").forward(req, resp);
+Index: src/ws/ChatEndpoint.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ws;\r\n\r\nimport com.fasterxml.jackson.databind.ObjectMapper;\r\nimport pojo.Message;\r\nimport pojo.String;\r\nimport utils.MessageUtils;\r\n\r\nimport javax.servlet.http.HttpSession;\r\nimport javax.websocket.*;\r\nimport javax.websocket.server.ServerEndpoint;\r\nimport java.io.IOException;\r\nimport java.util.Map;\r\nimport java.util.Set;\r\nimport java.util.concurrent.ConcurrentHashMap;\r\n\r\n//相对于springboot缺少了Bean注入\r\n@ServerEndpoint(value=\"/chat\",configurator = GetHttpSessionConfigurator.class)\r\npublic class ChatEndpoint {\r\n\r\n    //用来存储每个客户端对象对应的ChatEndpoint对象 string为用户名 ChatEndpoint对应一个终端\r\n    private static Map<java.lang.String,ChatEndpoint> onlineUsers = new ConcurrentHashMap<>();\r\n    //!!      用来存储各个组\r\n    private static Map<java.lang.String,Map<java.lang.String,ChatEndpoint>> onlineGroups = new ConcurrentHashMap<>();\r\n    //声明session对象 通过该对象可以发送消息给指定的用户，由于每一个ChatEndpoint都需要一个session\r\n    private Session session;\r\n    //声明小组用来存储该session属于哪一个组\r\n    private java.lang.String KeyGroup;\r\n    //声明一个httpSession对象\r\n    private HttpSession httpSession;\r\n    @OnOpen\r\n    public void onOpen(Session session, EndpointConfig config){\r\n            //将局部的session对象赋值给成员session\r\n        try {\r\n            this.session = session;\r\n            //获取httpsession对象\r\n            this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());\r\n//        System.out.println(httpSession.getAttribute(\"User\"));\r\n            //将当前对象存储到容器中\r\n            String loginUser = (String) httpSession.getAttribute(\"User\");\r\n            //将登陆的用户加入group\r\n            int groupid=1;\r\n            java.lang.String groupteacherUsername=\"teacher168\";\r\n            KeyGroup=groupid+groupteacherUsername;//为了确定唯一的group,必须如此做，将id与用户名相加\r\n            Map<java.lang.String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);\r\n            if (Group==null) {\r\n                //创建新的group\r\n               Group =new ConcurrentHashMap<>();\r\n            }\r\n            //把当前用户放到他对应的组中\r\n            Group.put(loginUser.getUsername(),this);\r\n            //将Group与Key对应塞回onlineGroups\r\n            onlineGroups.put(KeyGroup,Group);\r\n\r\n            onlineUsers.put(loginUser.getUsername(), this);\r\n            //然后将当前在线的该组的所有用户的用户名推送给所有用户\r\n            //1.获取消息\r\n            java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup)) ;\r\n\r\n//            String message = MessageUtils.getMessage(true, null, getNames());\r\n            //2.调用方法进行系统推送\r\n            System.out.println(onlineGroups.get(KeyGroup));\r\n//            broadcastAllUsers(message);\r\n            broadcastGroupUsers(Groupmessage,KeyGroup);\r\n            System.out.println(\"推送\"+KeyGroup+\"登陆消息\" + Groupmessage);\r\n        }catch (Exception e){\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n    private void broadcastAllUsers(java.lang.String message){\r\n        //要将该消息推送给所有客户端\r\n        Set<java.lang.String> names=onlineUsers.keySet();\r\n        for (java.lang.String name : names){\r\n            ChatEndpoint chatEndpoint= onlineUsers.get(name);\r\n            //Remote中有sendText方法可以用来传递数据\r\n            try {\r\n                chatEndpoint.session.getBasicRemote().sendText(message);\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n            }\r\n        }\r\n    }\r\n    private void broadcastGroupUsers(java.lang.String message, java.lang.String KeyGroup){\r\n        //小组成员\r\n        Map<java.lang.String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);\r\n        Set<java.lang.String> names=Group.keySet();\r\n        for (java.lang.String name : names){\r\n            ChatEndpoint chatEndpoint = Group.get(name);\r\n\r\n            try {\r\n                chatEndpoint.session.getBasicRemote().sendText(message);\r\n            }catch (IOException e){\r\n                e.printStackTrace();\r\n            }\r\n        }\r\n    }\r\n\r\n    private Set<java.lang.String> getNames(){\r\n        return onlineUsers.keySet();\r\n    }\r\n    private Set<java.lang.String> getGroupNames(java.lang.String KeyGroup){\r\n        return onlineGroups.get(KeyGroup).keySet();\r\n    }\r\n    @OnMessage\r\n    public void onMessage(java.lang.String message, Session session){\r\n        //将JSON数据message转换成message对象\r\n        try {\r\n            ObjectMapper mapper = new ObjectMapper();\r\n            Message mess = mapper.readValue(message, Message.class);\r\n            System.out.println(\"收到数据\"+mess.isGroup()+mess.getToName());\r\n            if (false == mess.isGroup()) {\r\n                //不是群发消息\r\n                System.out.println(\"不是群发消息\");\r\n                //获取要将数据发送给的指定用户\r\n                java.lang.String toName = mess.getToName();\r\n                //获取消息数据\r\n                java.lang.String data = mess.getMessage();\r\n                //获取当前登陆的用户\r\n                String loginUser = (String) httpSession.getAttribute(\"User\");\r\n                java.lang.String resultMessage = MessageUtils.getMessage(false, loginUser.getUsername(), data);\r\n                //获得对应的Session\r\n                System.out.println(\"发送给\"+toName+\"用户\"+resultMessage);\r\n                onlineUsers.get(toName).session.getBasicRemote().sendText(resultMessage);\r\n            }else {\r\n                //群发消息\r\n                System.out.println(\"是群发消息\");\r\n                //获取要将数据发送给的指定小组\r\n                java.lang.String KeyGroup = mess.getToName();\r\n                //获取消息\r\n                java.lang.String data = mess.getMessage();\r\n                java.lang.String resultMessage = MessageUtils.getGroupMessage(false,KeyGroup,data);\r\n                System.out.println(\"发送给\"+KeyGroup+\"小组\"+resultMessage);\r\n                //获取对应的session发送数据 sendToGroup\r\n                broadcastGroupUsers(resultMessage,KeyGroup);\r\n            }\r\n\r\n        }catch (Exception e){\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n    @OnClose\r\n    public void onClose(Session session){\r\n            //从容器中删除指定用户\r\n        //获取当前登陆的用户\r\n        String loginUser = (String)httpSession.getAttribute(\"User\");\r\n        //根据名字删除\r\n        onlineGroups.get(KeyGroup).remove(loginUser.getUsername());\r\n        onlineUsers.remove(loginUser.getUsername());\r\n        java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup)) ;\r\n\r\n//            String message = MessageUtils.getMessage(true, null, getNames());\r\n        //2.调用方法进行系统推送\r\n        System.out.println(onlineGroups.get(KeyGroup));\r\n//            broadcastAllUsers(message);\r\n        broadcastGroupUsers(Groupmessage,KeyGroup);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/ws/ChatEndpoint.java b/src/ws/ChatEndpoint.java
+--- a/src/ws/ChatEndpoint.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/ws/ChatEndpoint.java	(date 1628688522622)
+@@ -2,7 +2,7 @@
+ 
+ import com.fasterxml.jackson.databind.ObjectMapper;
+ import pojo.Message;
+-import pojo.String;
++import pojo.User;
+ import utils.MessageUtils;
+ 
+ import javax.servlet.http.HttpSession;
+@@ -36,7 +36,7 @@
+             this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
+ //        System.out.println(httpSession.getAttribute("User"));
+             //将当前对象存储到容器中
+-            String loginUser = (String) httpSession.getAttribute("User");
++            User loginUser = (User) httpSession.getAttribute("User");
+             //将登陆的用户加入group
+             int groupid=1;
+             java.lang.String groupteacherUsername="teacher168";
+@@ -115,7 +115,7 @@
+                 //获取消息数据
+                 java.lang.String data = mess.getMessage();
+                 //获取当前登陆的用户
+-                String loginUser = (String) httpSession.getAttribute("User");
++                User loginUser = (User) httpSession.getAttribute("User");
+                 java.lang.String resultMessage = MessageUtils.getMessage(false, loginUser.getUsername(), data);
+                 //获得对应的Session
+                 System.out.println("发送给"+toName+"用户"+resultMessage);
+@@ -141,7 +141,7 @@
+     public void onClose(Session session){
+             //从容器中删除指定用户
+         //获取当前登陆的用户
+-        String loginUser = (String)httpSession.getAttribute("User");
++        User loginUser = (User)httpSession.getAttribute("User");
+         //根据名字删除
+         onlineGroups.get(KeyGroup).remove(loginUser.getUsername());
+         onlineUsers.remove(loginUser.getUsername());
+Index: src/web/ShowBlogServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\nimport dao.impl.ArticleDaoImpl;\r\nimport pojo.String;\r\nimport utils.JsonConverter;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\nimport java.io.PrintWriter;\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-07-31-14\r\n */\r\n@WebServlet(\"/showblogsevlet\")\r\npublic class ShowBlogServlet extends HttpServlet {\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        super.doGet(req, resp);\r\n    }\r\n\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        try {\r\n            resp.setContentType(\"application/json;charset=utf-8\");\r\n            PrintWriter out = resp.getWriter();\r\n            String loginUser=(String)req.getSession().getAttribute(\"User\");\r\n            //连接数据库,获取文章\r\n            List<Map<java.lang.String,Object>> articles = new ArticleDaoImpl().queryallarticle(loginUser.getStudentNo());\r\n            JsonConverter converter = new JsonConverter();\r\n            //将文章转换为json类型\r\n            java.lang.String output = converter.convertToJson(articles);\r\n            out.print(output);\r\n            System.out.println(output);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/ShowBlogServlet.java b/src/web/ShowBlogServlet.java
+--- a/src/web/ShowBlogServlet.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/web/ShowBlogServlet.java	(date 1628688522830)
+@@ -1,7 +1,7 @@
+ package web;
+ 
+ import dao.impl.ArticleDaoImpl;
+-import pojo.String;
++import pojo.User;
+ import utils.JsonConverter;
+ 
+ import javax.servlet.ServletException;
+@@ -33,7 +33,7 @@
+         try {
+             resp.setContentType("application/json;charset=utf-8");
+             PrintWriter out = resp.getWriter();
+-            String loginUser=(String)req.getSession().getAttribute("User");
++            User loginUser=(User)req.getSession().getAttribute("User");
+             //连接数据库,获取文章
+             List<Map<java.lang.String,Object>> articles = new ArticleDaoImpl().queryallarticle(loginUser.getStudentNo());
+             JsonConverter converter = new JsonConverter();
+Index: web/pages/Teacher/My.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.String\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/7/26\r\n  Time: 9:37 上午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<html>\r\n<head>\r\n    <title>教师首页</title>\r\n    <!--    基础路径-->\r\n    <base href=\"../../\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css\">\r\n    <link rel=\"stylesheet\" href=\"static/css/card-style.css\">\r\n</head>\r\n<body>\r\n    <%@include file=\"headleader.jsp\"%>\r\n    <%--从session中获得user    --%>\r\n\r\n    <%\r\n        String loginUser=(String)request.getSession().getAttribute(\"User\");\r\n    %>\r\n    <h3>欢迎你登陆！<%=loginUser.getUsername()%></h3>\r\n    <main class=\"page-content\">\r\n        <div class=\"card\">\r\n            <div class=\"content\">\r\n                <h2 class=\"title\">Mountain View</h2>\r\n                <p class=\"copy\">Check out all of these gorgeous mountain trips with beautiful views of, you guessed it, the mountains</p>\r\n                <button class=\"btn\">View Trips</button>\r\n            </div>\r\n        </div>\r\n        <div class=\"card\">\r\n            <div class=\"content\">\r\n                <h2 class=\"title\">To The Beach</h2>\r\n                <p class=\"copy\">Plan your next beach trip with these fabulous destinations</p>\r\n                <button class=\"btn\">View Trips</button>\r\n            </div>\r\n        </div>\r\n        <div class=\"card\">\r\n            <div class=\"content\">\r\n                <h2 class=\"title\">Desert Destinations</h2>\r\n                <p class=\"copy\">It's the desert you've always dreamed of</p>\r\n                <button class=\"btn\">Book Now</button>\r\n            </div>\r\n        </div>\r\n        <div class=\"card\">\r\n            <div class=\"content\">\r\n                <h2 class=\"title\">Explore The Galaxy</h2>\r\n                <p class=\"copy\">Seriously, straight up, just blast off into outer space today</p>\r\n                <button class=\"btn\">Book Now</button>\r\n            </div>\r\n        </div>\r\n    </main>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/web/pages/Teacher/My.jsp b/web/pages/Teacher/My.jsp
+--- a/web/pages/Teacher/My.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/web/pages/Teacher/My.jsp	(date 1628688522643)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.String" %><%--
++<%@ page import="pojo.User" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/7/26
+@@ -19,7 +19,7 @@
+     <%--从session中获得user    --%>
+ 
+     <%
+-        String loginUser=(String)request.getSession().getAttribute("User");
++        User loginUser=(User)request.getSession().getAttribute("User");
+     %>
+     <h3>欢迎你登陆！<%=loginUser.getUsername()%></h3>
+     <main class="page-content">
+Index: out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/My.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.User\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/7/26\r\n  Time: 9:37 上午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<html>\r\n<head>\r\n    <title>教师首页</title>\r\n    <!--    基础路径-->\r\n    <base href=\"../../\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css\">\r\n    <link rel=\"stylesheet\" href=\"static/css/card-style.css\">\r\n</head>\r\n<body>\r\n    <%@include file=\"headleader.jsp\"%>\r\n    <%--从session中获得user    --%>\r\n\r\n    <%\r\n        User loginUser=(User)request.getSession().getAttribute(\"User\");\r\n    %>\r\n    <h3>欢迎你登陆！<%=loginUser.getUsername()%></h3>\r\n    <main class=\"page-content\">\r\n        <div class=\"card\">\r\n            <div class=\"content\">\r\n                <h2 class=\"title\">Mountain View</h2>\r\n                <p class=\"copy\">Check out all of these gorgeous mountain trips with beautiful views of, you guessed it, the mountains</p>\r\n                <button class=\"btn\">View Trips</button>\r\n            </div>\r\n        </div>\r\n        <div class=\"card\">\r\n            <div class=\"content\">\r\n                <h2 class=\"title\">To The Beach</h2>\r\n                <p class=\"copy\">Plan your next beach trip with these fabulous destinations</p>\r\n                <button class=\"btn\">View Trips</button>\r\n            </div>\r\n        </div>\r\n        <div class=\"card\">\r\n            <div class=\"content\">\r\n                <h2 class=\"title\">Desert Destinations</h2>\r\n                <p class=\"copy\">It's the desert you've always dreamed of</p>\r\n                <button class=\"btn\">Book Now</button>\r\n            </div>\r\n        </div>\r\n        <div class=\"card\">\r\n            <div class=\"content\">\r\n                <h2 class=\"title\">Explore The Galaxy</h2>\r\n                <p class=\"copy\">Seriously, straight up, just blast off into outer space today</p>\r\n                <button class=\"btn\">Book Now</button>\r\n            </div>\r\n        </div>\r\n    </main>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/My.jsp b/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/My.jsp
+--- a/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/My.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/My.jsp	(date 1628676762451)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.User" %><%--
++<%@ page import="pojo.String" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/7/26
+@@ -19,7 +19,7 @@
+     <%--从session中获得user    --%>
+ 
+     <%
+-        User loginUser=(User)request.getSession().getAttribute("User");
++        String loginUser=(String)request.getSession().getAttribute("User");
+     %>
+     <h3>欢迎你登陆！<%=loginUser.getUsername()%></h3>
+     <main class="page-content">
+Index: web/pages/Teacher/Comment.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.String\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/7/29\r\n  Time: 6:47 下午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, inital-scale=1.0\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\r\n    <title>作品评论</title>\r\n    <%--    基础地址--%>\r\n    <base href=\"../../\">\r\n<%--    vue包导入--%>\r\n    <script src=\"static/vue/vue.js\" type=\"text/javascript\" charset=\"utf-8\"></script>\r\n    <script src=\"https://cdn.staticfile.org/vue/2.4.2/vue.min.js\"></script>\r\n    <!--    vue-resource 包导入-->\r\n    <script src=\"https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js\"></script>\r\n<%-- bootstrap导入   --%>\r\n    <link rel=\"stylesheet\" href=\"static/css/bootstrap.css\">\r\n<%--    温馨提示--%>\r\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css\">\r\n    <link rel=\"stylesheet\" href=\"static/css/roll-style-teacher.css\">\r\n<%--    背景--%>\r\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css\">\r\n    <link rel=\"stylesheet\" href=\"static/css/teacher-background-style.css\">\r\n</head>\r\n<%--从session中获得user    把名字填入评论人--%>\r\n<%\r\n    String loginUser=(String)request.getSession().getAttribute(\"User\");\r\n%>\r\n    <%@include file=\"headleader.jsp\"%>\r\n<%--背景--%>\r\n<div id=\"top-image\"></div>\r\n<%--  温馨提示--%>\r\n    <div class=\"reminder\">\r\n        <div class=\"text\">\r\n            <p>Please be&nbsp\r\n                <span class=\"word wisteria\">polite.</span>\r\n                <span class=\"word belize\">patient.</span>\r\n                <span class=\"word pomegranate\">fancy.</span>\r\n                <span class=\"word green\">friendly.</span>\r\n                <span class=\"word midnight\">kind.</span>\r\n            </p>\r\n        </div>\r\n    </div>\r\n    <br/><br/><br/>\r\n<%--    --%>\r\n\r\n<div id=\"tmpl\">\r\n    <div id=\"blog\">\r\n        <h1>{{title}}</h1>\r\n        <h4>{{context}}</h4>\r\n        <h4>关键词:编使劲编</h4>\r\n        <h2 style=\"float: right\">作者:营销号</h2>\r\n    </div>\r\n    <div id=\"comment\">\r\n        <ul class=\"list-group\">\r\n            <li class=\"list-group-item\" v-for=\"item in list\" :key=\"item.id\">\r\n                <span class=\"badge\">评论人：{{ item.user }}</span>\r\n                {{ item.content }}\r\n            </li>\r\n        </ul>\r\n    <div>\r\n        <div class=\"form-group\">\r\n            <label>评论人：</label>\r\n            <input type=\"text\" class=\"form-control\" v-model=\"user\">\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label>评论内容：</label>\r\n            <textarea class=\"form-control\" v-model=\"content\"></textarea>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <input type=\"button\" value=\"发表评论\" class=\"btn btn-primary\" @click=\"postComments\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n</div>\r\n<script type=\"text/javascript\">\r\n    var vm = new Vue({\r\n        el: \"#tmpl\" ,\r\n        data:{\r\n            title:'',\r\n            context:'',\r\n            user:'<%=loginUser.getUsername()%>',\r\n            content: '',\r\n            list:[\r\n                { time: Date.now(), user: '路人甲', content: '武汉加油' },\r\n                { time: Date.now(), user: '炮灰乙', content: '中国加油' },\r\n                { time: Date.now(), user: '小兵丙', content: '广东加油' },\r\n                { time: Date.now(), user: '土匪丁', content: '全球加油' }\r\n            ]\r\n        },\r\n        methods:{\r\n            //评论发布\r\n            postComments() {\r\n                if (this.user!=''&&this.content!='') {\r\n                    var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,context:this.context}\r\n                    this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){\r\n                        console.log(data);\r\n                        this.loadComments();\r\n                    })\r\n                    //\r\n                    // var list = JSON.parse(localStorage.getItem('cmts') || '[]')\r\n                    // list.unshift(comment)\r\n                    // localStorage.setItem('cmts', JSON.stringify(list))\r\n                    // this.user = this.content = ''\r\n                    // this.$emit('func')\r\n                    // this.list=list\r\n                }\r\n            },\r\n            loadComments(){\r\n                //var list = JSON.parse(localStorage.getItem('cmts') || '[]')\r\n                //this.list = list\r\n                //loadcomment 要做判断 数据库中评论的title 要等于 这个title\r\n                this.$http.get(\"showcommentservlet\")\r\n                    .then(function (data) {\r\n                        this.list = data.body.slice(0,10);\r\n                        console.log(this.blogs);\r\n                    })\r\n            }\r\n        },\r\n        created(){\r\n            var blog = JSON.parse(localStorage.getItem('blog')||'[]')\r\n            this.title=blog.title\r\n            this.context=blog.context\r\n            var thisblog={title:this.title,context:this.context};\r\n            this.$http.post(\"showcommentservlet\",JSON.stringify(thisblog));\r\n            this.loadComments();\r\n        }\r\n\r\n    })\r\n</script>\r\n<style>\r\n    #comment{\r\n        width: 40%;\r\n        float: right;\r\n        padding: 10px;\r\n    }\r\n    #blog{\r\n        width: 55%;\r\n        float: left;\r\n        box-shadow: 10px 10px 5px #888888;\r\n        background: white;\r\n    }\r\n</style>\r\n<%--    温馨提示--%>\r\n    <script  src=\"static/script/roll-script-teacher.js\"></script>\r\n<%--背景--%>\r\n<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>\r\n<script  src=\"static/script/teacher-background-script.js\"></script>\r\n\r\n</body>\r\n</html>\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/web/pages/Teacher/Comment.jsp b/web/pages/Teacher/Comment.jsp
+--- a/web/pages/Teacher/Comment.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/web/pages/Teacher/Comment.jsp	(date 1628688522708)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.String" %><%--
++<%@ page import="pojo.User" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/7/29
+@@ -31,7 +31,7 @@
+ </head>
+ <%--从session中获得user    把名字填入评论人--%>
+ <%
+-    String loginUser=(String)request.getSession().getAttribute("User");
++    User loginUser=(User)request.getSession().getAttribute("User");
+ %>
+     <%@include file="headleader.jsp"%>
+ <%--背景--%>
+Index: BuptCreationEE.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"FacetManager\">\r\n    <facet type=\"web\" name=\"Web\">\r\n      <configuration>\r\n        <descriptors>\r\n          <deploymentDescriptor name=\"web.xml\" url=\"file://$MODULE_DIR$/web/WEB-INF/web.xml\" />\r\n        </descriptors>\r\n        <webroots>\r\n          <root url=\"file://$MODULE_DIR$/web\" relative=\"/\" />\r\n        </webroots>\r\n        <sourceRoots />\r\n      </configuration>\r\n    </facet>\r\n    <facet type=\"javaeeApplication\" name=\"javaEEApplication\">\r\n      <configuration>\r\n        <descriptors>\r\n          <deploymentDescriptor name=\"application.xml\" url=\"file://$MODULE_DIR$/META-INF/application.xml\" />\r\n        </descriptors>\r\n      </configuration>\r\n    </facet>\r\n  </component>\r\n  <component name=\"NewModuleRootManager\" inherit-compiler-output=\"true\">\r\n    <exclude-output />\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src\" isTestSource=\"false\" />\r\n    </content>\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n    <orderEntry type=\"library\" scope=\"PROVIDED\" name=\"Tomcat 8.5.69\" level=\"application_server_libraries\" />\r\n    <orderEntry type=\"library\" exported=\"\" name=\"lib\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"commons-dbutils-1.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"gson-2.8.7\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"mongo-java-driver-3.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"mongo-java-driver-3.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"websocket\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"javax.websocket-api-1.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"jackson-core-2.9.8-javadoc\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"jackson-core-2.9.8-javadoc  (2)\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"jackson-core-2.9.8-javadoc (2)\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"jackson-core-2.9.8-javadoc (3)\" level=\"application\" />\r\n    <orderEntry type=\"library\" name=\"jackson-annotations-2.11.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"jackson-databind-2.11.4\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"jackson-annotations-2.11.4\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"jackson-core-2.11.4\" level=\"project\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/BuptCreationEE.iml b/BuptCreationEE.iml
+--- a/BuptCreationEE.iml	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/BuptCreationEE.iml	(date 1628683605878)
+@@ -43,5 +43,6 @@
+     <orderEntry type="library" name="jackson-databind-2.11.4" level="project" />
+     <orderEntry type="library" name="jackson-annotations-2.11.4" level="project" />
+     <orderEntry type="library" name="jackson-core-2.11.4" level="project" />
++    <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
+   </component>
+ </module>
+\ No newline at end of file
+Index: web/pages/Teacher/Postblog.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.String\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/7/27\r\n  Time: 11:28 上午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<html>\r\n<head>\r\n<%--    基础地址--%>\r\n    <base href=\"../../\">\r\n    <!--    vue-基础包导入-->\r\n    <script src=\"static/vue/vue.js\" type=\"text/javascript\" charset=\"utf-8\"></script>\r\n    <script src=\"https://cdn.staticfile.org/vue/2.4.2/vue.min.js\"></script>\r\n    <!--    vue-resource 包导入-->\r\n    <script src=\"https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js\"></script>\r\n<%--    表单样式加入--%>\r\n    <link href='https://fonts.googleapis.com/css?family=Days+One' rel='stylesheet' type='text/css'><link rel=\"stylesheet\" href=\"static/css/list-style.css\">\r\n<%--    雪落背景加入--%>\r\n    <link rel=\"stylesheet\" href=\"static/css/snow-style.css\">\r\n    <title>任务发布</title>\r\n<%--    keyword card--%>\r\n    <style>\r\n        keyword{\r\n            display: flex;\r\n\r\n        }\r\n        div.polaroid {\r\n            width: 250px;\r\n            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\r\n            text-align: center;\r\n            padding: 10px;\r\n        }\r\n\r\n        div.keyword {\r\n            background-color: #ecf0f1;\r\n            padding: 10px;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n<%@include file=\"headleader.jsp\"%>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"app-post\">\r\n<%-- 以上为背景   --%>\r\n    <h2>协同写作任务发布</h2>\r\n    <%--从session中获得user--%>\r\n    <%\r\n        String loginUser=(String)request.getSession().getAttribute(\"User\");\r\n    %>\r\n<%--    教师编辑，发布端--%>\r\n    <form method=\"post\" id=\"form\" v-if=\"!blog.submitted\">\r\n        <label >文章标题</label>\r\n        <input type=\"text\" name=\"title\" v-model=\"blog.title\" required/>\r\n    <br/>\r\n        <label>写作指导</label>\r\n        <textarea name=\"guide\" v-model=\"blog.guide\"></textarea>\r\n    <br/>\r\n        <label>写作关键词</label>\r\n<%--        <select v-model=\"blog.keyword\">--%>\r\n<%--        <option name=\"keyword\" v-for=\"keyword in keywords\">--%>\r\n<%--            {{keyword}}--%>\r\n<%--        </option>--%>\r\n<%--        </select>--%>\r\n    <br/>\r\n<%--      关键词展示样式  --%>\r\n        <keyword>\r\n        <div class=\"polaroid\">\r\n            <img src=\"static/img/challenge.jpeg\" alt=\"Norway\" style=\"width:100%;height: 60%\">\r\n            <div class=\"keyword\">\r\n                Challenge<input type=\"radio\" checked=\"checked\" name=\"keyword\" value=\"Challenge\" v-model=\"blog.keyword\"/>\r\n            </div>\r\n        </div>\r\n        <div class=\"polaroid\">\r\n            <img src=\"static/img/funny.jpeg\" alt=\"Norway\" style=\"width:100%;height: 60%\">\r\n            <div class=\"keyword\">\r\n                Funny<input type=\"radio\" checked=\"checked\" name=\"keyword\" value=\"Funny\" v-model=\"blog.keyword\"/>\r\n            </div>\r\n        </div>\r\n            <div class=\"polaroid\">\r\n                <img src=\"static/img/trying.jpeg\" alt=\"Norway\" style=\"width:100%;height: 60% \">\r\n                <div class=\"keyword\">\r\n                    Trying<input type=\"radio\" checked=\"checked\" name=\"keyword\" value=\"Trying\" v-model=\"blog.keyword\"/>\r\n                </div>\r\n            </div>\r\n            <div class=\"polaroid\">\r\n                <img src=\"static/img/meaningful.jpeg\" alt=\"Norway\" style=\"width:100%;height: 60%\">\r\n                <div class=\"keyword\">\r\n                    Meaningful<input type=\"radio\" checked=\"checked\" name=\"keyword\" value=\" Meaningful\" v-model=\"blog.keyword\"/>\r\n                </div>\r\n            </div>\r\n        </keyword>\r\n        <br/>\r\n<%--        搜索样式--%>\r\n        <input type=\"text\" v-model=\"search\" placeholder=\"搜索学生\">\r\n<%--    表格样式    --%>\r\n            <dl class=\"list maki\">\r\n                <dt>合作学生:</dt>\r\n                <dd v-for=\"student,index in filterStudents.slice(0,10)\" >\r\n                    <a>{{student.username}}<input  :value=\"student.username\" name=\"writers\" type=\"checkbox\"  v-model=\"blog.writers\"></a>\r\n                </dd>\r\n            </dl>\r\n            <a href=\"#\" class=\"toggle\">Toggle</a>\r\n\r\n<%--        --%>\r\n        <button v-on:click.prevent=\"Post\">发布任务</button>\r\n    </form>\r\n    <h3 id=\"ok\" v-if=\"blog.submitted\">任务发布成功！</h3>\r\n<%--    展示端     --%>\r\n    <div id=\"preview\">\r\n        <h3>任务总览</h3>\r\n        <p>文章标题:{{blog.title}}</p>\r\n        <p>写作指导:</p>\r\n        <p>{{blog.guide}}</p>\r\n        <p>关键字</p>\r\n        <p>{{blog.keyword}}</p>\r\n        <p>参与学生</p>\r\n        <ul>\r\n            <li v-for=\"writer in blog.writers\">\r\n                {{writer}}\r\n            </li>\r\n        </ul>\r\n    </div>\r\n\r\n</div>\r\n<!-- partial -->\r\n<%--list--%>\r\n<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>\r\n<script  src=\"static/script/list-script.js\"></script>\r\n<%----%>\r\n<script type=\"text/javascript\">\r\n    var vm = new Vue({\r\n        el: \".app-post\" ,\r\n        data:{\r\n            blog:{\r\n                username:<%=loginUser.getUsername()%>,\r\n                title:\"hi-student\",\r\n                guide:\"别水字数\",\r\n                keyword:\"\",\r\n                categories:[],\r\n                writers:[],\r\n                submitted:false\r\n            },\r\n            search:\"\",\r\n            students:[],\r\n            keywords:[\"fluent\",\"interesting\",\"meaningful\"]\r\n        },\r\n        methods:{\r\n            Post:function(){\r\n                var misson = {username:this.blog.username,\r\n                                title: this.blog.title,\r\n                                guide:this.blog.guide,\r\n                                keyword: this.blog.keyword,\r\n                                writers: this.blog.writers}\r\n                this.$http.post(\"addmissonservlet\",JSON.stringify(misson)).then(function(data){\r\n                    console.log(data);\r\n                    this.blog.submitted=true;\r\n                })\r\n            },\r\n        },\r\n        created(){\r\n            this.$http.get('getallstudents')\r\n                .then(function (data) {\r\n                    this.students = data.body;\r\n                })\r\n        },\r\n        computed:{\r\n            filterStudents:function () {\r\n                return this.students.filter((student)=>{\r\n                    return student.title.match(this.search)\r\n                })\r\n            }\r\n        }\r\n\r\n    })\r\n</script>\r\n\r\n<%--样式布局--%>\r\n<style>\r\n    #add-blog *{\r\n        box-sizing: border-box;\r\n    }\r\n    #add-blog{\r\n        margin:20px auto;\r\n        max-width:400px;\r\n        padding:20px;\r\n\r\n    }\r\n    label{\r\n        display: block;\r\n        color: #ecf0f1;\r\n        margin:20px 0 10px;\r\n    }\r\n    input[type=\"text\"],textarea,select{\r\n        display:block;\r\n        width:60%;\r\n        padding:8px;\r\n        border-radius: 10px;\r\n    }\r\n    textarea{\r\n        height:200px;\r\n    }\r\n    #checkboxes label{\r\n        display:inline-block;\r\n        margin-top:0;\r\n    }\r\n    #checkboxes input{\r\n        display:inline-block;\r\n        margin-right:10px;\r\n    }\r\n\r\n    button{\r\n        display:block;\r\n        margin:20px 0;\r\n        background:#ffe57d;\r\n        color:gray;\r\n        border:0;\r\n        padding: 14px;\r\n        border-radius:20px;\r\n        font-size:18px;\r\n        cursor:pointer;\r\n    }\r\n    #preview{\r\n        padding:10px 20px;\r\n        border:1px dotted #666666;\r\n        margin: 30px 0;\r\n    }\r\n    h3{\r\n        margin-top:10px ;\r\n        color: white;\r\n    }\r\n    h2{\r\n        color: white;\r\n    }\r\n    p{\r\n        color: #ecf0f1;\r\n    }\r\n    li{\r\n        color:#ecf0f1;\r\n    }\r\n    button{\r\n        transition: transform 1s;\r\n    }\r\n    button:hover{\r\n        transform: rotate(360deg);\r\n    }\r\n</style>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/web/pages/Teacher/Postblog.jsp b/web/pages/Teacher/Postblog.jsp
+--- a/web/pages/Teacher/Postblog.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/web/pages/Teacher/Postblog.jsp	(date 1628688522651)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.String" %><%--
++<%@ page import="pojo.User" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/7/27
+@@ -246,7 +246,7 @@
+     <h2>协同写作任务发布</h2>
+     <%--从session中获得user--%>
+     <%
+-        String loginUser=(String)request.getSession().getAttribute("User");
++        User loginUser=(User)request.getSession().getAttribute("User");
+     %>
+ <%--    教师编辑，发布端--%>
+     <form method="post" id="form" v-if="!blog.submitted">
+Index: src/utils/JsonConverter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package utils;\r\n\r\nimport com.google.gson.Gson;\r\nimport com.google.gson.GsonBuilder;\r\nimport pojo.String;\r\n\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-07-31-16\r\n */\r\npublic class JsonConverter {\r\n    private final Gson gson;\r\n\r\n    public JsonConverter() {\r\n\r\n        gson = new GsonBuilder().create();\r\n    }\r\n    public java.lang.String convertToJson(List<Map<java.lang.String, Object>> articles){\r\n        Gson gson = new Gson();\r\n        return gson.toJson(articles);\r\n    }\r\n    public java.lang.String studentJson(List<String> users){\r\n        Gson gson = new Gson();\r\n        return gson.toJson(users);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/utils/JsonConverter.java b/src/utils/JsonConverter.java
+--- a/src/utils/JsonConverter.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/utils/JsonConverter.java	(date 1628688522794)
+@@ -2,7 +2,7 @@
+ 
+ import com.google.gson.Gson;
+ import com.google.gson.GsonBuilder;
+-import pojo.String;
++import pojo.User;
+ 
+ import java.util.List;
+ import java.util.Map;
+@@ -25,7 +25,7 @@
+         Gson gson = new Gson();
+         return gson.toJson(articles);
+     }
+-    public java.lang.String studentJson(List<String> users){
++    public java.lang.String studentJson(List<User> users){
+         Gson gson = new Gson();
+         return gson.toJson(users);
+     }
+Index: web/pages/Student/My.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.String\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/7/26\r\n  Time: 9:37 上午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<html>\r\n<head>\r\n    <title>学生首页</title>\r\n    <!--    基础路径-->\r\n    <base href=\"../../\">\r\n    <!--提示表单样式CSS  -->\r\n    <link rel=\"stylesheet\" href=\"static/css/prompt-style.css\">\r\n    <!--    vue-基础包导入-->\r\n    <script src=\"static/vue/vue.js\" type=\"text/javascript\" charset=\"utf-8\"></script>\r\n    <script src=\"https://cdn.staticfile.org/vue/2.4.2/vue.min.js\"></script>\r\n    <!--    vue-resource 包导入-->\r\n    <script src=\"https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js\"></script>\r\n</head>\r\n<body>\r\n    <%@include file=\"headleader.jsp\"%>\r\n    <%--从session中获得user    --%>\r\n\r\n    <%\r\n        String loginUser=(String)request.getSession().getAttribute(\"User\");\r\n    %>\r\n    <!--  -->\r\n    <section class=\"intro\">\r\n        <div class=\"container\">\r\n            <h1><!--  -->\r\n                <section class=\"intro\">\r\n                    <div class=\"container\">\r\n                        <h1>欢迎你登陆！<%=loginUser.getUsername()%> 查看你的最新消息吧&darr;</h1>\r\n                    </div>\r\n                </section>\r\n\r\n                <section class=\"timeline\">\r\n                    <ul class=\"messages\">\r\n                        <li>\r\n                            <div>\r\n                                <time>2005</time> In mattis elit vitae odio posuere, nec maximus massa varius. Suspendisse varius volutpat mattis. Vestibulum id magna est.\r\n                            </div>\r\n                        </li>\r\n                    </ul>\r\n                </section>\r\n                &darr;</h1>\r\n        </div>\r\n    </section>\r\n\r\n<script>\r\n    var messages;\r\n    $(function(){\r\n        $.getJSON(\"shownewsservlet\",function (data) {\r\n            $.each(data,function (i,message) {\r\n                var str= \" <li>\\n\" +\r\n                    \"                            <div>\\n\" +\r\n                    \"                                <time>\"+message.title+\"</time> \\n\" +message.content + message.extraInfo +\r\n                    \"                            </div>\\n\" +\r\n                    \"                        </li>\";\r\n                $(\".messages\").append(str);\r\n            })\r\n        }).then( function () {\r\n            \"use strict\";\r\n\r\n            // define variables\r\n            var items = document.querySelectorAll(\".timeline li\");\r\n\r\n            // check if an element is in viewport\r\n            // http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport\r\n            function isElementInViewport(el) {\r\n                var rect = el.getBoundingClientRect();\r\n                return (\r\n                    rect.top >= 0 &&\r\n                    rect.left >= 0 &&\r\n                    rect.bottom <=\r\n                    (window.innerHeight || document.documentElement.clientHeight) &&\r\n                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)\r\n                );\r\n            }\r\n\r\n            function callbackFunc() {\r\n                for (var i = 0; i < items.length; i++) {\r\n                    if (isElementInViewport(items[i])) {\r\n                        items[i].classList.add(\"in-view\");\r\n                    }\r\n                }\r\n            }\r\n\r\n            // listen for events\r\n            window.addEventListener(\"load\", callbackFunc);\r\n            window.addEventListener(\"resize\", callbackFunc);\r\n            window.addEventListener(\"scroll\", callbackFunc);\r\n        })\r\n    })\r\n</script>\r\n    <!-- 提示表单样式js-->\r\n<%-- --%>\r\n</body>\r\n\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/web/pages/Student/My.jsp b/web/pages/Student/My.jsp
+--- a/web/pages/Student/My.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/web/pages/Student/My.jsp	(date 1628688522746)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.String" %><%--
++<%@ page import="pojo.User" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/7/26
+@@ -24,7 +24,7 @@
+     <%--从session中获得user    --%>
+ 
+     <%
+-        String loginUser=(String)request.getSession().getAttribute("User");
++        User loginUser=(User)request.getSession().getAttribute("User");
+     %>
+     <!--  -->
+     <section class="intro">
+Index: web/pages/Student/Addblog.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.String\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/7/26\r\n  Time: 8:21 上午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<html lang=\"en\" xmlns:v-on=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <title>实现博客</title>\r\n    <!--    基础路径-->\r\n    <base href=\"../../\">\r\n    <!--    vue-基础包导入-->\r\n    <script src=\"static/vue/vue.js\" type=\"text/javascript\" charset=\"utf-8\"></script>\r\n    <script src=\"https://cdn.staticfile.org/vue/2.4.2/vue.min.js\"></script>\r\n    <!--    vue-resource 包导入-->\r\n    <script src=\"https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js\"></script>\r\n    <!--    vue 路由功能导入-->\r\n    <script src=\"https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js\"></script>\r\n    <!--    提示区样式导入-->\r\n    <link rel=\"stylesheet\" href=\"static/css/style-text-animation.css\">\r\n    <!-- 雪落背景-->\r\n    <link rel=\"stylesheet\" href=\"static/css/style-winter.css\">\r\n</head>\r\n<body >\r\n\r\n<%@include file=\"headleader.jsp\"%>\r\n<!--雪落-->\r\n<div class=\"sky\">\r\n    <div class=\"deep_sky\"></div>\r\n</div>\r\n<div class=\"c1\">\r\n    <div class=\"cloud\"></div>\r\n</div>\r\n<div class=\"c2\">\r\n    <div class=\"cloud\"></div>\r\n</div>\r\n<div class=\"c3\">\r\n    <div class=\"cloud\"></div>\r\n</div>\r\n<div class=\"windmill\">\r\n    <div class=\"tower\"></div>\r\n    <div class=\"t1\"></div>\r\n    <div class=\"t2\"></div>\r\n    <div class=\"blade\">\r\n        <div class=\"windblade\"></div>\r\n        <div class=\"windblade windblade2\"></div>\r\n        <div class=\"windblade windblade3\"></div>\r\n        <div class=\"windblade windblade4\"></div>\r\n    </div>\r\n</div>\r\n<div class=\"allsnows\">\r\n    <div class=\"snow1\"></div>\r\n    <div class=\"snow2\"></div>\r\n    <div class=\"snow3\"></div>\r\n    <div class=\"snow4\"></div>\r\n    <div class=\"snow5\"></div>\r\n    <div class=\"snow6\"></div>\r\n    <div class=\"snow7\"></div>\r\n    <div class=\"snow8\"></div>\r\n    <div class=\"snow9\"></div>\r\n    <div class=\"snow10\"></div>\r\n    <div class=\"snow11\"></div>\r\n    <div class=\"snow12\"></div>\r\n    <div class=\"snow13\"></div>\r\n    <div class=\"snow14\"></div>\r\n    <div class=\"snow15\"></div>\r\n    <div class=\"snow16\"></div>\r\n    <div class=\"snow17\"></div>\r\n    <div class=\"snow18\"></div>\r\n    <div class=\"snow19\"></div>\r\n    <div class=\"snow20\"></div>\r\n</div>\r\n\r\n<!--多人写作关键词提示区-->\r\n<div class=\"content\">\r\n    <div class=\"content__container\">\r\n        <p class=\"content__container__text\">\r\n            key：\r\n        </p>\r\n\r\n        <ul class=\"content__container__list\">\r\n            <li class=\"content__container__list__item\">Lihua!</li>\r\n            <li class=\"content__container__list__item\">Vocabulary!</li>\r\n            <li class=\"content__container__list__item\">fluent!</li>\r\n            <li class=\"content__container__list__item\">beautiful!</li>\r\n        </ul>\r\n    </div>\r\n</div>\r\n\r\n<%--从session中获得user--%>\r\n<%\r\n    String loginUser=(String)request.getSession().getAttribute(\"User\");\r\n%>\r\n<!--写作部分-->\r\n<div class=\"app-blog\">\r\n    <!--    标题部分-->\r\n    <h2>多人协作内容</h2>\r\n    <!--    文章标题内容编写-->\r\n    <form action=\"\" method=\"post\" id=\"form\" v-if=\"!blog.submitted\">\r\n        <label>文章标题</label>\r\n        <input type=\"text\" name=\"title\" v-model=\"blog.title\" required/>\r\n\r\n        <label>文章内容</label>\r\n        <textarea name=\"content\" v-model=\"blog.content\"></textarea>\r\n        <div id=\"checkboxes\">\r\n            <label>Vue.js</label>\r\n            <input name=\"categories\" type=\"checkbox\" value=\"Vue.js\" v-model=\"blog.categories\">\r\n            <label>Node.js</label>\r\n            <input name=\"categories\" type=\"checkbox\" value=\"Node.js\" v-model=\"blog.categories\">\r\n            <label>React.js</label>\r\n            <input name=\"categories\" type=\"checkbox\" value=\"React.js\" v-model=\"blog.categories\">\r\n            <label>Angular4</label>\r\n            <input name=\"categories\" type=\"checkbox\" value=\"Angular4\" v-model=\"blog.categories\">\r\n        </div>\r\n\r\n        <!--    动态浏览部分    -->\r\n        <label>作者:</label>\r\n        <select v-model=\"blog.author\">\r\n            <option name=\"author\" v-for=\"author in authors\">\r\n                {{author}}\r\n            </option>\r\n        </select>\r\n        <!--        <input type=\"submit\" value=\"发布文章\" id=\"sub_btn\" />-->\r\n        <button v-on:click.prevent=\"Post\">发布文章</button>\r\n    </form>\r\n\r\n    <h3 id=\"ok\" v-if=\"blog.submitted\">您的文章发布成功！</h3>\r\n    <hr>\r\n    <div id=\"preview\">\r\n        <h3>文章总览</h3>\r\n        <p>文章标题:{{blog.title}}</p>\r\n        <p>文章内容:</p>\r\n        <p>{{blog.content}}</p>\r\n        <p>文章类别</p>\r\n        <ul>\r\n            <li v-for=\"category in blog.categories\">\r\n                {{category}}\r\n            </li>\r\n        </ul>\r\n        <p>作者:{{blog.author}}</p>\r\n    </div>\r\n</div>\r\n\r\n<!--vue功能-->\r\n<script type=\"text/javascript\">\r\n    var vm = new Vue({\r\n        el: \".app-blog\" ,\r\n        data:{\r\n            blog:{\r\n                title:\"hi\",\r\n                content:\"你好\",\r\n                categories:[],\r\n                author:\"<%=loginUser.getUsername()%>\",\r\n                submitted:false,\r\n                studentNo: \"<%=loginUser.getStudentNo()%>\"\r\n            },\r\n            authors:[\"Hemiah\",\"Hemry\",\"Buky\"]\r\n        },\r\n        methods:{\r\n            Post:function(){\r\n                var article = {title: this.blog.title,content:this.blog.content,author:this.blog.author,studentNo:this.blog.studentNo}\r\n                this.$http.post(\"addblogsevlet\",JSON.stringify(article)).then(function(data){\r\n                    console.log(data);\r\n                    $(\"#messageDiv\").html(data);\r\n                    var json=JSON.parse(data);\r\n                    alert(json.message);\r\n                    this.blog.submitted=true;\r\n                })\r\n            }\r\n        }\r\n\r\n    })\r\n</script>\r\n\r\n\r\n\r\n<style>\r\n    #add-blog *{\r\n        box-sizing: border-box;\r\n    }\r\n    #add-blog{\r\n        margin:20px auto;\r\n        max-width:400px;\r\n        padding:20px;\r\n\r\n    }\r\n    lable{\r\n        display:block;\r\n        margin:20px 0 10px;\r\n    }\r\n    input[type=\"text\"],textarea,select{\r\n        display:block;\r\n        width:60%;\r\n        padding:8px;\r\n        border-radius: 10px;\r\n    }\r\n    textarea{\r\n        height:200px;\r\n    }\r\n    #checkboxes label{\r\n        display:inline-block;\r\n        margin-top:0;\r\n    }\r\n    #checkboxes input{\r\n        display:inline-block;\r\n        margin-right:10px;\r\n    }\r\n\r\n    button{\r\n        display:block;\r\n        margin:20px 0;\r\n        background:#ffe57d;\r\n        color:gray;\r\n        border:0;\r\n        padding: 14px;\r\n        border-radius:20px;\r\n        font-size:18px;\r\n        cursor:pointer;\r\n    }\r\n    #preview{\r\n        padding:10px 20px;\r\n        border:1px dotted #666666;\r\n        margin: 30px 0;\r\n    }\r\n    h3{\r\n        margin-top:10px ;\r\n    }\r\n\r\n\r\n</style>\r\n\r\n\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/web/pages/Student/Addblog.jsp b/web/pages/Student/Addblog.jsp
+--- a/web/pages/Student/Addblog.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/web/pages/Student/Addblog.jsp	(date 1628688522715)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.String" %><%--
++<%@ page import="pojo.User" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/7/26
+@@ -92,7 +92,7 @@
+ 
+ <%--从session中获得user--%>
+ <%
+-    String loginUser=(String)request.getSession().getAttribute("User");
++    User loginUser=(User)request.getSession().getAttribute("User");
+ %>
+ <!--写作部分-->
+ <div class="app-blog">
+Index: src/pojo/ResultGroupMessage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\npublic class ResultGroupMessage {\r\n    private boolean isGroup=true;\r\n    private boolean isSystem=false;\r\n    private String KeyGroup;\r\n    private Object message;\r\n    public String getKeyGroup() {\r\n        return KeyGroup;\r\n    }\r\n\r\n    public boolean isGroup() {\r\n        return isGroup;\r\n    }\r\n\r\n    public void setGroup(boolean group) {\r\n        isGroup = group;\r\n    }\r\n\r\n    public boolean isSystem() {\r\n        return isSystem;\r\n    }\r\n\r\n    public void setIsSystem(boolean system) {\r\n        isSystem = system;\r\n    }\r\n\r\n    public void setKeyGroup(String keyGroup) {\r\n        KeyGroup = keyGroup;\r\n    }\r\n\r\n    public Object getMessage() {\r\n        return message;\r\n    }\r\n\r\n    public void setMessage(Object message) {\r\n        this.message = message;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/ResultGroupMessage.java b/src/pojo/ResultGroupMessage.java
+--- a/src/pojo/ResultGroupMessage.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/pojo/ResultGroupMessage.java	(date 1628688522772)
+@@ -3,9 +3,9 @@
+ public class ResultGroupMessage {
+     private boolean isGroup=true;
+     private boolean isSystem=false;
+-    private String KeyGroup;
++    private User KeyGroup;
+     private Object message;
+-    public String getKeyGroup() {
++    public User getKeyGroup() {
+         return KeyGroup;
+     }
+ 
+@@ -25,7 +25,7 @@
+         isSystem = system;
+     }
+ 
+-    public void setKeyGroup(String keyGroup) {
++    public void setKeyGroup(User keyGroup) {
+         KeyGroup = keyGroup;
+     }
+ 
+Index: .idea/libraries/Java_EE_6_Java_EE_6.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Java_EE_6_Java_EE_6.xml b/.idea/libraries/Java_EE_6_Java_EE_6.xml
+new file mode 100644
+--- /dev/null	(date 1628683605896)
++++ b/.idea/libraries/Java_EE_6_Java_EE_6.xml	(date 1628683605896)
+@@ -0,0 +1,15 @@
++<component name="libraryTable">
++  <library name="Java EE 6-Java EE 6">
++    <CLASSES>
++      <root url="jar://$PROJECT_DIR$/lib/javax.annotation.jar!/" />
++      <root url="jar://$PROJECT_DIR$/lib/javax.transaction.jar!/" />
++      <root url="jar://$PROJECT_DIR$/lib/javax.servlet.jsp.jstl.jar!/" />
++      <root url="jar://$PROJECT_DIR$/lib/javax.jms.jar!/" />
++      <root url="jar://$PROJECT_DIR$/lib/javax.resource.jar!/" />
++      <root url="jar://$PROJECT_DIR$/lib/javax.ejb.jar!/" />
++      <root url="jar://$PROJECT_DIR$/lib/javax.persistence.jar!/" />
++    </CLASSES>
++    <JAVADOC />
++    <SOURCES />
++  </library>
++</component>
+\ No newline at end of file
+Index: src/web/ShowGroupsServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\nimport pojo.String;\r\nimport service.impl.GroupServiceImpl;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\nimport java.io.PrintWriter;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-07-16\r\n */\r\n@WebServlet(\"/showgroupsservlet\")\r\npublic class ShowGroupsServlet extends HttpServlet {\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        try {\r\n            resp.setContentType(\"application/json;charset=utf-8\");\r\n            PrintWriter out = resp.getWriter();\r\n            String loginUser=(String)req.getSession().getAttribute(\"User\");\r\n            //连接数据库,获取小组\r\n            java.lang.String groups = new GroupServiceImpl().loadGroup(loginUser.getUsername());\r\n            out.print(groups);\r\n            System.out.println(groups);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        super.doGet(req, resp);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/ShowGroupsServlet.java b/src/web/ShowGroupsServlet.java
+--- a/src/web/ShowGroupsServlet.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/web/ShowGroupsServlet.java	(date 1628688522634)
+@@ -1,6 +1,6 @@
+ package web;
+ 
+-import pojo.String;
++import pojo.User;
+ import service.impl.GroupServiceImpl;
+ 
+ import javax.servlet.ServletException;
+@@ -25,7 +25,7 @@
+         try {
+             resp.setContentType("application/json;charset=utf-8");
+             PrintWriter out = resp.getWriter();
+-            String loginUser=(String)req.getSession().getAttribute("User");
++            User loginUser=(User)req.getSession().getAttribute("User");
+             //连接数据库,获取小组
+             java.lang.String groups = new GroupServiceImpl().loadGroup(loginUser.getUsername());
+             out.print(groups);
+Index: src/pojo/News.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-11-13\r\n */\r\npublic class News {\r\n    private String type;//消息类型\r\n    private String title;//文章标题\r\n    private String content;//文章内容\r\n    private boolean isComment;//是否评论文章\r\n    private String extraInfo;//额外消息\r\n    private int studentNo; //对应的学生学号\r\n\r\n    public String getType() {\r\n        return type;\r\n    }\r\n\r\n    public void setType(String type) {\r\n        this.type = type;\r\n    }\r\n\r\n    public String getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public void setTitle(String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public String getContent() {\r\n        return content;\r\n    }\r\n\r\n    public void setContent(String content) {\r\n        this.content = content;\r\n    }\r\n\r\n    public boolean isComment() {\r\n        return isComment;\r\n    }\r\n\r\n    public void setComment(boolean comment) {\r\n        isComment = comment;\r\n    }\r\n\r\n    public String getExtraInfo() {\r\n        return extraInfo;\r\n    }\r\n\r\n    public void setExtraInfo(String extraInfo) {\r\n        this.extraInfo = extraInfo;\r\n    }\r\n\r\n    public int getStudentNo() {\r\n        return studentNo;\r\n    }\r\n\r\n    public void setStudentNo(int studentNo) {\r\n        this.studentNo = studentNo;\r\n    }\r\n\r\n    public News() {\r\n    }\r\n\r\n    public News(String type, String title, String content, boolean isComment, String extraInfo, int studentNo) {\r\n        this.type = type;\r\n        this.title = title;\r\n        this.content = content;\r\n        this.isComment = isComment;\r\n        this.extraInfo = extraInfo;\r\n        this.studentNo = studentNo;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/News.java b/src/pojo/News.java
+--- a/src/pojo/News.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/pojo/News.java	(date 1628688522664)
+@@ -8,34 +8,34 @@
+  * @date 2021-08-11-13
+  */
+ public class News {
+-    private String type;//消息类型
+-    private String title;//文章标题
+-    private String content;//文章内容
++    private User type;//消息类型
++    private User title;//文章标题
++    private User content;//文章内容
+     private boolean isComment;//是否评论文章
+-    private String extraInfo;//额外消息
++    private User extraInfo;//额外消息
+     private int studentNo; //对应的学生学号
+ 
+-    public String getType() {
++    public User getType() {
+         return type;
+     }
+ 
+-    public void setType(String type) {
++    public void setType(User type) {
+         this.type = type;
+     }
+ 
+-    public String getTitle() {
++    public User getTitle() {
+         return title;
+     }
+ 
+-    public void setTitle(String title) {
++    public void setTitle(User title) {
+         this.title = title;
+     }
+ 
+-    public String getContent() {
++    public User getContent() {
+         return content;
+     }
+ 
+-    public void setContent(String content) {
++    public void setContent(User content) {
+         this.content = content;
+     }
+ 
+@@ -47,11 +47,11 @@
+         isComment = comment;
+     }
+ 
+-    public String getExtraInfo() {
++    public User getExtraInfo() {
+         return extraInfo;
+     }
+ 
+-    public void setExtraInfo(String extraInfo) {
++    public void setExtraInfo(User extraInfo) {
+         this.extraInfo = extraInfo;
+     }
+ 
+@@ -66,7 +66,7 @@
+     public News() {
+     }
+ 
+-    public News(String type, String title, String content, boolean isComment, String extraInfo, int studentNo) {
++    public News(User type, User title, User content, boolean isComment, User extraInfo, int studentNo) {
+         this.type = type;
+         this.title = title;
+         this.content = content;
+Index: src/web/AddStudentToGroupServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\n\r\nimport com.google.gson.Gson;\r\nimport com.google.gson.JsonObject;\r\nimport com.google.gson.JsonParser;\r\nimport dao.impl.GroupDaoImpl;\r\nimport pojo.String;\r\nimport service.UserService;\r\nimport service.impl.UserServiceImpl;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.BufferedReader;\r\nimport java.io.IOException;\r\nimport java.io.InputStreamReader;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-07-16\r\n */\r\n@WebServlet(\"/addstudenttogroupservlet\")\r\npublic class AddStudentToGroupServlet extends HttpServlet {\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        UserService userService = new UserServiceImpl();\r\n        //用于保存所获取到的数据流\r\n        try {\r\n            BufferedReader br = new BufferedReader(new InputStreamReader(\r\n                    req.getInputStream(), \"utf-8\"));\r\n            StringBuffer sb = new StringBuffer(\"\");\r\n            java.lang.String temp;\r\n            while ((temp = br.readLine()) != null) {\r\n                sb.append(temp);\r\n            }\r\n            br.close();\r\n            //获取到的json字符串\r\n            System.out.println(sb);\r\n            java.lang.String acceptjson = sb.toString();\r\n            JsonObject jsonObject = JsonParser.parseString(acceptjson).getAsJsonObject();\r\n            //保存到组中\r\n            GroupDaoImpl groupDao = new GroupDaoImpl();\r\n            groupDao.saveGroup(acceptjson);\r\n            //保存用户数据\r\n            String user = new String();\r\n            user.setStudentNo(jsonObject.get(\"id\").getAsInt());\r\n            user.setUsername(\"bupt\"+jsonObject.get(\"id\").getAsString());\r\n            user.setPassword(\"123456\");\r\n            //user.setEmail(\"123456\");\r\n            user.setIdentity(\"student\");\r\n            userService.registUser(user);\r\n            java.lang.String userinfo = new Gson().toJson(user);\r\n            System.out.println(\"注册成功！\"+\"欢迎用户\"+userinfo);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        super.doPost(req, resp);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/AddStudentToGroupServlet.java b/src/web/AddStudentToGroupServlet.java
+--- a/src/web/AddStudentToGroupServlet.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/web/AddStudentToGroupServlet.java	(date 1628688522726)
+@@ -5,7 +5,7 @@
+ import com.google.gson.JsonObject;
+ import com.google.gson.JsonParser;
+ import dao.impl.GroupDaoImpl;
+-import pojo.String;
++import pojo.User;
+ import service.UserService;
+ import service.impl.UserServiceImpl;
+ 
+@@ -48,7 +48,7 @@
+             GroupDaoImpl groupDao = new GroupDaoImpl();
+             groupDao.saveGroup(acceptjson);
+             //保存用户数据
+-            String user = new String();
++            User user = new User();
+             user.setStudentNo(jsonObject.get("id").getAsInt());
+             user.setUsername("bupt"+jsonObject.get("id").getAsString());
+             user.setPassword("123456");
+Index: out/artifacts/BuptCreationEE_war_exploded/pages/Student/ChatRoom.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.User\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/8/7\r\n  Time: 3:02 下午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<html>\r\n<head>\r\n    <title>聊天室</title>\r\n    <!--    基础路径-->\r\n    <base href=\"../../\">\r\n    <!--    vue-基础包导入-->\r\n    <script src=\"static/vue/vue.js\" type=\"text/javascript\" charset=\"utf-8\"></script>\r\n    <script src=\"https://cdn.staticfile.org/vue/2.4.2/vue.min.js\"></script>\r\n    <!--    vue-resource 包导入-->\r\n    <script src=\"https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js\"></script>\r\n    <!--    vue 路由功能导入-->\r\n    <script src=\"https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js\"></script>\r\n    <%--jquery包    --%>\r\n    <script src=\"https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js\"></script>\r\n    <%-- bootstrap布局导入   --%>\r\n    <link rel=\"stylesheet\" href=\"static/css/bootstrap.css\">\r\n</head>\r\n<style>\r\n<%--    美化排版--%>\r\n    .User{\r\n        padding: 7px;\r\n        float: left;\r\n    }\r\n    .UState{\r\n        padding: 7px;\r\n        float: right;\r\n    }\r\n    .Prompt{\r\n        padding: 7px;\r\n        align-content: center;\r\n        color: lightskyblue;\r\n    }\r\n.bubble-left span{\r\n    float: left;\r\n    background-color: #999999;\r\n    padding: 5px 8px;\r\n    display: inline-block;\r\n    border-radius: 4px;\r\n    margin:10px 0 10px 10px;\r\n    position: relative;\r\n\r\n}\r\n.bubble-left span::after{\r\n    content: '';\r\n    border: 8px solid #ffffff00;\r\n    border-right: 8px solid #999999;\r\n    position: absolute;\r\n    top: 6px;\r\n    left: -16px;\r\n}\r\n.bubble-right span{\r\n    white-space: pre-line;\r\n    float: right;\r\n    background-color: #c6feeb;\r\n    padding: 5px 8px;\r\n    display: inline-block;\r\n    border-radius: 4px;\r\n    margin:10px 0 10px 10px;\r\n    position: relative;\r\n    right: 16px;\r\n}\r\n.bubble-right span::after{\r\n    content: '';\r\n    border: 8px solid #ffffff00;\r\n    border-left: 8px solid #c6feeb;\r\n    position: absolute;\r\n    top: 6px;\r\n    right: -16px;\r\n}\r\n.submit {\r\n    border: none;\r\n    color: white;\r\n    padding: 8px 16px;\r\n    text-align: center;\r\n    text-decoration: none;\r\n    display: inline-block;\r\n    font-size: 16px;\r\n    margin: 4px 2px;\r\n    -webkit-transition-duration: 0.4s; /* Safari */\r\n    transition-duration: 0.4s;\r\n    cursor: pointer;\r\n    background-color: white;\r\n    color: black;\r\n    border: 2px solid #008CBA;\r\n}\r\n\r\n.submit:hover {\r\n    background-color: #008CBA;\r\n    color: white;\r\n}\r\n<%--    格式排版--%>\r\n    #contains{\r\n        background-color: #666666;\r\n        width: 1000px;\r\n        height: 700px;\r\n        margin: auto;\r\n    }\r\n    #username{\r\n        color: #ecf0f1;\r\n        background-color: #666666;\r\n        width: 1000px;\r\n        height: 40px;\r\n        border-radius: 50px 50px 0px 0px;\r\n    }\r\n    #Inchat{\r\n        text-align: center;\r\n        background-color: #666666;\r\n        width: 1000px;\r\n        height: 50px;\r\n    }\r\n    #left{\r\n        border: 1px solid #8c8c8c;\r\n        background-color: white;\r\n        width: 700px;\r\n        height: 640px;\r\n        float: left;\r\n        position: relative;\r\n    }\r\n    #content{\r\n        border: 1px solid #8c8c8c;\r\n        background-color: white;\r\n        width: 700px;\r\n        height: 400px;\r\n        /*display: none;*/\r\n        visibility: hidden;\r\n        overflow-y: scroll;\r\n    }\r\n    #right{\r\n        border: 1px solid #8c8c8c;\r\n        background-color: #ecf0f1;\r\n        width: 300px;\r\n        height: 640px;\r\n        float: right;\r\n    }\r\n    #hyList{\r\n        border: 1px solid #8c8c8c;\r\n        height: 270px;\r\n        overflow-y: scroll;\r\n        background: antiquewhite;\r\n    }\r\n    #xtList{\r\n        border: 1px solid #8c8c8c;\r\n        height: 270px;\r\n        overflow-y: scroll;\r\n        background: antiquewhite;\r\n    }\r\n    #input{\r\n        border: 1px solid #8c8c8c;\r\n        margin-bottom: 0px;\r\n        position: absolute;\r\n        bottom: 0px;\r\n    }\r\n    #mes_left{\r\n        float: left;\r\n        border: 2px aqua;\r\n        max-width: 490px;\r\n    }\r\n    #mes_right{\r\n        float: right;\r\n        border: 2px aqua;\r\n        max-width: 490px;\r\n    }\r\n    #hy{\r\n        display: block;\r\n        width: 300px;\r\n    }\r\n    textarea {\r\n        resize: none;\r\n        border: none;\r\n        outline: none\r\n    }\r\n</style>\r\n<body>\r\n<%@include file=\"headleader.jsp\"%>\r\n<br/>\r\n<br/>\r\n<%\r\n    User loginUser=(User)request.getSession().getAttribute(\"User\");\r\n%>\r\n<div id = \"contains\">\r\n    <div id=\"username\">\r\n        <div class=\"User\"><h3>用户:</h3></div>\r\n        <div class=\"UState\">服务器未连接到终端</div>\r\n    </div>\r\n\r\n    <div id=\"Inchat\">\r\n\r\n        <div class=\"Prompt\">没有聊天对象</div>\r\n    </div>\r\n    <div id=\"left\">\r\n<%--    聊天展示区    --%>\r\n        <div id=\"content\">\r\n\r\n        </div>\r\n<%--输入区--%>\r\n        <div id=\"input\">\r\n            <textarea type=\"text\" id=\"input_text\" style=\"width: 695px;height: 200px;\"></textarea>\r\n            <button id=\"submit\" class=\"submit\" style=\"float: right;\">发送</button>\r\n        </div>\r\n    </div>\r\n    <div id=\"right\">\r\n        <p id=\"hy\" style=\"text-align: center;\">好友列表</p>\r\n        <a style=\"text-align: center;display: block\" onclick='showGroupChat()'>小组聊天室</a></br>\r\n        <div id=\"hyList\">\r\n\r\n        </div>\r\n        <p id=\"xt\" style=\"text-align: center\">系统消息</p>\r\n        <div id=\"xtList\">\r\n\r\n        </div>\r\n    </div>\r\n</div>\r\n<br/>\r\n<br/>\r\n</body>\r\n<%--jquery管理区域--%>\r\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n<script>\r\n    var Count=0;\r\n    var toName;\r\n    var username;\r\n    var Group=true;\r\n    var UserGroup=\"1teacher168\";//未初始化\r\n    var isMe=false;\r\n    //点击好友名称展示相关消息\r\n    window.onbeforeunload = function(event) {\r\n        var count = {count:Count,id:Number(<%=loginUser.getStudentNo()%>)};\r\n        $.post(\"updatecountservlet\",JSON.stringify(count)).then(function(data) {\r\n            console.log(data);\r\n        });\r\n        //count归零\r\n        Count=0;\r\n    };\r\n    function showChat(name){\r\n        Group=false;\r\n        toName = name;\r\n        //现在聊天框\r\n       //立刻清空聊天框\r\n        $(\"#content\").html(\"\");\r\n        $(\"#content\").css(\"visibility\",\"visible\");\r\n        $(\"#Inchat\").html(\"<div class=\\\"Prompt\\\">当前正与\"+toName+\"聊天</div>\");\r\n        //从sessionStorage中获取历史信息\r\n        var chatData = sessionStorage.getItem(toName);\r\n        if (chatData != null){\r\n            $(\"#content\").html(chatData);\r\n        }\r\n    }\r\n    function showGroupChat(name){\r\n        Group=true;\r\n        //现在聊天框\r\n        //立刻清空聊天框\r\n        $(\"#content\").html(\"\");\r\n        $(\"#content\").css(\"visibility\",\"visible\");\r\n        $(\"#Inchat\").html(\"<div class=\\\"Prompt\\\">当前正与\"+\"组内所有成员\"+\"聊天</div>\");\r\n        //从sessionStorage中获取群聊的历史信息\r\n        var chatData = sessionStorage.getItem(UserGroup);\r\n        if (chatData != null){\r\n            $(\"#content\").html(chatData);\r\n        }\r\n    }\r\n    $(function () {\r\n        $.ajax({\r\n            //从getUsername处获得用户名\r\n            url:\"getUsername\",\r\n            type:\"get\",\r\n            //成功后的回调函数\r\n            <%\r\n        String keyGroup = (String)request.getSession().getAttribute(\"KeyGroup\");\r\n    %>\r\n            success:function (res) {\r\n                username = res;\r\n                UserGroup =  \"<%=keyGroup%>\";\r\n            },\r\n            async:false //同步请求，只有上面好了才会接着下面\r\n        });\r\n        //建立websocket连接\r\n        //获取host解决后端获取httpsession的空指针异常\r\n        var host = window.location.host;\r\n        var ws = new WebSocket(\"ws://\"+\"localhost:8080/BuptCreationEE_war_exploded\"+\"/chat\");\r\n        //建立连接之后\r\n        ws.onopen = function (evt) {\r\n            //在建立连接之后 需要做什么?\r\n            $(\"#username\").html(\"<div class=\\\"User\\\"><h3>用户:\"+username+\"</h3></div><div class=\\\"UState\\\" style=\\\"color: lawngreen \\\"><h3>在线</h3></div>\");\r\n        }\r\n        //接受消息后进行触发\r\n        ws.onmessage = function (evt) {\r\n            //获取服务端推送的消息\r\n            var dataStr = evt.data;\r\n            //将dataStr转换为json对象\r\n            var res = JSON.parse(dataStr);\r\n            console.log(\"得到消息\");\r\n            //判断是否是系统消息\r\n            if(res.system){\r\n                //系统消息\r\n                //1.好友列表展示\r\n                //2.系统广播的展示\r\n                //此处声明的变量是调试时命名的，可以直接合并\r\n                var names = res.message;\r\n                var userlistStr = \"\";\r\n                var broadcastListStr = \"\";\r\n                var temp01 = \"<a style=\\\"text-align: center; display: block;\\\" onclick='showChat(\\\"\";\r\n                var temp03 = \"\\\")'>\";\r\n                var temp04 = \"</a></br>\";\r\n                var temp = \"\";\r\n                for (var name of names){\r\n                    if (name != username){\r\n                        temp = temp01 + name + temp03 + name + temp04;\r\n                        userlistStr = userlistStr + temp;\r\n                        broadcastListStr += \"<p style='text-align: center'>\"+ name +\"上线了</p>\";\r\n                    }\r\n                }\r\n                console.log(\"系统消息\"+userlistStr);\r\n                //渲染好友列表和系统广播\r\n                $(\"#hyList\").html(userlistStr);\r\n                $(\"#xtList\").html(broadcastListStr);\r\n\r\n            }else {\r\n                //不是系统消息\r\n                    //判断是否是小组消息\r\n                    if(res.group==true){\r\n                        var str = \"<div class=\\\"bubble-left\\\"><span>\" + res.message + \"</span></div></br></br></br>\";\r\n                        //如果消息就刚好是给我们组发消息的人\r\n                        if (UserGroup == res.keyGroup) {\r\n                            if (isMe==true) {\r\n                                isMe=false;\r\n                            }else {\r\n                                $(\"#content\").append(str);\r\n                            }\r\n                        }\r\n                        var chatData = sessionStorage.getItem(res.keyGroup);\r\n                        if (chatData != null) {\r\n                            str = chatData + str;\r\n                        }\r\n                        //保存聊天消息\r\n                        console.log(\"保存小组\"+res.keyGroup+\"的消息\"+str);\r\n                        sessionStorage.setItem(res.keyGroup, str);\r\n                    }else {\r\n                        var str = \"<div class=\\\"bubble-left\\\"><span>\" + res.message + \"</span></div></br></br></br>\";\r\n                        //如果消息就刚好是给我发消息的人\r\n                        if (toName === res.fromName) {\r\n                            $(\"#content\").append(str);\r\n                        }\r\n                        var chatData = sessionStorage.getItem(res.fromName);\r\n                        if (chatData != null) {\r\n                            str = chatData + str;\r\n                        }\r\n                        //保存聊天消息\r\n                        console.log(\"保存个人\"+res.fromName+\"的消息\"+res);\r\n                        sessionStorage.setItem(res.fromName, str);\r\n                    }\r\n            };\r\n        }\r\n        ws.onclose = function () {\r\n            //发送数据给后台统计\r\n\r\n            <%--var count = {count:Count,id:Number(<%=loginUser.getStudentNo()%>)};--%>\r\n            <%--$.post(\"https://jsonplaceholder.typicode.com/posts/\",JSON.stringify(count)).then(function(data) {--%>\r\n            <%--     console.log(data);--%>\r\n            <%--});--%>\r\n            <%--    //count归零--%>\r\n            <%--    Count=0;--%>\r\n            $(\"#username\").html(\"<div class=\\\"User\\\"><h3>用户:\"+username+\"</h3></div><div class=\\\"UState\\\" style=\\\"color: orangered \\\"><h3>离线</h3></div>\");\r\n        }\r\n\r\n        //发送消息\r\n        $(\"#submit\").click(function () {\r\n            //0.说话次数加一\r\n            Count+=1;\r\n            //1.获取输入的内容\r\n            var data = $(\"#input_text\").val();\r\n            //2.清空发送框\r\n            $(\"#input_text\").val(\"\");\r\n            if (Group==false) {\r\n                console.log(\"发送消息给个人\")\r\n                var json = {\"toName\": toName, \"message\": data,\"group\":false};\r\n                //将数据展示在聊天区\r\n                var str = \"<div class=\\\"bubble-right\\\"><span>\" + data + \"</span></div></br></br></br>\";\r\n                $(\"#content\").append(str);\r\n                //将聊天记录存储到局部寄存器\r\n\r\n                var chatData = sessionStorage.getItem(toName);\r\n                if (chatData != null) {\r\n                    str = chatData + str;\r\n                }\r\n                sessionStorage.setItem(toName, str);\r\n            }else {\r\n                console.log(\"消息发送给小组\");\r\n                var json = {\"toName\":UserGroup, \"message\": data,\"group\":true};\r\n                //将数据展示在聊天区\r\n                console.log(json);\r\n                var str = \"<div class=\\\"bubble-right\\\"><span>\" + data + \"</span></div></br></br></br>\";\r\n                $(\"#content\").append(str);\r\n                //将聊天记录存储到局部寄存器\r\n\r\n                var chatData = sessionStorage.getItem(UserGroup);\r\n                if (chatData != null) {\r\n                    str = chatData + str;\r\n                }\r\n                sessionStorage.setItem(UserGroup, str);\r\n                isMe=true;\r\n            }\r\n            //3.发送数据\r\n            ws.send(JSON.stringify(json));\r\n        })\r\n    })\r\n</script>\r\n<script src=\"https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js\"></script>\r\n<!--小帅哥： https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json-->\r\n<!--萌娘：https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json-->\r\n<!--小可爱（女）：https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json-->\r\n<!--小可爱（男）：https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json-->\r\n<!--初音：https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json-->\r\n<!-- 上边的不同链接显示的是不同的小人，这个可以根据需要来选择 下边的初始化部分，可以修改宽高来修改小人的大小，或者是鼠标移动到小人上的透明度，也可以修改小人在页面出现的位置。 -->\r\n<script>\r\n    /*https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json*/\r\n    L2Dwidget.init({ \"model\": { jsonPath:\r\n                \"https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json\",\r\n            \"scale\": 1 }, \"display\": { \"position\": \"right\", \"width\": 210, \"height\": 250,\r\n            \"hOffset\": 0, \"vOffset\": -20 }, \"mobile\": { \"show\": true, \"scale\": 0.5 },\r\n        \"react\": { \"opacityDefault\": 0.8, \"opacityOnHover\": 0.1 } });\r\n</script>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/artifacts/BuptCreationEE_war_exploded/pages/Student/ChatRoom.jsp b/out/artifacts/BuptCreationEE_war_exploded/pages/Student/ChatRoom.jsp
+--- a/out/artifacts/BuptCreationEE_war_exploded/pages/Student/ChatRoom.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/out/artifacts/BuptCreationEE_war_exploded/pages/Student/ChatRoom.jsp	(date 1628676762402)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.User" %><%--
++<%@ page import="pojo.String" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/8/7
+@@ -183,7 +183,7 @@
+ <br/>
+ <br/>
+ <%
+-    User loginUser=(User)request.getSession().getAttribute("User");
++    String loginUser=(String)request.getSession().getAttribute("User");
+ %>
+ <div id = "contains">
+     <div id="username">
+@@ -273,7 +273,7 @@
+             type:"get",
+             //成功后的回调函数
+             <%
+-        String keyGroup = (String)request.getSession().getAttribute("KeyGroup");
++        java.lang.String keyGroup = (java.lang.String)request.getSession().getAttribute("KeyGroup");
+     %>
+             success:function (res) {
+                 username = res;
+Index: src/web/ChatRoomUser.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\n\r\nimport pojo.String;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport javax.xml.ws.RequestWrapper;\r\nimport java.io.IOException;\r\n\r\n@WebServlet(\"/getUsername\")\r\npublic class ChatRoomUser extends HttpServlet {\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        String loginUser=(String)req.getSession().getAttribute(\"User\");\r\n        java.lang.String username=loginUser.getUsername();\r\n        resp.setContentType(\"text/html;charset=UTF-8\");\r\n        resp.getWriter().write(username);\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/ChatRoomUser.java b/src/web/ChatRoomUser.java
+--- a/src/web/ChatRoomUser.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/web/ChatRoomUser.java	(date 1628688522720)
+@@ -1,7 +1,7 @@
+ package web;
+ 
+ 
+-import pojo.String;
++import pojo.User;
+ 
+ import javax.servlet.ServletException;
+ import javax.servlet.annotation.WebServlet;
+@@ -15,7 +15,7 @@
+ public class ChatRoomUser extends HttpServlet {
+     @Override
+     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+-        String loginUser=(String)req.getSession().getAttribute("User");
++        User loginUser=(User)req.getSession().getAttribute("User");
+         java.lang.String username=loginUser.getUsername();
+         resp.setContentType("text/html;charset=UTF-8");
+         resp.getWriter().write(username);
+Index: web/pages/Teacher/Group.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.String\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/8/6\r\n  Time: 10:50 上午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<html>\r\n<head>\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, inital-scale=1.0\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\r\n    <title>小组管理</title>\r\n    <%--    基础地址--%>\r\n    <base href=\"../../\">\r\n    <%--    vue包导入--%>\r\n    <script src=\"static/vue/vue.js\" type=\"text/javascript\" charset=\"utf-8\"></script>\r\n    <script src=\"https://cdn.staticfile.org/vue/2.4.2/vue.min.js\"></script>\r\n    <!--    vue-resource 包导入-->\r\n    <script src=\"https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js\"></script>\r\n    <%-- bootstrap导入   --%>\r\n    <link rel=\"stylesheet\" href=\"static/css/bootstrap.css\">\r\n</head>\r\n<body>\r\n<%--引入导航栏--%>\r\n<%@include file=\"headleader.jsp\"%>\r\n<%--从session中获得user    --%>\r\n<div class=\"app\">\r\n    <div id=\"GroupManager\">\r\n        <ul class=\"list-group\" v-for=\"group in groups\" :key=\"group.id\">\r\n            <li class=\"list-group-item\" v-for=\"student in group\" :key=\"student.id\">\r\n\r\n                <span class=\"badge\">小组号：{{student.groupId}}</span>\r\n                学号：{{ student.id }}\r\n                 用户名：{{ student.username }}\r\n            </li>\r\n            <br/>\r\n        </ul>\r\n\r\n        <div>\r\n            <div class=\"form-group\">\r\n                <label>学号：</label>\r\n                <input type=\"text\" class=\"form-control\" v-model=\"student.id\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label>学生用户名：</label>\r\n                <textarea class=\"form-control\" v-model=\"student.username\"></textarea>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label>小组号：</label>\r\n                <select class=\"form-control\" v-model=\"student.groupId\">\r\n                    <option value=\"1\">1</option>\r\n                    <option value=\"2\">2</option>\r\n                    <option value=\"3\">3</option>\r\n                    <option value=\"4\">4</option>\r\n                    <option value=\"5\">5</option>\r\n                    <option value=\"6\">6</option>\r\n                    <option value=\"7\">7</option>\r\n                    <option value=\"8\">8</option>\r\n                    <option value=\"9\">9</option>\r\n                    <option value=\"10\">10</option>\r\n                    <option value=\"11\">11</option>\r\n                    <option value=\"12\">12</option>\r\n                </select>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <input type=\"button\" value=\"确定\" class=\"btn btn-primary\" @click=\"PostStudent\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<%\r\n    String loginUser=(String)request.getSession().getAttribute(\"User\");\r\n%>\r\n<script type=\"text/javascript\">\r\n    var vm = new Vue({\r\n        el: \".app\" ,\r\n        data:{\r\n\r\n            students:[],\r\n            groups:[\r\n                [\r\n                {studentId:\"2019212001\",studentName:\"张四\",group:1},\r\n                // {studentId:\"2019212002\",studentName:\"张二\",group:1},\r\n                // {studentId:\"2019212003\",studentName:\"张三\",group:1}\r\n            ],\r\n                [\r\n                {studentId:\"2019212004\",studentName:\"李一\",group:2},\r\n                {studentId:\"2019212005\",studentName:\"李二\",group:2},\r\n                {studentId:\"2019212006\",studentName:\"李三\",group:2}\r\n            ],\r\n                [\r\n                {studentId:\"2019212007\",studentName:\"王一\",group:3},\r\n                {studentId:\"2019212008\",studentName:\"王二\",group:3},\r\n                // {studentId:\"2019212009\",studentName:\"王三\",group:3}\r\n            ]],\r\n            teacherUsername:\"\",\r\n            student:{\r\n                username:\"\",\r\n                id: Number(),\r\n                groupId: Number()\r\n            }\r\n        },\r\n        methods: {\r\n            //学生注册\r\n            PostStudent(){\r\n                if (this.student.groupId !=''&&this.student.username!=''&&this.studentId!=''){\r\n                    var student = {\r\n                        id: Number(this.student.id),\r\n                        username: this.student.username,\r\n                        groupId: Number(this.student.groupId),\r\n                        teacherUsername: '<%=loginUser.getUsername()%>',\r\n                        speeches: Number(0)\r\n                    }\r\n                    this.$http.post(\"addstudenttogroupservlet\",JSON.stringify(student)).then(function (data) {\r\n                        console.log(student)\r\n                    })\r\n\r\n                }\r\n            },\r\n            //学生加载\r\n            LoadStudents(){\r\n                this.$http.get(\"showgroupsservlet\").then(function(data){\r\n                    this.groups=data.body;\r\n                    console.log(this.groups);\r\n                })\r\n            }\r\n            // //评论发布\r\n            // postComments() {\r\n            //     if (this.user != '' && this.content != '') {\r\n            //         var comment = {\r\n            //             id: Date.now(),\r\n            //             user: this.user,\r\n            //             content: this.content,\r\n            //             title: this.title,\r\n            //             context: this.context\r\n            //         }\r\n            //         this.$http.post('addcommentsevlet', JSON.stringify(comment)).then(function (data) {\r\n            //             console.log(data);\r\n            //             console.log(comment)\r\n            //         })\r\n            //         //\r\n            //         // var list = JSON.parse(localStorage.getItem('cmts') || '[]')\r\n            //         // list.unshift(comment)\r\n            //         // localStorage.setItem('cmts', JSON.stringify(list))\r\n            //         // this.user = this.content = ''\r\n            //         // this.$emit('func')\r\n            //         this.list=list\r\n            //     }\r\n            // },\r\n            // loadComments(){\r\n            //     //var list = JSON.parse(localStorage.getItem('cmts') || '[]')\r\n            //     //this.list = list\r\n            //     this.$http.get(\"showcommentservlet\")\r\n            //         .then(function (data) {\r\n            //             this.groups = data.body;\r\n            //             console.log(this.groups);\r\n            //         })\r\n            // }\r\n        },\r\n        created(){\r\n            this.LoadStudents();\r\n        }\r\n\r\n    })\r\n</script>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/web/pages/Teacher/Group.jsp b/web/pages/Teacher/Group.jsp
+--- a/web/pages/Teacher/Group.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/web/pages/Teacher/Group.jsp	(date 1628688522702)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.String" %><%--
++<%@ page import="pojo.User" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/8/6
+@@ -71,7 +71,7 @@
+     </div>
+ </div>
+ <%
+-    String loginUser=(String)request.getSession().getAttribute("User");
++    User loginUser=(User)request.getSession().getAttribute("User");
+ %>
+ <script type="text/javascript">
+     var vm = new Vue({
+Index: src/dao/UserDao.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package dao;\r\n\r\n\r\nimport pojo.String;\r\n\r\nimport java.util.List;\r\n\r\npublic interface UserDao {\r\n\r\n\r\n\r\n    /**\r\n     * 根据用户名查询用户信息\r\n     * @param username 用户名\r\n     * @return 如果返回null,说明没有这个用户。反之亦然\r\n     */\r\n    public String queryUserByUsername(java.lang.String username);\r\n\r\n    /**\r\n     * 根据 用户名和密码查询用户信息\r\n     * @param username\r\n     * @param password\r\n     * @return 如果返回null,说明用户名或密码错误,反之亦然\r\n     */\r\n    public String queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password);\r\n\r\n    /**\r\n     * 保存用户信息\r\n     * @param user\r\n     * @return 返回-1表示操作失败，其他是sql语句影响的行数\r\n     */\r\n    public int saveUser(String user);\r\n\r\n    public List<String> querybyIdentity(java.lang.String identity);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/dao/UserDao.java b/src/dao/UserDao.java
+--- a/src/dao/UserDao.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/dao/UserDao.java	(date 1628688522629)
+@@ -1,7 +1,7 @@
+ package dao;
+ 
+ 
+-import pojo.String;
++import pojo.User;
+ 
+ import java.util.List;
+ 
+@@ -14,7 +14,7 @@
+      * @param username 用户名
+      * @return 如果返回null,说明没有这个用户。反之亦然
+      */
+-    public String queryUserByUsername(java.lang.String username);
++    public User queryUserByUsername(java.lang.String username);
+ 
+     /**
+      * 根据 用户名和密码查询用户信息
+@@ -22,14 +22,14 @@
+      * @param password
+      * @return 如果返回null,说明用户名或密码错误,反之亦然
+      */
+-    public String queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password);
++    public User queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password);
+ 
+     /**
+      * 保存用户信息
+      * @param user
+      * @return 返回-1表示操作失败，其他是sql语句影响的行数
+      */
+-    public int saveUser(String user);
++    public int saveUser(User user);
+ 
+-    public List<String> querybyIdentity(java.lang.String identity);
++    public List<User> querybyIdentity(java.lang.String identity);
+ }
+Index: out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Comment.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.User\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/7/29\r\n  Time: 6:47 下午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, inital-scale=1.0\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\r\n    <title>作品评论</title>\r\n    <%--    基础地址--%>\r\n    <base href=\"../../\">\r\n<%--    vue包导入--%>\r\n    <script src=\"static/vue/vue.js\" type=\"text/javascript\" charset=\"utf-8\"></script>\r\n    <script src=\"https://cdn.staticfile.org/vue/2.4.2/vue.min.js\"></script>\r\n    <!--    vue-resource 包导入-->\r\n    <script src=\"https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js\"></script>\r\n<%-- bootstrap导入   --%>\r\n    <link rel=\"stylesheet\" href=\"static/css/bootstrap.css\">\r\n<%--    温馨提示--%>\r\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css\">\r\n    <link rel=\"stylesheet\" href=\"static/css/roll-style-teacher.css\">\r\n<%--    背景--%>\r\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css\">\r\n    <link rel=\"stylesheet\" href=\"static/css/teacher-background-style.css\">\r\n</head>\r\n<%--从session中获得user    把名字填入评论人--%>\r\n<%\r\n    User loginUser=(User)request.getSession().getAttribute(\"User\");\r\n%>\r\n    <%@include file=\"headleader.jsp\"%>\r\n<%--背景--%>\r\n<div id=\"top-image\"></div>\r\n<%--  温馨提示--%>\r\n    <div class=\"reminder\">\r\n        <div class=\"text\">\r\n            <p>Please be&nbsp\r\n                <span class=\"word wisteria\">polite.</span>\r\n                <span class=\"word belize\">patient.</span>\r\n                <span class=\"word pomegranate\">fancy.</span>\r\n                <span class=\"word green\">friendly.</span>\r\n                <span class=\"word midnight\">kind.</span>\r\n            </p>\r\n        </div>\r\n    </div>\r\n    <br/><br/><br/>\r\n<%--    --%>\r\n\r\n<div id=\"tmpl\">\r\n    <div id=\"blog\">\r\n        <h1>{{title}}</h1>\r\n        <h4>{{context}}</h4>\r\n        <h4>关键词:编使劲编</h4>\r\n        <h2 style=\"float: right\">作者:营销号</h2>\r\n    </div>\r\n    <div id=\"comment\">\r\n        <ul class=\"list-group\">\r\n            <li class=\"list-group-item\" v-for=\"item in list\" :key=\"item.id\">\r\n                <span class=\"badge\">评论人：{{ item.user }}</span>\r\n                {{ item.content }}\r\n            </li>\r\n        </ul>\r\n    <div>\r\n        <div class=\"form-group\">\r\n            <label>评论人：</label>\r\n            <input type=\"text\" class=\"form-control\" v-model=\"user\">\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label>评论内容：</label>\r\n            <textarea class=\"form-control\" v-model=\"content\"></textarea>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <input type=\"button\" value=\"发表评论\" class=\"btn btn-primary\" @click=\"postComments\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n</div>\r\n<script type=\"text/javascript\">\r\n    var vm = new Vue({\r\n        el: \"#tmpl\" ,\r\n        data:{\r\n            title:'',\r\n            context:'',\r\n            user:'<%=loginUser.getUsername()%>',\r\n            content: '',\r\n            list:[\r\n                { time: Date.now(), user: '路人甲', content: '武汉加油' },\r\n                { time: Date.now(), user: '炮灰乙', content: '中国加油' },\r\n                { time: Date.now(), user: '小兵丙', content: '广东加油' },\r\n                { time: Date.now(), user: '土匪丁', content: '全球加油' }\r\n            ]\r\n        },\r\n        methods:{\r\n            //评论发布\r\n            postComments() {\r\n                if (this.user!=''&&this.content!='') {\r\n                    var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,context:this.context}\r\n                    this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){\r\n                        console.log(data);\r\n                        this.loadComments();\r\n                    })\r\n                    //\r\n                    // var list = JSON.parse(localStorage.getItem('cmts') || '[]')\r\n                    // list.unshift(comment)\r\n                    // localStorage.setItem('cmts', JSON.stringify(list))\r\n                    // this.user = this.content = ''\r\n                    // this.$emit('func')\r\n                    // this.list=list\r\n                }\r\n            },\r\n            loadComments(){\r\n                //var list = JSON.parse(localStorage.getItem('cmts') || '[]')\r\n                //this.list = list\r\n                //loadcomment 要做判断 数据库中评论的title 要等于 这个title\r\n                this.$http.get(\"showcommentservlet\")\r\n                    .then(function (data) {\r\n                        this.list = data.body.slice(0,10);\r\n                        console.log(this.blogs);\r\n                    })\r\n            }\r\n        },\r\n        created(){\r\n            var blog=JSON.parse(localStorage.getItem('blog')||'[]')\r\n            this.title=blog.title\r\n            this.context=blog.content\r\n            var thisblog={title:this.title,context:this.context};\r\n            this.$http.post(\"showcommentservlet\",JSON.stringify(thisblog));\r\n            this.loadComments();\r\n        }\r\n\r\n    })\r\n</script>\r\n<style>\r\n    #comment{\r\n        width: 40%;\r\n        float: right;\r\n        padding: 10px;\r\n    }\r\n    #blog{\r\n        width: 55%;\r\n        float: left;\r\n        box-shadow: 10px 10px 5px #888888;\r\n        background: white;\r\n    }\r\n</style>\r\n<%--    温馨提示--%>\r\n    <script  src=\"static/script/roll-script-teacher.js\"></script>\r\n<%--背景--%>\r\n<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>\r\n<script  src=\"static/script/teacher-background-script.js\"></script>\r\n\r\n</body>\r\n</html>\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Comment.jsp b/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Comment.jsp
+--- a/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Comment.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Comment.jsp	(date 1628681603806)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.User" %><%--
++<%@ page import="pojo.String" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/7/29
+@@ -31,7 +31,7 @@
+ </head>
+ <%--从session中获得user    把名字填入评论人--%>
+ <%
+-    User loginUser=(User)request.getSession().getAttribute("User");
++    String loginUser=(String)request.getSession().getAttribute("User");
+ %>
+     <%@include file="headleader.jsp"%>
+ <%--背景--%>
+@@ -125,9 +125,9 @@
+             }
+         },
+         created(){
+-            var blog=JSON.parse(localStorage.getItem('blog')||'[]')
++            var blog = JSON.parse(localStorage.getItem('blog')||'[]')
+             this.title=blog.title
+-            this.context=blog.content
++            this.context=blog.context
+             var thisblog={title:this.title,context:this.context};
+             this.$http.post("showcommentservlet",JSON.stringify(thisblog));
+             this.loadComments();
+Index: src/dao/impl/UserDaoImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package dao.impl;\r\n\r\n\r\nimport dao.UserDao;\r\nimport pojo.String;\r\n\r\nimport java.util.List;\r\n\r\npublic class UserDaoImpl extends BaseDao implements UserDao {\r\n\r\n\r\n    @Override\r\n    public String queryUserByUsername(java.lang.String username) {\r\n        java.lang.String sql = \"select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ?\";\r\n        return queryForOne(String.class, sql, username);\r\n    }\r\n\r\n    @Override\r\n    public String queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password) {\r\n        java.lang.String sql = \"select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ? and password = ?\";\r\n        return queryForOne(String.class, sql, username,password);\r\n    }\r\n\r\n    @Override\r\n    public int saveUser(String user) {\r\n        java.lang.String sql = \"insert into user(`username`,`password`,`email`,`identity`,`studentNo`) values(?,?,?,?,?)\";\r\n        return update(sql, user.getUsername(),user.getPassword(),user.getEmail(),user.getIdentity(),user.getStudentNo());\r\n    }\r\n\r\n    @Override\r\n    public List<String> querybyIdentity(java.lang.String identity) {\r\n        java.lang.String sql = \"select username from user where identity = ?\";\r\n        return  queryForList(String.class,sql,identity);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/dao/impl/UserDaoImpl.java b/src/dao/impl/UserDaoImpl.java
+--- a/src/dao/impl/UserDaoImpl.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/dao/impl/UserDaoImpl.java	(date 1628688522670)
+@@ -2,7 +2,7 @@
+ 
+ 
+ import dao.UserDao;
+-import pojo.String;
++import pojo.User;
+ 
+ import java.util.List;
+ 
+@@ -10,26 +10,26 @@
+ 
+ 
+     @Override
+-    public String queryUserByUsername(java.lang.String username) {
++    public User queryUserByUsername(java.lang.String username) {
+         java.lang.String sql = "select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ?";
+-        return queryForOne(String.class, sql, username);
++        return queryForOne(User.class, sql, username);
+     }
+ 
+     @Override
+-    public String queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password) {
++    public User queryUserByUsernameAndPassword(java.lang.String username, java.lang.String password) {
+         java.lang.String sql = "select `id`,`username`,`password`,`email`,`identity`,`studentNo` from user where username = ? and password = ?";
+-        return queryForOne(String.class, sql, username,password);
++        return queryForOne(User.class, sql, username,password);
+     }
+ 
+     @Override
+-    public int saveUser(String user) {
++    public int saveUser(User user) {
+         java.lang.String sql = "insert into user(`username`,`password`,`email`,`identity`,`studentNo`) values(?,?,?,?,?)";
+         return update(sql, user.getUsername(),user.getPassword(),user.getEmail(),user.getIdentity(),user.getStudentNo());
+     }
+ 
+     @Override
+-    public List<String> querybyIdentity(java.lang.String identity) {
++    public List<User> querybyIdentity(java.lang.String identity) {
+         java.lang.String sql = "select username from user where identity = ?";
+-        return  queryForList(String.class,sql,identity);
++        return  queryForList(User.class,sql,identity);
+     }
+ }
+Index: src/pojo/Misson.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\nimport java.util.List;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-05-23\r\n */\r\npublic class Misson {\r\n    private String username;\r\n    private String title;\r\n    private String guide;\r\n    private String keyword;\r\n    private List<String> writers;\r\n\r\n    public String getUsername() {\r\n        return username;\r\n    }\r\n\r\n    public void setUsername(String username) {\r\n        this.username = username;\r\n    }\r\n\r\n    public String getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public void setTitle(String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public String getGuide() {\r\n        return guide;\r\n    }\r\n\r\n    public void setGuide(String guide) {\r\n        this.guide = guide;\r\n    }\r\n\r\n    public String getKeyword() {\r\n        return keyword;\r\n    }\r\n\r\n    public void setKeyword(String keyword) {\r\n        this.keyword = keyword;\r\n    }\r\n\r\n    public List<String> getWriters() {\r\n        return writers;\r\n    }\r\n\r\n    public void setWriters(List<String> writers) {\r\n        this.writers = writers;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"Misson{\" +\r\n                \"username='\" + username + '\\'' +\r\n                \", title='\" + title + '\\'' +\r\n                \", guide='\" + guide + '\\'' +\r\n                \", keyword='\" + keyword + '\\'' +\r\n                \", writers=\" + writers +\r\n                '}';\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/Misson.java b/src/pojo/Misson.java
+--- a/src/pojo/Misson.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/pojo/Misson.java	(date 1628688522695)
+@@ -10,54 +10,54 @@
+  * @date 2021-08-05-23
+  */
+ public class Misson {
+-    private String username;
+-    private String title;
+-    private String guide;
+-    private String keyword;
+-    private List<String> writers;
++    private User username;
++    private User title;
++    private User guide;
++    private User keyword;
++    private List<User> writers;
+ 
+-    public String getUsername() {
++    public User getUsername() {
+         return username;
+     }
+ 
+-    public void setUsername(String username) {
++    public void setUsername(User username) {
+         this.username = username;
+     }
+ 
+-    public String getTitle() {
++    public User getTitle() {
+         return title;
+     }
+ 
+-    public void setTitle(String title) {
++    public void setTitle(User title) {
+         this.title = title;
+     }
+ 
+-    public String getGuide() {
++    public User getGuide() {
+         return guide;
+     }
+ 
+-    public void setGuide(String guide) {
++    public void setGuide(User guide) {
+         this.guide = guide;
+     }
+ 
+-    public String getKeyword() {
++    public User getKeyword() {
+         return keyword;
+     }
+ 
+-    public void setKeyword(String keyword) {
++    public void setKeyword(User keyword) {
+         this.keyword = keyword;
+     }
+ 
+-    public List<String> getWriters() {
++    public List<User> getWriters() {
+         return writers;
+     }
+ 
+-    public void setWriters(List<String> writers) {
++    public void setWriters(List<User> writers) {
+         this.writers = writers;
+     }
+ 
+     @Override
+-    public String toString() {
++    public User toString() {
+         return "Misson{" +
+                 "username='" + username + '\'' +
+                 ", title='" + title + '\'' +
+Index: src/pojo/Comment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-05-21\r\n */\r\npublic class Comment {\r\n\r\n    private String user; //发表的用户\r\n    private int id; //发表事件\r\n    private java.lang.String content; //内容\r\n    private java.lang.String title; //标题\r\n    private java.lang.String context; //\r\n\r\n    public String getUser() {\r\n        return user;\r\n    }\r\n\r\n    public void setUser(String user) {\r\n        this.user = user;\r\n    }\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public java.lang.String getContent() {\r\n        return content;\r\n    }\r\n\r\n    public void setContent(java.lang.String content) {\r\n        this.content = content;\r\n    }\r\n\r\n    public java.lang.String getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public void setTitle(java.lang.String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public java.lang.String getContext() {\r\n        return context;\r\n    }\r\n\r\n    public void setContext(java.lang.String context) {\r\n        this.context = context;\r\n    }\r\n\r\n    public Comment(String user, int id, java.lang.String content, java.lang.String title, java.lang.String context) {\r\n        this.user = user;\r\n        this.id = id;\r\n        this.content = content;\r\n        this.title = title;\r\n        this.context = context;\r\n    }\r\n\r\n    public Comment(){};\r\n\r\n    @Override\r\n    public java.lang.String toString() {\r\n        return \"Comment{\" +\r\n                \"user=\" + user +\r\n                \", id=\" + id +\r\n                \", content='\" + content + '\\'' +\r\n                \", title='\" + title + '\\'' +\r\n                \", context='\" + context + '\\'' +\r\n                '}';\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/Comment.java b/src/pojo/Comment.java
+--- a/src/pojo/Comment.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/pojo/Comment.java	(date 1628688522687)
+@@ -9,17 +9,17 @@
+  */
+ public class Comment {
+ 
+-    private String user; //发表的用户
++    private User user; //发表的用户
+     private int id; //发表事件
+     private java.lang.String content; //内容
+     private java.lang.String title; //标题
+     private java.lang.String context; //
+ 
+-    public String getUser() {
++    public User getUser() {
+         return user;
+     }
+ 
+-    public void setUser(String user) {
++    public void setUser(User user) {
+         this.user = user;
+     }
+ 
+@@ -55,7 +55,7 @@
+         this.context = context;
+     }
+ 
+-    public Comment(String user, int id, java.lang.String content, java.lang.String title, java.lang.String context) {
++    public Comment(User user, int id, java.lang.String content, java.lang.String title, java.lang.String context) {
+         this.user = user;
+         this.id = id;
+         this.content = content;
+Index: src/pojo/ResultMessage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\n\r\n/**\r\n * ResultMessage 结果方法用于：CharRoom 服务器发送给浏览器\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-05-21\r\n */\r\npublic class ResultMessage {\r\n    private boolean isSystem;\r\n    private String fromName;\r\n    private Object message;\r\n\r\n    public boolean isSystem() {\r\n        return isSystem;\r\n    }\r\n\r\n    public void setIsSystem(boolean system) {\r\n        isSystem = system;\r\n    }\r\n\r\n    public String getFromName() {\r\n        return fromName;\r\n    }\r\n\r\n    public void setFromName(String fromName) {\r\n        this.fromName = fromName;\r\n    }\r\n\r\n    public Object getMessage() {\r\n        return message;\r\n    }\r\n\r\n    public void setMessage(Object message) {\r\n        this.message = message;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/ResultMessage.java b/src/pojo/ResultMessage.java
+--- a/src/pojo/ResultMessage.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/pojo/ResultMessage.java	(date 1628688522822)
+@@ -10,7 +10,7 @@
+  */
+ public class ResultMessage {
+     private boolean isSystem;
+-    private String fromName;
++    private User fromName;
+     private Object message;
+ 
+     public boolean isSystem() {
+@@ -21,11 +21,11 @@
+         isSystem = system;
+     }
+ 
+-    public String getFromName() {
++    public User getFromName() {
+         return fromName;
+     }
+ 
+-    public void setFromName(String fromName) {
++    public void setFromName(User fromName) {
+         this.fromName = fromName;
+     }
+ 
+Index: src/pojo/Message.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\n/**\r\n * 用于：ChatRoom      浏览器发送给服务器\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-05-21\r\n */\r\npublic class Message {\r\n    private String toName;\r\n    private String message;\r\n    private boolean isGroup;\r\n\r\n    public boolean isGroup() {\r\n        return isGroup;\r\n    }\r\n\r\n    public void setGroup(boolean group) {\r\n        isGroup = group;\r\n    }\r\n\r\n    public String getToName() {\r\n        return toName;\r\n    }\r\n\r\n    public void setToName(String toName) {\r\n        this.toName = toName;\r\n    }\r\n\r\n    public String getMessage() {\r\n        return message;\r\n    }\r\n\r\n    public void setMessage(String message) {\r\n        this.message = message;\r\n    }\r\n}\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/Message.java b/src/pojo/Message.java
+--- a/src/pojo/Message.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/pojo/Message.java	(date 1628688522741)
+@@ -8,8 +8,8 @@
+  * @date 2021-08-05-21
+  */
+ public class Message {
+-    private String toName;
+-    private String message;
++    private User toName;
++    private User message;
+     private boolean isGroup;
+ 
+     public boolean isGroup() {
+@@ -20,19 +20,19 @@
+         isGroup = group;
+     }
+ 
+-    public String getToName() {
++    public User getToName() {
+         return toName;
+     }
+ 
+-    public void setToName(String toName) {
++    public void setToName(User toName) {
+         this.toName = toName;
+     }
+ 
+-    public String getMessage() {
++    public User getMessage() {
+         return message;
+     }
+ 
+-    public void setMessage(String message) {
++    public void setMessage(User message) {
+         this.message = message;
+     }
+ }
+Index: src/pojo/Article.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package pojo;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-07-21\r\n */\r\npublic class Article {\r\n    private int id; //学号\r\n    private String title; //标题\r\n    private String author; //作者\r\n    private String content; //内容\r\n    private int commentCount; //评论数\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public void setTitle(String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public String getAuthor() {\r\n        return author;\r\n    }\r\n\r\n    public void setAuthor(String author) {\r\n        this.author = author;\r\n    }\r\n\r\n    public String getContent() {\r\n        return content;\r\n    }\r\n\r\n    public void setContent(String content) {\r\n        this.content = content;\r\n    }\r\n\r\n    public int getCommentCount() {\r\n        return commentCount;\r\n    }\r\n\r\n    public void setCommentCount(int commentCount) {\r\n        this.commentCount = commentCount;\r\n    }\r\n\r\n    public Article() {\r\n    }\r\n\r\n    public Article(int id, String title, String author, String content, int commentCount) {\r\n        this.id = id;\r\n        this.title = title;\r\n        this.author = author;\r\n        this.content = content;\r\n        this.commentCount = commentCount;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/pojo/Article.java b/src/pojo/Article.java
+--- a/src/pojo/Article.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/pojo/Article.java	(date 1628688522676)
+@@ -9,9 +9,9 @@
+  */
+ public class Article {
+     private int id; //学号
+-    private String title; //标题
+-    private String author; //作者
+-    private String content; //内容
++    private User title; //标题
++    private User author; //作者
++    private User content; //内容
+     private int commentCount; //评论数
+ 
+     public int getId() {
+@@ -22,27 +22,27 @@
+         this.id = id;
+     }
+ 
+-    public String getTitle() {
++    public User getTitle() {
+         return title;
+     }
+ 
+-    public void setTitle(String title) {
++    public void setTitle(User title) {
+         this.title = title;
+     }
+ 
+-    public String getAuthor() {
++    public User getAuthor() {
+         return author;
+     }
+ 
+-    public void setAuthor(String author) {
++    public void setAuthor(User author) {
+         this.author = author;
+     }
+ 
+-    public String getContent() {
++    public User getContent() {
+         return content;
+     }
+ 
+-    public void setContent(String content) {
++    public void setContent(User content) {
+         this.content = content;
+     }
+ 
+@@ -57,7 +57,7 @@
+     public Article() {
+     }
+ 
+-    public Article(int id, String title, String author, String content, int commentCount) {
++    public Article(int id, User title, User author, User content, int commentCount) {
+         this.id = id;
+         this.title = title;
+         this.author = author;
+Index: src/service/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package service;\r\n\r\n\r\nimport pojo.String;\r\n\r\npublic interface UserService {\r\n    /**\r\n     * 注册用户\r\n     * @param user\r\n     */\r\n    public void registUser(String user);\r\n\r\n    /**\r\n     * 登录\r\n     * @param user\r\n     * @return 如果返回null，说明登录失败，返回有值，是登录成功\r\n     */\r\n    public String login(String user);\r\n\r\n    /**\r\n     * 检查 用户名是否可用\r\n     * @param username\r\n     * @return 返回true表示用户名已存在，返回false表示用户名可用\r\n     */\r\n    public boolean existsUsername(java.lang.String username);\r\n\r\n    /**\r\n     * 查找学生所对应的小组好以及教师名字\r\n     * @param studentId\r\n     * @return 如果返回Null，说明没有找到\r\n     */\r\n    public java.lang.String queryGroupIdAndTeacherName(int studentId)throws Exception;\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/service/UserService.java b/src/service/UserService.java
+--- a/src/service/UserService.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/service/UserService.java	(date 1628688522807)
+@@ -1,21 +1,21 @@
+ package service;
+ 
+ 
+-import pojo.String;
++import pojo.User;
+ 
+ public interface UserService {
+     /**
+      * 注册用户
+      * @param user
+      */
+-    public void registUser(String user);
++    public void registUser(User user);
+ 
+     /**
+      * 登录
+      * @param user
+      * @return 如果返回null，说明登录失败，返回有值，是登录成功
+      */
+-    public String login(String user);
++    public User login(User user);
+ 
+     /**
+      * 检查 用户名是否可用
+Index: src/service/impl/UserServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package service.impl;\r\n\r\n\r\nimport com.google.gson.Gson;\r\nimport com.google.gson.JsonObject;\r\nimport com.google.gson.JsonParser;\r\nimport com.mongodb.BasicDBObject;\r\nimport com.mongodb.client.FindIterable;\r\nimport com.mongodb.client.MongoCollection;\r\nimport com.mongodb.client.MongoCursor;\r\nimport com.mongodb.client.MongoDatabase;\r\nimport dao.UserDao;\r\nimport dao.impl.UserDaoImpl;\r\nimport org.bson.Document;\r\nimport pojo.String;\r\nimport service.UserService;\r\nimport utils.*;\r\n\r\nimport java.util.Map;\r\n\r\npublic class UserServiceImpl implements UserService {\r\n\r\n    private UserDao userDao = new UserDaoImpl();\r\n\r\n    @Override\r\n    public void registUser(String user) {\r\n        userDao.saveUser(user);\r\n    }\r\n\r\n    @Override\r\n    public String login(String user) {\r\n        return userDao.queryUserByUsernameAndPassword(user.getUsername(), user.getPassword());\r\n    }\r\n\r\n    @Override\r\n    public boolean existsUsername(java.lang.String username) {\r\n\r\n        if (userDao.queryUserByUsername(username) == null) {\r\n           // 等于null,说明没查到，没查到表示可用\r\n           return false;\r\n        }\r\n\r\n        return true;\r\n\r\n    }\r\n\r\n    @Override\r\n    public java.lang.String queryGroupIdAndTeacherName(int studentId) throws Exception{\r\n        MongoDao mongoDao = new MongoDaoImpl();\r\n        MongoDatabase db = MongoHelper.getMongoDataBase();\r\n        BasicDBObject studentIdObj = new BasicDBObject(\"id\",studentId);\r\n        java.lang.String table = \"buptgroup\";\r\n        MongoCollection<Document> collection = db.getCollection(table);\r\n        FindIterable<Document> iterable = collection.find(studentIdObj);\r\n        Map<java.lang.String, Object> jsonStrToMap = null;\r\n        MongoCursor<Document> cursor = iterable.iterator();\r\n        while (cursor.hasNext()) {\r\n            Document user = cursor.next();\r\n            java.lang.String jsonString = user.toJson();\r\n            jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);// 这里用到我自己写的方法,主要是包json字符串转换成map格式,为后面做准备,方法放在后面\r\n        }\r\n        System.out.println(jsonStrToMap);\r\n        java.lang.String json = new Gson().toJson(jsonStrToMap);\r\n        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();\r\n        return jsonObject.get(\"groupId\").getAsString() + jsonObject.get(\"teacherUsername\").getAsString();\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/service/impl/UserServiceImpl.java b/src/service/impl/UserServiceImpl.java
+--- a/src/service/impl/UserServiceImpl.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/service/impl/UserServiceImpl.java	(date 1628688522656)
+@@ -12,7 +12,7 @@
+ import dao.UserDao;
+ import dao.impl.UserDaoImpl;
+ import org.bson.Document;
+-import pojo.String;
++import pojo.User;
+ import service.UserService;
+ import utils.*;
+ 
+@@ -23,12 +23,12 @@
+     private UserDao userDao = new UserDaoImpl();
+ 
+     @Override
+-    public void registUser(String user) {
++    public void registUser(User user) {
+         userDao.saveUser(user);
+     }
+ 
+     @Override
+-    public String login(String user) {
++    public User login(User user) {
+         return userDao.queryUserByUsernameAndPassword(user.getUsername(), user.getPassword());
+     }
+ 
+Index: out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Postblog.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.User\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/7/27\r\n  Time: 11:28 上午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<html>\r\n<head>\r\n<%--    基础地址--%>\r\n    <base href=\"../../\">\r\n    <!--    vue-基础包导入-->\r\n    <script src=\"static/vue/vue.js\" type=\"text/javascript\" charset=\"utf-8\"></script>\r\n    <script src=\"https://cdn.staticfile.org/vue/2.4.2/vue.min.js\"></script>\r\n    <!--    vue-resource 包导入-->\r\n    <script src=\"https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js\"></script>\r\n<%--    表单样式加入--%>\r\n    <link href='https://fonts.googleapis.com/css?family=Days+One' rel='stylesheet' type='text/css'><link rel=\"stylesheet\" href=\"static/css/list-style.css\">\r\n<%--    雪落背景加入--%>\r\n    <link rel=\"stylesheet\" href=\"static/css/snow-style.css\">\r\n    <title>任务发布</title>\r\n<%--    keyword card--%>\r\n    <style>\r\n        keyword{\r\n            display: flex;\r\n\r\n        }\r\n        div.polaroid {\r\n            width: 250px;\r\n            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\r\n            text-align: center;\r\n            padding: 10px;\r\n        }\r\n\r\n        div.keyword {\r\n            background-color: #ecf0f1;\r\n            padding: 10px;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n<%@include file=\"headleader.jsp\"%>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"snow\"></div>\r\n<div class=\"app-post\">\r\n<%-- 以上为背景   --%>\r\n    <h2>协同写作任务发布</h2>\r\n    <%--从session中获得user--%>\r\n    <%\r\n        User loginUser=(User)request.getSession().getAttribute(\"User\");\r\n    %>\r\n<%--    教师编辑，发布端--%>\r\n    <form method=\"post\" id=\"form\" v-if=\"!blog.submitted\">\r\n        <label >文章标题</label>\r\n        <input type=\"text\" name=\"title\" v-model=\"blog.title\" required/>\r\n    <br/>\r\n        <label>写作指导</label>\r\n        <textarea name=\"guide\" v-model=\"blog.guide\"></textarea>\r\n    <br/>\r\n        <label>写作关键词</label>\r\n<%--        <select v-model=\"blog.keyword\">--%>\r\n<%--        <option name=\"keyword\" v-for=\"keyword in keywords\">--%>\r\n<%--            {{keyword}}--%>\r\n<%--        </option>--%>\r\n<%--        </select>--%>\r\n    <br/>\r\n<%--      关键词展示样式  --%>\r\n        <keyword>\r\n        <div class=\"polaroid\">\r\n            <img src=\"static/img/challenge.jpeg\" alt=\"Norway\" style=\"width:100%;height: 60%\">\r\n            <div class=\"keyword\">\r\n                Challenge<input type=\"radio\" checked=\"checked\" name=\"keyword\" value=\"Challenge\" v-model=\"blog.keyword\"/>\r\n            </div>\r\n        </div>\r\n        <div class=\"polaroid\">\r\n            <img src=\"static/img/funny.jpeg\" alt=\"Norway\" style=\"width:100%;height: 60%\">\r\n            <div class=\"keyword\">\r\n                Funny<input type=\"radio\" checked=\"checked\" name=\"keyword\" value=\"Funny\" v-model=\"blog.keyword\"/>\r\n            </div>\r\n        </div>\r\n            <div class=\"polaroid\">\r\n                <img src=\"static/img/trying.jpeg\" alt=\"Norway\" style=\"width:100%;height: 60% \">\r\n                <div class=\"keyword\">\r\n                    Trying<input type=\"radio\" checked=\"checked\" name=\"keyword\" value=\"Trying\" v-model=\"blog.keyword\"/>\r\n                </div>\r\n            </div>\r\n            <div class=\"polaroid\">\r\n                <img src=\"static/img/meaningful.jpeg\" alt=\"Norway\" style=\"width:100%;height: 60%\">\r\n                <div class=\"keyword\">\r\n                    Meaningful<input type=\"radio\" checked=\"checked\" name=\"keyword\" value=\" Meaningful\" v-model=\"blog.keyword\"/>\r\n                </div>\r\n            </div>\r\n        </keyword>\r\n        <br/>\r\n<%--        搜索样式--%>\r\n        <input type=\"text\" v-model=\"search\" placeholder=\"搜索学生\">\r\n<%--    表格样式    --%>\r\n            <dl class=\"list maki\">\r\n                <dt>合作学生:</dt>\r\n                <dd v-for=\"student,index in filterStudents.slice(0,10)\" >\r\n                    <a>{{student.username}}<input  :value=\"student.username\" name=\"writers\" type=\"checkbox\"  v-model=\"blog.writers\"></a>\r\n                </dd>\r\n            </dl>\r\n            <a href=\"#\" class=\"toggle\">Toggle</a>\r\n\r\n<%--        --%>\r\n        <button v-on:click.prevent=\"Post\">发布任务</button>\r\n    </form>\r\n    <h3 id=\"ok\" v-if=\"blog.submitted\">任务发布成功！</h3>\r\n<%--    展示端     --%>\r\n    <div id=\"preview\">\r\n        <h3>任务总览</h3>\r\n        <p>文章标题:{{blog.title}}</p>\r\n        <p>写作指导:</p>\r\n        <p>{{blog.guide}}</p>\r\n        <p>关键字</p>\r\n        <p>{{blog.keyword}}</p>\r\n        <p>参与学生</p>\r\n        <ul>\r\n            <li v-for=\"writer in blog.writers\">\r\n                {{writer}}\r\n            </li>\r\n        </ul>\r\n    </div>\r\n\r\n</div>\r\n<!-- partial -->\r\n<%--list--%>\r\n<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>\r\n<script  src=\"static/script/list-script.js\"></script>\r\n<%----%>\r\n<script type=\"text/javascript\">\r\n    var vm = new Vue({\r\n        el: \".app-post\" ,\r\n        data:{\r\n            blog:{\r\n                username:<%=loginUser.getUsername()%>,\r\n                title:\"hi-student\",\r\n                guide:\"别水字数\",\r\n                keyword:\"\",\r\n                categories:[],\r\n                writers:[],\r\n                submitted:false\r\n            },\r\n            search:\"\",\r\n            students:[],\r\n            keywords:[\"fluent\",\"interesting\",\"meaningful\"]\r\n        },\r\n        methods:{\r\n            Post:function(){\r\n                var misson = {username:this.blog.username,\r\n                                title: this.blog.title,\r\n                                guide:this.blog.guide,\r\n                                keyword: this.blog.keyword,\r\n                                writers: this.blog.writers}\r\n                this.$http.post(\"addmissonservlet\",JSON.stringify(misson)).then(function(data){\r\n                    console.log(data);\r\n                    this.blog.submitted=true;\r\n                })\r\n            },\r\n        },\r\n        created(){\r\n            this.$http.get('getallstudents')\r\n                .then(function (data) {\r\n                    this.students = data.body;\r\n                })\r\n        },\r\n        computed:{\r\n            filterStudents:function () {\r\n                return this.students.filter((student)=>{\r\n                    return student.title.match(this.search)\r\n                })\r\n            }\r\n        }\r\n\r\n    })\r\n</script>\r\n\r\n<%--样式布局--%>\r\n<style>\r\n    #add-blog *{\r\n        box-sizing: border-box;\r\n    }\r\n    #add-blog{\r\n        margin:20px auto;\r\n        max-width:400px;\r\n        padding:20px;\r\n\r\n    }\r\n    label{\r\n        display: block;\r\n        color: #ecf0f1;\r\n        margin:20px 0 10px;\r\n    }\r\n    input[type=\"text\"],textarea,select{\r\n        display:block;\r\n        width:60%;\r\n        padding:8px;\r\n        border-radius: 10px;\r\n    }\r\n    textarea{\r\n        height:200px;\r\n    }\r\n    #checkboxes label{\r\n        display:inline-block;\r\n        margin-top:0;\r\n    }\r\n    #checkboxes input{\r\n        display:inline-block;\r\n        margin-right:10px;\r\n    }\r\n\r\n    button{\r\n        display:block;\r\n        margin:20px 0;\r\n        background:#ffe57d;\r\n        color:gray;\r\n        border:0;\r\n        padding: 14px;\r\n        border-radius:20px;\r\n        font-size:18px;\r\n        cursor:pointer;\r\n    }\r\n    #preview{\r\n        padding:10px 20px;\r\n        border:1px dotted #666666;\r\n        margin: 30px 0;\r\n    }\r\n    h3{\r\n        margin-top:10px ;\r\n        color: white;\r\n    }\r\n    h2{\r\n        color: white;\r\n    }\r\n    p{\r\n        color: #ecf0f1;\r\n    }\r\n    li{\r\n        color:#ecf0f1;\r\n    }\r\n    button{\r\n        transition: transform 1s;\r\n    }\r\n    button:hover{\r\n        transform: rotate(360deg);\r\n    }\r\n</style>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Postblog.jsp b/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Postblog.jsp
+--- a/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Postblog.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Postblog.jsp	(date 1628676762231)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.User" %><%--
++<%@ page import="pojo.String" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/7/27
+@@ -246,7 +246,7 @@
+     <h2>协同写作任务发布</h2>
+     <%--从session中获得user--%>
+     <%
+-        User loginUser=(User)request.getSession().getAttribute("User");
++        String loginUser=(String)request.getSession().getAttribute("User");
+     %>
+ <%--    教师编辑，发布端--%>
+     <form method="post" id="form" v-if="!blog.submitted">
+Index: src/web/GetAllStudents.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\nimport dao.impl.UserDaoImpl;\r\nimport pojo.String;\r\nimport utils.JsonConverter;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\nimport java.io.PrintWriter;\r\nimport java.util.List;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-05-22\r\n */\r\n@WebServlet(\"/getallstudents\")\r\npublic class GetAllStudents extends HttpServlet {\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        try {\r\n            resp.setContentType(\"application/json;charset=utf-8\");\r\n            PrintWriter out = resp.getWriter();\r\n            //连接数据库,获取用户\r\n            List<String> users= new UserDaoImpl().querybyIdentity(\"student\");\r\n            JsonConverter converter = new JsonConverter();\r\n            //将学生转换为json类型\r\n            java.lang.String output = converter.studentJson(users);\r\n            out.print(output);\r\n            System.out.println(output);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        super.doGet(req, resp);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/GetAllStudents.java b/src/web/GetAllStudents.java
+--- a/src/web/GetAllStudents.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/web/GetAllStudents.java	(date 1628688522681)
+@@ -1,7 +1,7 @@
+ package web;
+ 
+ import dao.impl.UserDaoImpl;
+-import pojo.String;
++import pojo.User;
+ import utils.JsonConverter;
+ 
+ import javax.servlet.ServletException;
+@@ -28,7 +28,7 @@
+             resp.setContentType("application/json;charset=utf-8");
+             PrintWriter out = resp.getWriter();
+             //连接数据库,获取用户
+-            List<String> users= new UserDaoImpl().querybyIdentity("student");
++            List<User> users= new UserDaoImpl().querybyIdentity("student");
+             JsonConverter converter = new JsonConverter();
+             //将学生转换为json类型
+             java.lang.String output = converter.studentJson(users);
+Index: src/web/ShowNewsServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web;\r\n\r\nimport pojo.String;\r\nimport service.impl.NewsServiceImpl;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\nimport java.io.PrintWriter;\r\n\r\n/**\r\n * 类<code>Doc</code>用于：TODO\r\n *\r\n * @author LuoSue\r\n * @version 1.0\r\n * @date 2021-08-11-14\r\n */\r\n@WebServlet(\"/shownewsservlet\")\r\npublic class ShowNewsServlet extends HttpServlet {\r\n    @Override\r\n    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        try {\r\n            resp.setContentType(\"application/json;charset=utf-8\");\r\n            PrintWriter out = resp.getWriter();\r\n            String loginUser=(String)req.getSession().getAttribute(\"User\");\r\n            //连接数据库,获取消息\r\n            java.lang.String NewsList = new NewsServiceImpl().loadNews(loginUser.getStudentNo());\r\n            out.print(NewsList);\r\n            System.out.println(NewsList);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {\r\n        super.doGet(req, resp);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/web/ShowNewsServlet.java b/src/web/ShowNewsServlet.java
+--- a/src/web/ShowNewsServlet.java	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/src/web/ShowNewsServlet.java	(date 1628688522731)
+@@ -1,6 +1,6 @@
+ package web;
+ 
+-import pojo.String;
++import pojo.User;
+ import service.impl.NewsServiceImpl;
+ 
+ import javax.servlet.ServletException;
+@@ -25,7 +25,7 @@
+         try {
+             resp.setContentType("application/json;charset=utf-8");
+             PrintWriter out = resp.getWriter();
+-            String loginUser=(String)req.getSession().getAttribute("User");
++            User loginUser=(User)req.getSession().getAttribute("User");
+             //连接数据库,获取消息
+             java.lang.String NewsList = new NewsServiceImpl().loadNews(loginUser.getStudentNo());
+             out.print(NewsList);
+Index: out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Group.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.User\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/8/6\r\n  Time: 10:50 上午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<html>\r\n<head>\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, inital-scale=1.0\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\r\n    <title>小组管理</title>\r\n    <%--    基础地址--%>\r\n    <base href=\"../../\">\r\n    <%--    vue包导入--%>\r\n    <script src=\"static/vue/vue.js\" type=\"text/javascript\" charset=\"utf-8\"></script>\r\n    <script src=\"https://cdn.staticfile.org/vue/2.4.2/vue.min.js\"></script>\r\n    <!--    vue-resource 包导入-->\r\n    <script src=\"https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js\"></script>\r\n    <%-- bootstrap导入   --%>\r\n    <link rel=\"stylesheet\" href=\"static/css/bootstrap.css\">\r\n</head>\r\n<body>\r\n<%--引入导航栏--%>\r\n<%@include file=\"headleader.jsp\"%>\r\n<%--从session中获得user    --%>\r\n<div class=\"app\">\r\n    <div id=\"GroupManager\">\r\n        <ul class=\"list-group\" v-for=\"group in groups\" :key=\"group.id\">\r\n            <li class=\"list-group-item\" v-for=\"student in group\" :key=\"student.id\">\r\n\r\n                <span class=\"badge\">小组号：{{student.groupId}}</span>\r\n                学号：{{ student.id }}\r\n                 用户名：{{ student.username }}\r\n            </li>\r\n            <br/>\r\n        </ul>\r\n\r\n        <div>\r\n            <div class=\"form-group\">\r\n                <label>学号：</label>\r\n                <input type=\"text\" class=\"form-control\" v-model=\"student.id\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label>学生用户名：</label>\r\n                <textarea class=\"form-control\" v-model=\"student.username\"></textarea>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label>小组号：</label>\r\n                <select class=\"form-control\" v-model=\"student.groupId\">\r\n                    <option value=\"1\">1</option>\r\n                    <option value=\"2\">2</option>\r\n                    <option value=\"3\">3</option>\r\n                    <option value=\"4\">4</option>\r\n                    <option value=\"5\">5</option>\r\n                    <option value=\"6\">6</option>\r\n                    <option value=\"7\">7</option>\r\n                    <option value=\"8\">8</option>\r\n                    <option value=\"9\">9</option>\r\n                    <option value=\"10\">10</option>\r\n                    <option value=\"11\">11</option>\r\n                    <option value=\"12\">12</option>\r\n                </select>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <input type=\"button\" value=\"确定\" class=\"btn btn-primary\" @click=\"PostStudent\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<%\r\n    User loginUser=(User)request.getSession().getAttribute(\"User\");\r\n%>\r\n<script type=\"text/javascript\">\r\n    var vm = new Vue({\r\n        el: \".app\" ,\r\n        data:{\r\n\r\n            students:[],\r\n            groups:[\r\n                [\r\n                {studentId:\"2019212001\",studentName:\"张四\",group:1},\r\n                // {studentId:\"2019212002\",studentName:\"张二\",group:1},\r\n                // {studentId:\"2019212003\",studentName:\"张三\",group:1}\r\n            ],\r\n                [\r\n                {studentId:\"2019212004\",studentName:\"李一\",group:2},\r\n                {studentId:\"2019212005\",studentName:\"李二\",group:2},\r\n                {studentId:\"2019212006\",studentName:\"李三\",group:2}\r\n            ],\r\n                [\r\n                {studentId:\"2019212007\",studentName:\"王一\",group:3},\r\n                {studentId:\"2019212008\",studentName:\"王二\",group:3},\r\n                // {studentId:\"2019212009\",studentName:\"王三\",group:3}\r\n            ]],\r\n            teacherUsername:\"\",\r\n            student:{\r\n                username:\"\",\r\n                id: Number(),\r\n                groupId: Number()\r\n            }\r\n        },\r\n        methods: {\r\n            //学生注册\r\n            PostStudent(){\r\n                if (this.student.groupId !=''&&this.student.username!=''&&this.studentId!=''){\r\n                    var student = {\r\n                        id: Number(this.student.id),\r\n                        username: this.student.username,\r\n                        groupId: Number(this.student.groupId),\r\n                        teacherUsername: '<%=loginUser.getUsername()%>',\r\n                        speeches: Number(0)\r\n                    }\r\n                    this.$http.post(\"addstudenttogroupservlet\",JSON.stringify(student)).then(function (data) {\r\n                        console.log(student)\r\n                    })\r\n\r\n                }\r\n            },\r\n            //学生加载\r\n            LoadStudents(){\r\n                this.$http.get(\"showgroupsservlet\").then(function(data){\r\n                    this.groups=data.body;\r\n                    console.log(this.groups);\r\n                })\r\n            }\r\n            // //评论发布\r\n            // postComments() {\r\n            //     if (this.user != '' && this.content != '') {\r\n            //         var comment = {\r\n            //             id: Date.now(),\r\n            //             user: this.user,\r\n            //             content: this.content,\r\n            //             title: this.title,\r\n            //             context: this.context\r\n            //         }\r\n            //         this.$http.post('addcommentsevlet', JSON.stringify(comment)).then(function (data) {\r\n            //             console.log(data);\r\n            //             console.log(comment)\r\n            //         })\r\n            //         //\r\n            //         // var list = JSON.parse(localStorage.getItem('cmts') || '[]')\r\n            //         // list.unshift(comment)\r\n            //         // localStorage.setItem('cmts', JSON.stringify(list))\r\n            //         // this.user = this.content = ''\r\n            //         // this.$emit('func')\r\n            //         this.list=list\r\n            //     }\r\n            // },\r\n            // loadComments(){\r\n            //     //var list = JSON.parse(localStorage.getItem('cmts') || '[]')\r\n            //     //this.list = list\r\n            //     this.$http.get(\"showcommentservlet\")\r\n            //         .then(function (data) {\r\n            //             this.groups = data.body;\r\n            //             console.log(this.groups);\r\n            //         })\r\n            // }\r\n        },\r\n        created(){\r\n            this.LoadStudents();\r\n        }\r\n\r\n    })\r\n</script>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Group.jsp b/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Group.jsp
+--- a/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Group.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/out/artifacts/BuptCreationEE_war_exploded/pages/Teacher/Group.jsp	(date 1628676762314)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.User" %><%--
++<%@ page import="pojo.String" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/8/6
+@@ -71,7 +71,7 @@
+     </div>
+ </div>
+ <%
+-    User loginUser=(User)request.getSession().getAttribute("User");
++    String loginUser=(String)request.getSession().getAttribute("User");
+ %>
+ <script type="text/javascript">
+     var vm = new Vue({
+Index: web/pages/Student/ChatRoom.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page import=\"pojo.String\" %><%--\r\n  Created by IntelliJ IDEA.\r\n  User: tigers\r\n  Date: 2021/8/7\r\n  Time: 3:02 下午\r\n  To change this template use File | Settings | File Templates.\r\n--%>\r\n<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\r\n<html>\r\n<head>\r\n    <title>聊天室</title>\r\n    <!--    基础路径-->\r\n    <base href=\"../../\">\r\n    <!--    vue-基础包导入-->\r\n    <script src=\"static/vue/vue.js\" type=\"text/javascript\" charset=\"utf-8\"></script>\r\n    <script src=\"https://cdn.staticfile.org/vue/2.4.2/vue.min.js\"></script>\r\n    <!--    vue-resource 包导入-->\r\n    <script src=\"https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js\"></script>\r\n    <!--    vue 路由功能导入-->\r\n    <script src=\"https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js\"></script>\r\n    <%--jquery包    --%>\r\n    <script src=\"https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js\"></script>\r\n    <%-- bootstrap布局导入   --%>\r\n    <link rel=\"stylesheet\" href=\"static/css/bootstrap.css\">\r\n</head>\r\n<style>\r\n<%--    美化排版--%>\r\n    .User{\r\n        padding: 7px;\r\n        float: left;\r\n    }\r\n    .UState{\r\n        padding: 7px;\r\n        float: right;\r\n    }\r\n    .Prompt{\r\n        padding: 7px;\r\n        align-content: center;\r\n        color: lightskyblue;\r\n    }\r\n.bubble-left span{\r\n    float: left;\r\n    background-color: #999999;\r\n    padding: 5px 8px;\r\n    display: inline-block;\r\n    border-radius: 4px;\r\n    margin:10px 0 10px 10px;\r\n    position: relative;\r\n\r\n}\r\n.bubble-left span::after{\r\n    content: '';\r\n    border: 8px solid #ffffff00;\r\n    border-right: 8px solid #999999;\r\n    position: absolute;\r\n    top: 6px;\r\n    left: -16px;\r\n}\r\n.bubble-right span{\r\n    white-space: pre-line;\r\n    float: right;\r\n    background-color: #c6feeb;\r\n    padding: 5px 8px;\r\n    display: inline-block;\r\n    border-radius: 4px;\r\n    margin:10px 0 10px 10px;\r\n    position: relative;\r\n    right: 16px;\r\n}\r\n.bubble-right span::after{\r\n    content: '';\r\n    border: 8px solid #ffffff00;\r\n    border-left: 8px solid #c6feeb;\r\n    position: absolute;\r\n    top: 6px;\r\n    right: -16px;\r\n}\r\n.submit {\r\n    border: none;\r\n    color: white;\r\n    padding: 8px 16px;\r\n    text-align: center;\r\n    text-decoration: none;\r\n    display: inline-block;\r\n    font-size: 16px;\r\n    margin: 4px 2px;\r\n    -webkit-transition-duration: 0.4s; /* Safari */\r\n    transition-duration: 0.4s;\r\n    cursor: pointer;\r\n    background-color: white;\r\n    color: black;\r\n    border: 2px solid #008CBA;\r\n}\r\n\r\n.submit:hover {\r\n    background-color: #008CBA;\r\n    color: white;\r\n}\r\n<%--    格式排版--%>\r\n    #contains{\r\n        background-color: #666666;\r\n        width: 1000px;\r\n        height: 700px;\r\n        margin: auto;\r\n    }\r\n    #username{\r\n        color: #ecf0f1;\r\n        background-color: #666666;\r\n        width: 1000px;\r\n        height: 40px;\r\n        border-radius: 50px 50px 0px 0px;\r\n    }\r\n    #Inchat{\r\n        text-align: center;\r\n        background-color: #666666;\r\n        width: 1000px;\r\n        height: 50px;\r\n    }\r\n    #left{\r\n        border: 1px solid #8c8c8c;\r\n        background-color: white;\r\n        width: 700px;\r\n        height: 640px;\r\n        float: left;\r\n        position: relative;\r\n    }\r\n    #content{\r\n        border: 1px solid #8c8c8c;\r\n        background-color: white;\r\n        width: 700px;\r\n        height: 400px;\r\n        /*display: none;*/\r\n        visibility: hidden;\r\n        overflow-y: scroll;\r\n    }\r\n    #right{\r\n        border: 1px solid #8c8c8c;\r\n        background-color: #ecf0f1;\r\n        width: 300px;\r\n        height: 640px;\r\n        float: right;\r\n    }\r\n    #hyList{\r\n        border: 1px solid #8c8c8c;\r\n        height: 270px;\r\n        overflow-y: scroll;\r\n        background: antiquewhite;\r\n    }\r\n    #xtList{\r\n        border: 1px solid #8c8c8c;\r\n        height: 270px;\r\n        overflow-y: scroll;\r\n        background: antiquewhite;\r\n    }\r\n    #input{\r\n        border: 1px solid #8c8c8c;\r\n        margin-bottom: 0px;\r\n        position: absolute;\r\n        bottom: 0px;\r\n    }\r\n    #mes_left{\r\n        float: left;\r\n        border: 2px aqua;\r\n        max-width: 490px;\r\n    }\r\n    #mes_right{\r\n        float: right;\r\n        border: 2px aqua;\r\n        max-width: 490px;\r\n    }\r\n    #hy{\r\n        display: block;\r\n        width: 300px;\r\n    }\r\n    textarea {\r\n        resize: none;\r\n        border: none;\r\n        outline: none\r\n    }\r\n</style>\r\n<body>\r\n<%@include file=\"headleader.jsp\"%>\r\n<br/>\r\n<br/>\r\n<%\r\n    String loginUser=(String)request.getSession().getAttribute(\"User\");\r\n%>\r\n<div id = \"contains\">\r\n    <div id=\"username\">\r\n        <div class=\"User\"><h3>用户:</h3></div>\r\n        <div class=\"UState\">服务器未连接到终端</div>\r\n    </div>\r\n\r\n    <div id=\"Inchat\">\r\n\r\n        <div class=\"Prompt\">没有聊天对象</div>\r\n    </div>\r\n    <div id=\"left\">\r\n<%--    聊天展示区    --%>\r\n        <div id=\"content\">\r\n\r\n        </div>\r\n<%--输入区--%>\r\n        <div id=\"input\">\r\n            <textarea type=\"text\" id=\"input_text\" style=\"width: 695px;height: 200px;\"></textarea>\r\n            <button id=\"submit\" class=\"submit\" style=\"float: right;\">发送</button>\r\n        </div>\r\n    </div>\r\n    <div id=\"right\">\r\n        <p id=\"hy\" style=\"text-align: center;\">好友列表</p>\r\n        <a style=\"text-align: center;display: block\" onclick='showGroupChat()'>小组聊天室</a></br>\r\n        <div id=\"hyList\">\r\n\r\n        </div>\r\n        <p id=\"xt\" style=\"text-align: center\">系统消息</p>\r\n        <div id=\"xtList\">\r\n\r\n        </div>\r\n    </div>\r\n</div>\r\n<br/>\r\n<br/>\r\n</body>\r\n<%--jquery管理区域--%>\r\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n<script>\r\n    var Count=0;\r\n    var toName;\r\n    var username;\r\n    var Group=true;\r\n    var UserGroup=\"1teacher168\";//未初始化\r\n    var isMe=false;\r\n    //点击好友名称展示相关消息\r\n    window.onbeforeunload = function(event) {\r\n        var count = {count:Count,id:Number(<%=loginUser.getStudentNo()%>)};\r\n        $.post(\"updatecountservlet\",JSON.stringify(count)).then(function(data) {\r\n            console.log(data);\r\n        });\r\n        //count归零\r\n        Count=0;\r\n    };\r\n    function showChat(name){\r\n        Group=false;\r\n        toName = name;\r\n        //现在聊天框\r\n       //立刻清空聊天框\r\n        $(\"#content\").html(\"\");\r\n        $(\"#content\").css(\"visibility\",\"visible\");\r\n        $(\"#Inchat\").html(\"<div class=\\\"Prompt\\\">当前正与\"+toName+\"聊天</div>\");\r\n        //从sessionStorage中获取历史信息\r\n        var chatData = sessionStorage.getItem(toName);\r\n        if (chatData != null){\r\n            $(\"#content\").html(chatData);\r\n        }\r\n    }\r\n    function showGroupChat(name){\r\n        Group=true;\r\n        //现在聊天框\r\n        //立刻清空聊天框\r\n        $(\"#content\").html(\"\");\r\n        $(\"#content\").css(\"visibility\",\"visible\");\r\n        $(\"#Inchat\").html(\"<div class=\\\"Prompt\\\">当前正与\"+\"组内所有成员\"+\"聊天</div>\");\r\n        //从sessionStorage中获取群聊的历史信息\r\n        var chatData = sessionStorage.getItem(UserGroup);\r\n        if (chatData != null){\r\n            $(\"#content\").html(chatData);\r\n        }\r\n    }\r\n    $(function () {\r\n        $.ajax({\r\n            //从getUsername处获得用户名\r\n            url:\"getUsername\",\r\n            type:\"get\",\r\n            //成功后的回调函数\r\n            <%\r\n        java.lang.String keyGroup = (java.lang.String)request.getSession().getAttribute(\"KeyGroup\");\r\n    %>\r\n            success:function (res) {\r\n                username = res;\r\n                UserGroup =  \"<%=keyGroup%>\";\r\n            },\r\n            async:false //同步请求，只有上面好了才会接着下面\r\n        });\r\n        //建立websocket连接\r\n        //获取host解决后端获取httpsession的空指针异常\r\n        var host = window.location.host;\r\n        var ws = new WebSocket(\"ws://\"+\"localhost:8080/BuptCreationEE_war_exploded\"+\"/chat\");\r\n        //建立连接之后\r\n        ws.onopen = function (evt) {\r\n            //在建立连接之后 需要做什么?\r\n            $(\"#username\").html(\"<div class=\\\"User\\\"><h3>用户:\"+username+\"</h3></div><div class=\\\"UState\\\" style=\\\"color: lawngreen \\\"><h3>在线</h3></div>\");\r\n        }\r\n        //接受消息后进行触发\r\n        ws.onmessage = function (evt) {\r\n            //获取服务端推送的消息\r\n            var dataStr = evt.data;\r\n            //将dataStr转换为json对象\r\n            var res = JSON.parse(dataStr);\r\n            console.log(\"得到消息\");\r\n            //判断是否是系统消息\r\n            if(res.system){\r\n                //系统消息\r\n                //1.好友列表展示\r\n                //2.系统广播的展示\r\n                //此处声明的变量是调试时命名的，可以直接合并\r\n                var names = res.message;\r\n                var userlistStr = \"\";\r\n                var broadcastListStr = \"\";\r\n                var temp01 = \"<a style=\\\"text-align: center; display: block;\\\" onclick='showChat(\\\"\";\r\n                var temp03 = \"\\\")'>\";\r\n                var temp04 = \"</a></br>\";\r\n                var temp = \"\";\r\n                for (var name of names){\r\n                    if (name != username){\r\n                        temp = temp01 + name + temp03 + name + temp04;\r\n                        userlistStr = userlistStr + temp;\r\n                        broadcastListStr += \"<p style='text-align: center'>\"+ name +\"上线了</p>\";\r\n                    }\r\n                }\r\n                console.log(\"系统消息\"+userlistStr);\r\n                //渲染好友列表和系统广播\r\n                $(\"#hyList\").html(userlistStr);\r\n                $(\"#xtList\").html(broadcastListStr);\r\n\r\n            }else {\r\n                //不是系统消息\r\n                    //判断是否是小组消息\r\n                    if(res.group==true){\r\n                        var str = \"<div class=\\\"bubble-left\\\"><span>\" + res.message + \"</span></div></br></br></br>\";\r\n                        //如果消息就刚好是给我们组发消息的人\r\n                        if (UserGroup == res.keyGroup) {\r\n                            if (isMe==true) {\r\n                                isMe=false;\r\n                            }else {\r\n                                $(\"#content\").append(str);\r\n                            }\r\n                        }\r\n                        var chatData = sessionStorage.getItem(res.keyGroup);\r\n                        if (chatData != null) {\r\n                            str = chatData + str;\r\n                        }\r\n                        //保存聊天消息\r\n                        console.log(\"保存小组\"+res.keyGroup+\"的消息\"+str);\r\n                        sessionStorage.setItem(res.keyGroup, str);\r\n                    }else {\r\n                        var str = \"<div class=\\\"bubble-left\\\"><span>\" + res.message + \"</span></div></br></br></br>\";\r\n                        //如果消息就刚好是给我发消息的人\r\n                        if (toName === res.fromName) {\r\n                            $(\"#content\").append(str);\r\n                        }\r\n                        var chatData = sessionStorage.getItem(res.fromName);\r\n                        if (chatData != null) {\r\n                            str = chatData + str;\r\n                        }\r\n                        //保存聊天消息\r\n                        console.log(\"保存个人\"+res.fromName+\"的消息\"+res);\r\n                        sessionStorage.setItem(res.fromName, str);\r\n                    }\r\n            };\r\n        }\r\n        ws.onclose = function () {\r\n            //发送数据给后台统计\r\n\r\n            <%--var count = {count:Count,id:Number(<%=loginUser.getStudentNo()%>)};--%>\r\n            <%--$.post(\"https://jsonplaceholder.typicode.com/posts/\",JSON.stringify(count)).then(function(data) {--%>\r\n            <%--     console.log(data);--%>\r\n            <%--});--%>\r\n            <%--    //count归零--%>\r\n            <%--    Count=0;--%>\r\n            $(\"#username\").html(\"<div class=\\\"User\\\"><h3>用户:\"+username+\"</h3></div><div class=\\\"UState\\\" style=\\\"color: orangered \\\"><h3>离线</h3></div>\");\r\n        }\r\n\r\n        //发送消息\r\n        $(\"#submit\").click(function () {\r\n            //0.说话次数加一\r\n            Count+=1;\r\n            //1.获取输入的内容\r\n            var data = $(\"#input_text\").val();\r\n            //2.清空发送框\r\n            $(\"#input_text\").val(\"\");\r\n            if (Group==false) {\r\n                console.log(\"发送消息给个人\")\r\n                var json = {\"toName\": toName, \"message\": data,\"group\":false};\r\n                //将数据展示在聊天区\r\n                var str = \"<div class=\\\"bubble-right\\\"><span>\" + data + \"</span></div></br></br></br>\";\r\n                $(\"#content\").append(str);\r\n                //将聊天记录存储到局部寄存器\r\n\r\n                var chatData = sessionStorage.getItem(toName);\r\n                if (chatData != null) {\r\n                    str = chatData + str;\r\n                }\r\n                sessionStorage.setItem(toName, str);\r\n            }else {\r\n                console.log(\"消息发送给小组\");\r\n                var json = {\"toName\":UserGroup, \"message\": data,\"group\":true};\r\n                //将数据展示在聊天区\r\n                console.log(json);\r\n                var str = \"<div class=\\\"bubble-right\\\"><span>\" + data + \"</span></div></br></br></br>\";\r\n                $(\"#content\").append(str);\r\n                //将聊天记录存储到局部寄存器\r\n\r\n                var chatData = sessionStorage.getItem(UserGroup);\r\n                if (chatData != null) {\r\n                    str = chatData + str;\r\n                }\r\n                sessionStorage.setItem(UserGroup, str);\r\n                isMe=true;\r\n            }\r\n            //3.发送数据\r\n            ws.send(JSON.stringify(json));\r\n        })\r\n    })\r\n</script>\r\n<script src=\"https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js\"></script>\r\n<!--小帅哥： https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json-->\r\n<!--萌娘：https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json-->\r\n<!--小可爱（女）：https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json-->\r\n<!--小可爱（男）：https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json-->\r\n<!--初音：https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json-->\r\n<!-- 上边的不同链接显示的是不同的小人，这个可以根据需要来选择 下边的初始化部分，可以修改宽高来修改小人的大小，或者是鼠标移动到小人上的透明度，也可以修改小人在页面出现的位置。 -->\r\n<script>\r\n    /*https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json*/\r\n    L2Dwidget.init({ \"model\": { jsonPath:\r\n                \"https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json\",\r\n            \"scale\": 1 }, \"display\": { \"position\": \"right\", \"width\": 210, \"height\": 250,\r\n            \"hOffset\": 0, \"vOffset\": -20 }, \"mobile\": { \"show\": true, \"scale\": 0.5 },\r\n        \"react\": { \"opacityDefault\": 0.8, \"opacityOnHover\": 0.1 } });\r\n</script>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/web/pages/Student/ChatRoom.jsp b/web/pages/Student/ChatRoom.jsp
+--- a/web/pages/Student/ChatRoom.jsp	(revision d9da634ab76d1e513086e8adbf9f746044515648)
++++ b/web/pages/Student/ChatRoom.jsp	(date 1628688522801)
+@@ -1,4 +1,4 @@
+-<%@ page import="pojo.String" %><%--
++<%@ page import="pojo.User" %><%--
+   Created by IntelliJ IDEA.
+   User: tigers
+   Date: 2021/8/7
+@@ -183,7 +183,7 @@
+ <br/>
+ <br/>
+ <%
+-    String loginUser=(String)request.getSession().getAttribute("User");
++    User loginUser=(User)request.getSession().getAttribute("User");
+ %>
+ <div id = "contains">
+     <div id="username">
