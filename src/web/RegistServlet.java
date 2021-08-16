@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
+
 /**
  * 类<code>RegistServlet</code>用于:用户注册的servlet
  *
@@ -34,7 +36,7 @@ public class RegistServlet extends HttpServlet {
         String email = req.getParameter("email");
         String code = req.getParameter("code");
         String identity = req.getParameter("identity");
-        int studentNo = Integer.parseInt(req.getParameter("studentNo"));
+        //int studentNo = Integer.parseInt(req.getParameter("studentNo"));
 //        2、检查 验证码是否正确  === 写死,要求验证码为:abcde
         if ("abcde".equalsIgnoreCase(code)) {
 //        3、检查 用户名是否可用
@@ -45,7 +47,7 @@ public class RegistServlet extends HttpServlet {
             } else {
                 //      可用
 //                调用Sservice保存到数据库
-                userService.registUser(new User(null, username, password, email, identity,studentNo));
+                userService.registUser(new User(null, username, password, email, identity));
 //
 //        跳到注册成功页面 regist_success.html
                 req.getRequestDispatcher("/pages/user/regist_success.html").forward(req, resp);

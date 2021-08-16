@@ -108,7 +108,7 @@
                 if (this.student.groupId !=''&&this.student.username!=''&&this.studentId!=''){
                     var student = {
                         id: Number(this.student.id),
-                        username: this.student.username,
+                        username: "bupt"+this.student.id,
                         groupId: Number(this.student.groupId),
                         teacherUsername: '<%=loginUser.getUsername()%>',
                         speeches: Number(0)

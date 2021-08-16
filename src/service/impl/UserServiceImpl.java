@@ -30,10 +30,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registUser(User user) {
-        userDao.saveUser(user);
-        String username = user.getUsername();
-        User user2 = userDao.queryUserByUsername(username);
-        userDao.MongosaveUser(user2);
+//        userDao.saveUser(user);
+//        String username = user.getUsername();
+//        User user2 = userDao.queryUserByUsername(username);
+//        userDao.MongosaveUser(user2);
+        if(user.getIdentity().equals("student")){
+            userDao.saveStudent(user);
+            String username = user.getUsername();
+            User user2 = userDao.queryUserByUsername(username);
+            userDao.MongosaveUser(user2);
+        }
+        if (user.getIdentity().equals("teacher")){
+            userDao.saveTeacher(user);
+        }
     }
 
     @Override
