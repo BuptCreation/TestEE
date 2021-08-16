@@ -31,9 +31,9 @@
         <ul class="list-group" v-for="group in groups" :key="group.id">
             <li class="list-group-item" v-for="student in group" :key="student.id">
 
-                <span class="badge">小组号：{{student.groupId}}</span>
-                学号：{{ student.id }}
-                 用户名：{{ student.username }}
+                <span class="badge">小组号：{{student.groupid}}</span>
+                学号：{{ student.studentno }}
+                 用户名：{{ student.studentname }}
             </li>
             <br/>
         </ul>
@@ -97,20 +97,20 @@
             ]],
             teacherUsername:"",
             student:{
-                username:"",
-                id: Number(),
-                groupId: Number()
+                studentname:"",
+                studentno: Number(),
+                groupid: Number()
             }
         },
         methods: {
             //学生注册
             PostStudent(){
-                if (this.student.groupId !=''&&this.student.username!=''&&this.studentId!=''){
+                if (this.student.groupid !=''&&this.student.studentname!=''&&this.studentno!=''){
                     var student = {
-                        id: Number(this.student.id),
-                        username: "bupt"+this.student.id,
-                        groupId: Number(this.student.groupId),
-                        teacherUsername: '<%=loginUser.getUsername()%>',
+                        studentno: Number(this.student.studentno),
+                        studentname: "bupt"+this.student.studentname,
+                        groupid: Number(this.student.groupid),
+                        teachername: '<%=loginUser.getUsername()%>',
                         speeches: Number(0)
                     }
                     this.$http.post("addstudenttogroupservlet",JSON.stringify(student)).then(function (data) {

@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public String queryGroupIdAndTeacherName(int studentId) throws Exception{
         MongoDao mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
-        BasicDBObject studentIdObj = new BasicDBObject("id",studentId);
+        BasicDBObject studentIdObj = new BasicDBObject("studentno",studentId);
         String table = "buptgroup";
         MongoCollection<Document> collection = db.getCollection(table);
         FindIterable<Document> iterable = collection.find(studentIdObj);
@@ -80,6 +80,6 @@ public class UserServiceImpl implements UserService {
         System.out.println(jsonStrToMap);
         String json = new Gson().toJson(jsonStrToMap);
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        return jsonObject.get("groupId").getAsString() + jsonObject.get("teacherUsername").getAsString();
+        return jsonObject.get("groupid").getAsString() + jsonObject.get("teachername").getAsString();
     }
 }
