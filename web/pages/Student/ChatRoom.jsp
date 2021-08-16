@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>聊天室</title>
+    <title>研讨区</title>
     <!--    基础路径-->
     <base href="../../">
     <!--    vue-基础包导入-->
