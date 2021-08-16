@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>UpdateCountServlet</code>用于:增加用户发言次数
  *
  * @author LuoSue
  * @version 1.0

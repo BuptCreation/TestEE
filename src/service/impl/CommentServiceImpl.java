@@ -22,11 +22,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>CommentServiceImpl</code>用于:实现Comment类相关服务所需要的一系列基础函数
  *
  * @author LuoSue
  * @version 1.0
- * @date 2021-08-05-22
+ * @date 2021-07-31-14
  */
 public class CommentServiceImpl implements CommentService {
     @Override

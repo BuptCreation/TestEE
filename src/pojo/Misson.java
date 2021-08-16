@@ -3,7 +3,7 @@ package pojo;
 import java.util.List;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>Misson</code>用于:实现任务类以及其需要的相关参数和构造函数
  *
  * @author LuoSue
  * @version 1.0

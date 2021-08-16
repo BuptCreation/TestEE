@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>ShowNewsServlet</code>用于:展示消息的servlet
  *
  * @author LuoSue
  * @version 1.0

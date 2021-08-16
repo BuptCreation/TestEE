@@ -28,9 +28,7 @@ public class MongoHelper {
         try {
             MongoDatabase mDatabase = mongoClient.getDatabase(DBName);
             mongoDatabases.add(mDatabase);
-            System.out.println("线程池中现有: "+mongoDatabases.remainingCapacity());
             MongoDatabase Database = mongoDatabases.take();
-            System.out.println("线程池中仍有: "+mongoDatabases.remainingCapacity());
             return Database;
         } catch (InterruptedException e) {
             e.printStackTrace();

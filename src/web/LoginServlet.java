@@ -13,7 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+/**
+ * 类<code>LoginServlet</code>用于:用户登录的servlet
+ *
+ * @author LuoSue
+ * @version 1.0
+ * @date 2021-08-05-23
+ */
 @WebServlet(value = {"/login"})
 public class LoginServlet extends HttpServlet {
 

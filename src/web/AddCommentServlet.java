@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>AddCommentServlet</code>用于:添加评论的servlet
  *
  * @author LuoSue
  * @version 1.0

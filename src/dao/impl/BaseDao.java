@@ -10,7 +10,13 @@ import utils.JdbcUtils;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * 类<code>BaseDao</code>用于:实现mysql相关操作所需要的一系列基础函数
+ *
+ * @author LuoSue
+ * @version 1.0
+ * @date 2021-08-04-22
+ */
 public abstract class BaseDao {
 
     //使用DbUtils操作数据库

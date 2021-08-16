@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>ShowBlogServlet</code>用于:展示博客的servlet
  *
  * @author LuoSue
  * @version 1.0

@@ -1,11 +1,11 @@
 package service;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>GroupService</code>用于:定义Group类相关服务所需要的一系列基础函数
  *
  * @author LuoSue
  * @version 1.0
- * @date 2021-08-07-14
+ * @date 2021-07-31-14
  */
 public interface GroupService {
     public String loadGroup(String teacherName);

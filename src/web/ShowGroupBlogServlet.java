@@ -19,7 +19,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>ShowGroupBlogServlet</code>用于:展示小组组员博客的servlet
  *
  * @author LuoSue
  * @version 1.0

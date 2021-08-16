@@ -2,7 +2,13 @@ package service;
 
 
 import pojo.User;
-
+/**
+ * 类<code>UserService</code>用于:定义User类相关服务所需要的一系列基础函数
+ *
+ * @author LuoSue
+ * @version 1.0
+ * @date 2021-07-31-14
+ */
 public interface UserService {
     /**
      * 注册用户
@@ -22,12 +28,12 @@ public interface UserService {
      * @param username
      * @return 返回true表示用户名已存在，返回false表示用户名可用
      */
-    public boolean existsUsername(java.lang.String username);
+    public boolean existsUsername(String username);
 
     /**
      * 查找学生所对应的小组好以及教师名字
      * @param studentId
      * @return 如果返回Null，说明没有找到
      */
-    public java.lang.String queryGroupIdAndTeacherName(int studentId)throws Exception;
+    public String queryGroupIdAndTeacherName(int studentId)throws Exception;
 }

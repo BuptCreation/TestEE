@@ -1,7 +1,7 @@
 package pojo;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>News</code>用于:实现消息类的相关操作及其需要的相关函数和构造函数
  *
  * @author LuoSue
  * @version 1.0
