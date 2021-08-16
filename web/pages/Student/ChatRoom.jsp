@@ -11,6 +11,11 @@
     <title>研讨区</title>
     <!--    基础路径-->
     <base href="../../">
+    <!--引入样式表-->
+    <link href="https://cdn.staticfile.org/quill/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- 引入Quill -->
+    <script src="https://cdn.staticfile.org/quill/1.3.6/quill.js"></script>
+
     <!--    vue-基础包导入-->
     <script src="static/vue/vue.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
@@ -203,6 +208,7 @@
 <%--输入区--%>
         <div id="input">
             <textarea type="text" id="input_text" style="width: 695px;height: 200px;"></textarea>
+            <div id="editor"></div>
             <button id="submit" class="submit" style="float: right;">发送</button>
         </div>
     </div>
@@ -411,6 +417,11 @@
             ws.send(JSON.stringify(json));
         })
     })
+</script>
+<script>
+    var quill = new Quill('#editor', {
+        theme: 'snow'
+    });
 </script>
 <script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
 <!--小帅哥： https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json-->

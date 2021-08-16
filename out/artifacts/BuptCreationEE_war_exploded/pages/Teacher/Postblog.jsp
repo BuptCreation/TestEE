@@ -421,10 +421,10 @@
         cursor:pointer;
     }
     #preview{
-        padding:10px 20px;
-        border:1px dotted #666666;
-        margin: 30px 0;
-    }
+          padding:10px 20px;
+          border:1px dotted #666666;
+          margin: 30px 0;
+      }
     h3{
         margin-top:10px ;
         color: white;
