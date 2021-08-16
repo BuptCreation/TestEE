@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>JsonConverter</code>用于:Json转换操作工具类
  *
  * @author LuoSue
  * @version 1.0
@@ -18,15 +18,15 @@ public class JsonConverter {
     private final Gson gson;
 
     public JsonConverter() {
-
         gson = new GsonBuilder().create();
     }
     public String convertToJson(List<Map<String, Object>> articles){
-        Gson gson = new Gson();
-        return gson.toJson(articles);
+        return new Gson().toJson(articles);
     }
     public String studentJson(List<User> users){
-        Gson gson = new Gson();
-        return gson.toJson(users);
+        return new Gson().toJson(users);
+    }
+    public String userJson(User user){
+        return new Gson().toJson(user);
     }
 }

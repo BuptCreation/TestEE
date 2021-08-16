@@ -1,5 +1,11 @@
 package pojo;
-
+/**
+ * 类<code>User</code>用于:实现用户类的相关操作及其需要的相关函数和构造函数
+ *
+ * @author LuoSue
+ * @version 1.0
+ * @date 2021-08-11-13
+ */
 public class User {
     private Integer id; //默认id
     private String username; //用户名

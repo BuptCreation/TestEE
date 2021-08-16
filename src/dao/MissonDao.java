@@ -1,7 +1,7 @@
 package dao;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>MissonDao</code></code>用于:定义Misson类相关操作所需要的一系列基础函数
  *
  * @author LuoSue
  * @version 1.0

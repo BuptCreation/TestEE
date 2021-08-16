@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>AddMissonServlet</code>用于:添加任务的servlet
  *
  * @author LuoSue
  * @version 1.0

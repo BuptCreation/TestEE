@@ -1,7 +1,7 @@
 package pojo;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>Group</code>用于:实现小组类以及其需要的相关参数和构造函数
  *
  * @author LuoSue
  * @version 1.0

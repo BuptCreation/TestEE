@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>ShowCommentServlet</code>用于:展示评论的servlet
  *
  * @author LuoSue
  * @version 1.0

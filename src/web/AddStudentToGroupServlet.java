@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>AddStudentToGroupServlet</code>用于:添加学生至小组的servlet
  *
  * @author LuoSue
  * @version 1.0
@@ -35,14 +35,14 @@ public class AddStudentToGroupServlet extends HttpServlet {
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     req.getInputStream(), "utf-8"));
             StringBuffer sb = new StringBuffer("");
-            java.lang.String temp;
+            String temp;
             while ((temp = br.readLine()) != null) {
                 sb.append(temp);
             }
             br.close();
             //获取到的json字符串
             System.out.println(sb);
-            java.lang.String acceptjson = sb.toString();
+            String acceptjson = sb.toString();
             JsonObject jsonObject = JsonParser.parseString(acceptjson).getAsJsonObject();
             //保存到组中
             GroupDaoImpl groupDao = new GroupDaoImpl();
@@ -55,7 +55,7 @@ public class AddStudentToGroupServlet extends HttpServlet {
             //user.setEmail("123456");
             user.setIdentity("student");
             userService.registUser(user);
-            java.lang.String userinfo = new Gson().toJson(user);
+            String userinfo = new Gson().toJson(user);
             System.out.println("注册成功！"+"欢迎用户"+userinfo);
         } catch (Exception e) {
             e.printStackTrace();

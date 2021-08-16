@@ -1,11 +1,11 @@
 package pojo;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 类<code>Comment</code>用于:实现评论类以及其需要的相关参数和构造函数
  *
  * @author LuoSue
  * @version 1.0
- * @date 2021-08-05-21
+ * @date 2021-07-21
  */
 public class Comment {
 

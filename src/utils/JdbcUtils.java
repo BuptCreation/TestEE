@@ -7,7 +7,13 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-
+/**
+ * 类<code>JdbcUtils</code>用于:jdbc类的工具类
+ *
+ * @author LuoSue
+ * @version 1.0
+ * @date 2021-07-31-14
+ */
 public class JdbcUtils {
 
     private static DruidDataSource dataSource;

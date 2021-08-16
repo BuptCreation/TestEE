@@ -2,6 +2,8 @@ package web;
 
 
 
+import dao.UserDao;
+import dao.impl.UserDaoImpl;
 import pojo.User;
 import service.UserService;
 import service.impl.UserServiceImpl;
@@ -12,7 +14,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+/**
+ * 类<code>RegistServlet</code>用于:用户注册的servlet
+ *
+ * @author LuoSue
+ * @version 1.0
+ * @date 2021-08-05-23
+ */
 @WebServlet(value = {"/regist"})
 public class RegistServlet extends HttpServlet {
 
