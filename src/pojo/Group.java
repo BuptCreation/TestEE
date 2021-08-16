@@ -9,11 +9,11 @@ package pojo;
  */
 public class Group {
     private int _id;
-    private int id; //学号
-    private String username;//学生姓名
-    private int groupId;//小组号
+    private int studentno; //学号
+    private String studentname;//学生姓名
+    private int groupid;//小组号
     private int speeches;//群聊发言次数
-    private String teacherUsername;//教师姓名
+    private String teachername;//教师姓名
 
     public int get_id() {
         return _id;
@@ -23,28 +23,28 @@ public class Group {
         this._id = _id;
     }
 
-    public int getId() {
-        return id;
+    public int getStudentno() {
+        return studentno;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStudentno(int studentno) {
+        this.studentno = studentno;
     }
 
-    public String getUsername() {
-        return username;
+    public String getStudentname() {
+        return studentname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setStudentname(String studentname) {
+        this.studentname = studentname;
     }
 
-    public int getGroupId() {
-        return groupId;
+    public int getGroupid() {
+        return groupid;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
+    public void setGroupid(int groupid) {
+        this.groupid = groupid;
     }
 
     public int getSpeeches() {
@@ -55,35 +55,35 @@ public class Group {
         this.speeches = speeches;
     }
 
-    public String getTeacherUsername() {
-        return teacherUsername;
+    public String getTeachername() {
+        return teachername;
     }
 
-    public void setTeacherUsername(String teacherUsername) {
-        this.teacherUsername = teacherUsername;
+    public void setTeachername(String teachername) {
+        this.teachername = teachername;
     }
 
     public Group() {
     }
 
-    public Group(int _id, int id, String username, int groupId, int speeches, String teacherUsername) {
+    public Group(int _id, int studentno, String studentname, int groupid, int speeches, String teachername) {
         this._id = _id;
-        this.id = id;
-        this.username = username;
-        this.groupId = groupId;
+        this.studentno = studentno;
+        this.studentname = studentname;
+        this.groupid = groupid;
         this.speeches = speeches;
-        this.teacherUsername = teacherUsername;
+        this.teachername = teachername;
     }
 
     @Override
     public String toString() {
         return "Group{" +
                 "_id=" + _id +
-                ", id=" + id +
-                ", username=" + username +
-                ", groupId=" + groupId +
+                ", studentno=" + studentno +
+                ", studentname='" + studentname + '\'' +
+                ", groupid=" + groupid +
                 ", speeches=" + speeches +
-                ", teacherUsername=" + teacherUsername +
+                ", teachername='" + teachername + '\'' +
                 '}';
     }
 }
