@@ -47,7 +47,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void deleteGroup(Integer groupId) {
-        BasicDBObject query = new BasicDBObject("groupId",groupId);
+        BasicDBObject query = new BasicDBObject("groupid",groupId);
         MongoDaoImpl mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "buptgroup";
@@ -60,9 +60,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void deleteStudent(Integer studentsId, String studentsName, Integer groupId) {
-        BasicDBObject studentsIdObj = new BasicDBObject("studentsId",studentsId);
-        BasicDBObject studentsNameObj = new BasicDBObject("studentsName",studentsName);
-        BasicDBObject groupIdObj = new BasicDBObject("groupId",groupId);
+        BasicDBObject studentsIdObj = new BasicDBObject("studentno",studentsId);
+        BasicDBObject studentsNameObj = new BasicDBObject("studentname",studentsName);
+        BasicDBObject groupIdObj = new BasicDBObject("groupid",groupId);
         BasicDBObject andObj = new BasicDBObject("$and", Arrays.asList(studentsNameObj,studentsIdObj,groupIdObj));
         MongoDaoImpl mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();

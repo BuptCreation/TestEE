@@ -49,8 +49,8 @@ public class AddStudentToGroupServlet extends HttpServlet {
             groupDao.saveGroup(acceptjson);
             //保存用户数据
             User user = new User();
-            user.setStudentNo(jsonObject.get("id").getAsInt());
-            user.setUsername("bupt"+jsonObject.get("id").getAsString());
+            user.setStudentNo(jsonObject.get("studentno").getAsInt());
+            user.setUsername("bupt"+jsonObject.get("studentno").getAsString());
             user.setPassword("123456");
             //user.setEmail("123456");
             user.setIdentity("student");

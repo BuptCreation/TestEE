@@ -31,11 +31,11 @@ public interface UserDao {
     public User queryUserByUsernameAndPassword(String username, String password);
 
     /**
-     * 保存用户信息
+     * 保存学生信息
      * @param user
      * @return 返回-1表示操作失败，其他是sql语句影响的行数
      */
-    public int saveUser(User user);
+    public int saveStudent(User user);
 
     /**
      * 查找对应身份的用户
@@ -49,4 +49,11 @@ public interface UserDao {
      * @param user
      */
     public void MongosaveUser(User user);
+
+    /**
+     * 保存教师信息
+     * @param user
+     * @return
+     */
+    public int saveTeacher(User user);
 }

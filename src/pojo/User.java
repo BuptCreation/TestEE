@@ -89,5 +89,11 @@ public class User {
         this.studentNo = studentNo;
     }
 
-
+    public User(Integer id, String username, String password, String email, String identity) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.identity = identity;
+    }
 }

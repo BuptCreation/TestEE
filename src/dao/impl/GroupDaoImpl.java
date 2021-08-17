@@ -35,7 +35,7 @@ public class GroupDaoImpl implements GroupDao {
     public List<Map<String, Object>> queryGroup(String teacherName) throws Exception {
         MongoDao mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
-        BasicDBObject teacherNameObj = new BasicDBObject("teacherUsername",teacherName);
+        BasicDBObject teacherNameObj = new BasicDBObject("teachername",teacherName);
         BasicDBObject groupIdObj = new BasicDBObject("groupId",1);
         String table = "buptgroup";
         MongoCollection<Document> collection = db.getCollection(table);
@@ -66,9 +66,9 @@ public class GroupDaoImpl implements GroupDao {
         String table = "buptgroup";
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         int speeches = jsonObject.get("count").getAsInt();
-        int id = jsonObject.get("id").getAsInt();
+        int id = jsonObject.get("studentno").getAsInt();
         int total = speeches+querySpeeches(id);
-        BasicDBObject query = new BasicDBObject("id",id);
+        BasicDBObject query = new BasicDBObject("studentno",id);
         BasicDBObject updateObj = new BasicDBObject("speeches",total);
         mongoDao.updateOne(db,table,query,updateObj);
         System.out.println("更新成功！你本次说了： "+speeches+"句话。");
@@ -78,7 +78,7 @@ public class GroupDaoImpl implements GroupDao {
     public int querySpeeches(int id) throws Exception {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "buptgroup";
-        BasicDBObject query = new BasicDBObject("id",id);
+        BasicDBObject query = new BasicDBObject("studentno",id);
         MongoCollection<Document> collection = db.getCollection(table);
         FindIterable<Document> iterable = collection.find(query);
         Map<String, Object> jsonStrToMap = null;
@@ -97,14 +97,14 @@ public class GroupDaoImpl implements GroupDao {
         String table = "buptgroup";
 
         BasicDBObject query = new BasicDBObject("teacherUsername",teachername);
-        BasicDBObject groupIdObj = new BasicDBObject("groupId",1);
+        BasicDBObject groupIdObj = new BasicDBObject("groupid",1);
         List<String> list = new ArrayList<String>();
         MongoCollection<Document> collection = db.getCollection(table);
-        FindIterable<Document> iterable = collection.find(query).projection(new BasicDBObject("username",1)).sort(groupIdObj);
+        FindIterable<Document> iterable = collection.find(query).projection(new BasicDBObject("studentname",1)).sort(groupIdObj);
         for (Document user : iterable) {
             String jsonString = user.toJson();
             JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
-            String studentname = jsonObject.get("username").getAsString();
+            String studentname = jsonObject.get("studentname").getAsString();
             list.add(studentname);
         }
         return list;
