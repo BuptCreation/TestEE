@@ -273,7 +273,7 @@
             type:"get",
             //成功后的回调函数
             <%
-        java.lang.String keyGroup = (java.lang.String)request.getSession().getAttribute("KeyGroup");
+        String keyGroup = (String)request.getSession().getAttribute("KeyGroup");
     %>
             success:function (res) {
                 username = res;
@@ -284,7 +284,8 @@
         //建立websocket连接
         //获取host解决后端获取httpsession的空指针异常
         var host = window.location.host;
-        var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
+        // var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
+        var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE"+"/chat");
         //建立连接之后
         ws.onopen = function (evt) {
             //在建立连接之后 需要做什么?

@@ -80,6 +80,9 @@ public class UserServiceImpl implements UserService {
         System.out.println(jsonStrToMap);
         String json = new Gson().toJson(jsonStrToMap);
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        return jsonObject.get("groupid").getAsString() + jsonObject.get("teachername").getAsString();
+//        return jsonObject.get("groupid").getAsString() + jsonObject.get("teachername").getAsString();
+        int groupid = jsonObject.get("groupid").getAsInt();
+        String teachername = jsonObject.get("teachername").getAsString();
+        return groupid +teachername;
     }
 }
