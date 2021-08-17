@@ -352,6 +352,7 @@
                 }
             });
         var host = window.location.host;
+        // var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
         var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
         //建立连接之后
         ws.onopen = function (evt) {
@@ -380,6 +381,7 @@
                 var temp = "";
                 for (var name of names){
                     if (name != username){
+                        tags.push(name);
                         temp = temp01 + name + temp03 + name + temp04;
                         userlistStr = userlistStr + temp;
                         broadcastListStr += "<p style='text-align: center'>"+ name +"上线了</p>";
@@ -446,6 +448,7 @@
             //1.获取输入的内容
             var input=document.getElementById("input_text");
             var data = input.innerHTML;
+            console.log(document.getElementById("editable").innerHTML);
             //2.清空发送框
             input.innerHTML="";
             if (Group==false) {
