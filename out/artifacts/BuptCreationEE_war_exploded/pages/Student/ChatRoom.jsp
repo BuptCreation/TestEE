@@ -11,6 +11,8 @@
     <title>研讨区</title>
     <!--    基础路径-->
     <base href="../../">
+    <%--聊天室表情包导入--%>
+    <link rel="stylesheet" href="static/css/chat-style.css">
     <!--引入样式表-->
     <link href="https://cdn.staticfile.org/quill/1.3.6/quill.snow.css" rel="stylesheet">
     <!-- 引入Quill -->
@@ -27,6 +29,20 @@
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <%-- bootstrap布局导入   --%>
     <link rel="stylesheet" href="static/css/bootstrap.css">
+    <%--at包导入    --%>
+    <link rel="stylesheet" href="static/css/jqueryAtwho.css" />
+    <link rel="stylesheet" href="pages/Student/atwho.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
+    <style type="text/css">
+        /*override atwho's style*/
+        .atwho-inserted {
+            color: #4183C4;
+        }
+        .atwho-query {
+            color: #4183C4;
+        }
+    </style>
 </head>
 <style>
 <%--    美化排版--%>
@@ -207,8 +223,36 @@
         </div>
 <%--输入区--%>
         <div id="input">
-            <textarea type="text" id="input_text" style="width: 695px;height: 200px;"></textarea>
-            <div id="editor"></div>
+<%--            <textarea type="text" id="input_text" style="width: 695px;height: 200px;"></textarea>--%>
+    <div id="main">
+        <div id="editable" class="inputor" contentEditable="true"></div>
+    </div>
+            <div id="app">
+                <!-- emojis start -->
+                <div class="emoji">
+                    <div class="emoji-list">
+                        <section v-for="(key, keyIndex) in Object.keys(emoji)" :key="keyIndex">
+          <span class="emoji-list-item" v-for="(item, index) in emoji[key]" :key="index" @click="insertEmoji(item)">
+            {{item}}
+          </span>
+                        </section>
+                    </div>
+                </div>
+                <!-- emojis end -->
+
+                <!-- editor start -->
+                <div
+                        class="editor"
+                        contenteditable="true"
+                        ref="editor"
+                        @keyup="getCursor"
+                        @keydown.enter.prevent="submit"
+                        @paste.prevent="onPaste"
+                        @click="getCursor"
+                        id="input_text">
+                </div>
+                <!-- editor end -->
+            </div>
             <button id="submit" class="submit" style="float: right;">发送</button>
         </div>
     </div>
@@ -279,7 +323,7 @@
             type:"get",
             //成功后的回调函数
             <%
-        java.lang.String keyGroup = (java.lang.String)request.getSession().getAttribute("KeyGroup");
+        String keyGroup = (String)request.getSession().getAttribute("KeyGroup");
     %>
             success:function (res) {
                 username = res;
@@ -289,6 +333,24 @@
         });
         //建立websocket连接
         //获取host解决后端获取httpsession的空指针异常
+            var jeremy = decodeURI("J%C3%A9r%C3%A9my") // Jérémy
+            var tags = ["前端样式 完毕","该列表需要自动维护","张景鸿","张景","景鸿"];
+            $('#editable').atwho({
+                at: "@",
+                data: tags,
+                limit: 200,
+                callbacks: {
+                    afterMatchFailed: function(at, el) {
+                        // 32 is spacebar
+                        if (at == '#') {
+                            tags.push(el.text().trim().slice(1));
+                            this.model.save(tags);
+                            this.insert(el.text().trim());
+                            return false;
+                        }
+                    }
+                }
+            });
         var host = window.location.host;
         var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
         //建立连接之后
@@ -332,6 +394,7 @@
                 //不是系统消息
                     //判断是否是小组消息
                     if(res.group==true){
+                        console.log(res.keyGroup);
                         var str = "<div class=\"bubble-left\"><span>" + res.message + "</span></div></br></br></br>";
                         //如果消息就刚好是给我们组发消息的人
                         if (UserGroup == res.keyGroup) {
@@ -381,9 +444,10 @@
             //0.说话次数加一
             Count+=1;
             //1.获取输入的内容
-            var data = $("#input_text").val();
+            var input=document.getElementById("input_text");
+            var data = input.innerHTML;
             //2.清空发送框
-            $("#input_text").val("");
+            input.innerHTML="";
             if (Group==false) {
                 console.log("发送消息给个人")
                 var json = {"toName": toName, "message": data,"group":false};
@@ -418,11 +482,6 @@
         })
     })
 </script>
-<script>
-    var quill = new Quill('#editor', {
-        theme: 'snow'
-    });
-</script>
 <script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
 <!--小帅哥： https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json-->
 <!--萌娘：https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json-->
@@ -438,4 +497,9 @@
             "hOffset": 0, "vOffset": -20 }, "mobile": { "show": true, "scale": 0.5 },
         "react": { "opacityDefault": 0.8, "opacityOnHover": 0.1 } });
 </script>
+<%--表情包导入--%>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.min.js'></script>
+<script  src="static/script/chat-script.js"></script>
+<%--静态资源直接导入--%>
+<script   src="static/script/jqueryAtwho.js"></script>
 </html>
