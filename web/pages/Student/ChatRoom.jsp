@@ -352,7 +352,8 @@
                 }
             });
         var host = window.location.host;
-        var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
+        // var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
+        var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE"+"/chat");
         //建立连接之后
         ws.onopen = function (evt) {
             //在建立连接之后 需要做什么?
