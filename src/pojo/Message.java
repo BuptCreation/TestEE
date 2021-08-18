@@ -15,6 +15,15 @@ public class Message {
     private boolean isGroup;
     private boolean isat;
     private List<String> atwhos;
+    private String sender;
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
 
     public boolean isat() {
         return isat;

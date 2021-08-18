@@ -421,14 +421,14 @@
                         for (var i=0;i<res.atwhos.length;i++){
                             at +="<div style='color:lightskyblue;display: inline'>@"+res.atwhos[i]+"</div>";
                         }
-                        var str = "<div class=\"bubble-left\"><span>" +at+res.message + "</span></div></br></br></br>";
+                        var str = "<div class=\"bubble-left\"><span>"+res.sender+"说:"+at+res.message + "</span></div></br></br></br>";
                         //如果消息就刚好是给我们组发消息的人
                         if (UserGroup == res.keyGroup) {
                             //处理at广播
                             if (res.at==true) {
                                 var atmessage = "";
                                 for (var i = 0; i < res.atwhos.length; i++) {
-                                    atmessage += res.atwhos[i] + "被at了";
+                                    atmessage += res.atwhos[i] + "被"+res.sender+"at了";
                                 }
                             }
                             $("footer").append(atmessage);
@@ -509,7 +509,7 @@
                 sessionStorage.setItem(toName, str);
             }else {
                 console.log("消息发送给小组");
-                var json = {"toName":UserGroup, "message": data,"group":true,"atwhos":atwhos,"at":atwhos.length!=0};
+                var json = {"toName":UserGroup, "message": data,"group":true,"atwhos":atwhos,"at":atwhos.length!=0,"sender":username};
                 //将数据展示在聊天区
                 console.log(json);
                 var at="";

@@ -31,7 +31,7 @@ public class MessageUtils {
         }
         return null;
     }
-    public static String getGroupMessage(boolean isSystemMessage, String KeyGroup, Object message, boolean isat, List<String> atwhos){
+    public static String getGroupMessage(boolean isSystemMessage, String KeyGroup, Object message, boolean isat, List<String> atwhos,String sender){
         try{
             ResultGroupMessage result= new ResultGroupMessage();
             result.setKeyGroup(KeyGroup);
@@ -39,6 +39,7 @@ public class MessageUtils {
             result.setIsSystem(isSystemMessage);
             result.setat(isat);
             result.setAtwhos(atwhos);
+            result.setSender(sender);
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(result);
         }catch (Exception e){

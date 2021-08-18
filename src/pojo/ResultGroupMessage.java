@@ -9,6 +9,15 @@ public class ResultGroupMessage {
     private Object message;
     private boolean isat;
     private List<String> atwhos;
+    private String sender;
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
 
     public void setSystem(boolean system) {
         isSystem = system;
