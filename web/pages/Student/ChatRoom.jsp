@@ -29,6 +29,9 @@
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <%-- bootstrap布局导入   --%>
     <link rel="stylesheet" href="static/css/bootstrap.css">
+    <%--样式模版导入    --%>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,500,500i,700" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css'><link rel="stylesheet" href="static/css/chat_remainder.css">
     <%--at包导入    --%>
     <link rel="stylesheet" href="static/css/jqueryAtwho.css" />
 <%--    <link rel="stylesheet" href="pages/Student/atwho.css" />--%>
@@ -46,6 +49,9 @@
 </head>
 <style>
 <%--    美化排版--%>
+    footer{
+
+    }
     .User{
         padding: 7px;
         float: left;
@@ -117,6 +123,9 @@
     background-color: #008CBA;
     color: white;
 }
+#input_text{
+    width: 690px;
+}
 <%--    格式排版--%>
     #contains{
         background-color: #666666;
@@ -174,6 +183,7 @@
         background: antiquewhite;
     }
     #input{
+        width: 700px;
         border: 1px solid #8c8c8c;
         margin-bottom: 0px;
         position: absolute;
@@ -206,6 +216,28 @@
 <%
     User loginUser=(User)request.getSession().getAttribute("User");
 %>
+<%--消息提示区以及背景切换区域，以下--%>
+<input class="variation" id="bluepurple" type="radio" value="1" name="color" checked="checked"/>
+<label for="bluepurple"></label>
+<input class="variation" id="sunset" type="radio" value="2" name="color"/>
+<label for="sunset"></label>
+<input class="variation" id="godiva" type="radio" value="3" name="color"/>
+<label for="godiva"></label>
+<input class="variation" id="dark" type="radio" value="4" name="color"/>
+<label for="dark"></label>
+<input class="variation" id="pinkaru" type="radio" value="5" name="color"/>
+<label for="pinkaru"></label>
+<main>
+    <section class="alerts">
+        <h6>消息提示</h6>
+        <div class="alert status-primary">点击小组聊天室 进行群聊功能.</div>
+        <div class="alert status-secondary">输入框的上方框框专为at设计 请在此完成at的所有功能.</div>
+        <div class="alert status-info">聊天表情可以增加,at提示会出现这儿</div>
+        <div class="alert status-success">点击我们，我们会消失.</div>
+        <div class="alert status-error">数据库未归档，注意归档.</div>
+    </section>
+</main>
+<%--以上--%>
 <div id = "contains">
     <div id="username">
         <div class="User"><h3>用户:</h3></div>
@@ -225,7 +257,7 @@
         <div id="input">
 <%--            <textarea type="text" id="input_text" style="width: 695px;height: 200px;"></textarea>--%>
     <div id="main">
-        <div id="editable" class="inputor" contentEditable="true"></div>
+        <div id="editable" class="inputor" contentEditable="true" style="text-align: left"></div>
     </div>
             <div id="app">
                 <!-- emojis start -->
@@ -249,7 +281,7 @@
                         @keydown.enter.prevent="submit"
                         @paste.prevent="onPaste"
                         @click="getCursor"
-                        id="input_text">
+                        id="input_text" style="text-align: left">
                 </div>
                 <!-- editor end -->
             </div>
@@ -288,6 +320,10 @@
         $.post("updatecountservlet",JSON.stringify(count)).then(function(data) {
             console.log(data);
         });
+        var allchat=sessionStorage.getItem(UserGroup);
+        $.post("https://jsonplaceholder.typicode.com/posts/",JSON.stringify(allchat)).then(function(data){
+            console.log("Data: "+data);
+        });
         //count归零
         Count=0;
     };
@@ -318,6 +354,20 @@
             $("#content").html(chatData);
         }
     }
+    //the alert is collapsible yay
+    $(".alert").on("click", function() {
+        $(this).hide("slow");
+    });
+    //apprearance
+    $("input.variation").on("click", function() {
+        if ($(this).val() > 3) {
+            $("body").css("background", "#2a313b");
+            $("footer").attr('class','dark');
+        } else {
+            $("body").css("background", "#f9f9f9");
+            $("footer").attr('class','');
+        }
+    });
     $(function () {
         $.ajax({
             //从getUsername处获得用户名
@@ -428,10 +478,22 @@
                             if (res.at==true) {
                                 var atmessage = "";
                                 for (var i = 0; i < res.atwhos.length; i++) {
-                                    atmessage += res.atwhos[i] + "被"+res.sender+"at了";
+                                //     <div class="alert status-primary">A normal alert here.</div>
+                                //     <div class="alert status-secondary">A normal alert here.</div>
+                                // <div class="alert status-info">A normal alert here.</div>
+                                // <div class="alert status-success">A happy alert here.</div>
+                                // <div class="alert status-error">A sad alert here.</div>
+                                    if (res.atwhos[i]==username) {
+                                        var alter = "<div class=\"alert status-info\">" + res.atwhos[i] + "被" + res.sender + "at了" + "</div>";
+                                    }else {
+                                        var alter = "<div class=\"alert status-primary\">" + res.atwhos[i] + "被" + res.sender + "at了" + "</div>";
+                                    }
+                                    $(".alerts").append(alter);
                                 }
+                                $(".alert").on("click", function() {
+                                    $(this).hide("slow");
+                                });
                             }
-                            $("footer").append(atmessage);
                             if (isMe==true) {
                                 isMe=false;
                                 return
@@ -472,7 +534,9 @@
             <%--});--%>
             <%--    //count归零--%>
             <%--    Count=0;--%>
+            <%--关闭时获取寄存器中的所有数据,发送--%>
             $("#username").html("<div class=\"User\"><h3>用户:"+username+"</h3></div><div class=\"UState\" style=\"color: orangered \"><h3>离线</h3></div>");
+
         }
 
         //发送消息
@@ -552,4 +616,6 @@
 <script  src="static/script/chat-script.js"></script>
 <%--静态资源直接导入--%>
 <script   src="static/script/jqueryAtwho.js"></script>
+<%--模版动态样式导入--%>
+<%--<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script><script  src="static/script/chat_remainder.js"></script>--%>
 </html>
