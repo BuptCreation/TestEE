@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import pojo.ResultGroupMessage;
 import pojo.ResultMessage;
 
+import java.util.List;
+
 /**
  * 用来封装消息工具类
  *
@@ -29,12 +31,14 @@ public class MessageUtils {
         }
         return null;
     }
-    public static String getGroupMessage(boolean isSystemMessage,String KeyGroup,Object message){
+    public static String getGroupMessage(boolean isSystemMessage, String KeyGroup, Object message, boolean isat, List<String> atwhos){
         try{
             ResultGroupMessage result= new ResultGroupMessage();
             result.setKeyGroup(KeyGroup);
             result.setMessage(message);
             result.setIsSystem(isSystemMessage);
+            result.setat(isat);
+            result.setAtwhos(atwhos);
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(result);
         }catch (Exception e){

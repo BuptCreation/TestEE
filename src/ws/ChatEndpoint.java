@@ -54,7 +54,7 @@ public class ChatEndpoint {
             onlineUsers.put(loginUser.getUsername(), this);
             //然后将当前在线的该组的所有用户的用户名推送给所有用户
             //1.获取消息
-            java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup)) ;
+            java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup),false,null) ;
 
 //            String message = MessageUtils.getMessage(true, null, getNames());
             //2.调用方法进行系统推送
@@ -106,7 +106,7 @@ public class ChatEndpoint {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Message mess = mapper.readValue(message, Message.class);
-            System.out.println("收到数据"+mess.isGroup()+mess.getToName());
+            System.out.println("收到数据"+mess.isGroup()+mess.getToName()+mess.isat()+mess.getAtwhos());
             if (false == mess.isGroup()) {
                 //不是群发消息
                 System.out.println("不是群发消息");
@@ -123,14 +123,14 @@ public class ChatEndpoint {
             }else {
                 //群发消息
                 System.out.println("是群发消息");
-                //获取要将数据发送给的指定小组
-                java.lang.String KeyGroup = mess.getToName();
-                //获取消息
-                java.lang.String data = mess.getMessage();
-                java.lang.String resultMessage = MessageUtils.getGroupMessage(false,KeyGroup,data);
-                System.out.println("发送给"+KeyGroup+"小组"+resultMessage);
-                //获取对应的session发送数据 sendToGroup
-                broadcastGroupUsers(resultMessage,KeyGroup);
+                    //获取要将数据发送给的指定小组
+                    java.lang.String KeyGroup = mess.getToName();
+                    //获取消息
+                    java.lang.String data = mess.getMessage();
+                    java.lang.String resultMessage = MessageUtils.getGroupMessage(false, KeyGroup, data,mess.isat(),mess.getAtwhos());
+                    System.out.println("发送给" + KeyGroup + "小组" + resultMessage+"有无at？"+mess.isat()+"at了谁？"+mess.getAtwhos());
+                    //获取对应的session发送数据 sendToGroup
+                    broadcastGroupUsers(resultMessage, KeyGroup);
             }
 
         }catch (Exception e){
@@ -145,7 +145,7 @@ public class ChatEndpoint {
         //根据名字删除
         onlineGroups.get(KeyGroup).remove(loginUser.getUsername());
         onlineUsers.remove(loginUser.getUsername());
-        java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup)) ;
+        java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup),false,null) ;
 
 //            String message = MessageUtils.getMessage(true, null, getNames());
         //2.调用方法进行系统推送

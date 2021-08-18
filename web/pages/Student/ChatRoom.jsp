@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="static/css/bootstrap.css">
     <%--at包导入    --%>
     <link rel="stylesheet" href="static/css/jqueryAtwho.css" />
-    <link rel="stylesheet" href="pages/Student/atwho.css" />
+<%--    <link rel="stylesheet" href="pages/Student/atwho.css" />--%>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="http://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
     <style type="text/css">
@@ -264,9 +264,11 @@
         </div>
         <p id="xt" style="text-align: center">系统消息</p>
         <div id="xtList">
-
         </div>
     </div>
+    <footer>
+
+    </footer>
 </div>
 <br/>
 <br/>
@@ -334,21 +336,35 @@
         //建立websocket连接
         //获取host解决后端获取httpsession的空指针异常
             var jeremy = decodeURI("J%C3%A9r%C3%A9my") // Jérémy
-            var tags = ["前端样式 完毕","该列表需要自动维护","张景鸿","张景","景鸿"];
+            var tags = ["student168","wzg168","张景鸿","张景","景鸿"];
             $('#editable').atwho({
                 at: "@",
                 data: tags,
                 limit: 200,
+                <%--tpl:'<span data-id="${id}">@${name}</span>',--%>
                 callbacks: {
                     afterMatchFailed: function(at, el) {
                         // 32 is spacebar
-                        if (at == '#') {
+                        if (at == '@') {
                             tags.push(el.text().trim().slice(1));
                             this.model.save(tags);
                             this.insert(el.text().trim());
                             return false;
                         }
                     }
+                    // matcher: function (flag, subtext) {
+                    //     var match, regexp, _a, _y;
+                    //     flag = flag.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+                    //     _a = decodeURI("%C3%80");
+                    //     _y = decodeURI("%C3%BF");
+                    //     regexp = new RegExp("" + flag + "([A-Za-z" + _a + "-" + _y + "0-9_\+\-]*)$|" + flag + "([^\\x00-\\xff]*)$", 'gi');
+                    //     match = regexp.exec(subtext);
+                    //     if (match) {
+                    //         return match[2] || match[1];
+                    //     } else {
+                    //         return null;
+                    //     }
+                    // }
                 }
             });
         var host = window.location.host;
@@ -379,9 +395,12 @@
                 var temp03 = "\")'>";
                 var temp04 = "</a></br>";
                 var temp = "";
+                //at数据
+                // $('#editable').atwho({data:names});
+
                 for (var name of names){
+
                     if (name != username){
-                        tags.push(name);
                         temp = temp01 + name + temp03 + name + temp04;
                         userlistStr = userlistStr + temp;
                         broadcastListStr += "<p style='text-align: center'>"+ name +"上线了</p>";
@@ -396,12 +415,26 @@
                 //不是系统消息
                     //判断是否是小组消息
                     if(res.group==true){
-                        console.log(res.keyGroup);
-                        var str = "<div class=\"bubble-left\"><span>" + res.message + "</span></div></br></br></br>";
+                        //处理小组消息内容
+                        console.log(res.keyGroup+"at"+res.atwhos);
+                        var at="";
+                        for (var i=0;i<res.atwhos.length;i++){
+                            at +="<div style='color:lightskyblue;display: inline'>@"+res.atwhos[i]+"</div>";
+                        }
+                        var str = "<div class=\"bubble-left\"><span>" +at+res.message + "</span></div></br></br></br>";
                         //如果消息就刚好是给我们组发消息的人
                         if (UserGroup == res.keyGroup) {
+                            //处理at广播
+                            if (res.at==true) {
+                                var atmessage = "";
+                                for (var i = 0; i < res.atwhos.length; i++) {
+                                    atmessage += res.atwhos[i] + "被at了";
+                                }
+                            }
+                            $("footer").append(atmessage);
                             if (isMe==true) {
                                 isMe=false;
+                                return
                             }else {
                                 $("#content").append(str);
                             }
@@ -413,6 +446,7 @@
                         //保存聊天消息
                         console.log("保存小组"+res.keyGroup+"的消息"+str);
                         sessionStorage.setItem(res.keyGroup, str);
+
                     }else {
                         var str = "<div class=\"bubble-left\"><span>" + res.message + "</span></div></br></br></br>";
                         //如果消息就刚好是给我发消息的人
@@ -445,12 +479,21 @@
         $("#submit").click(function () {
             //0.说话次数加一
             Count+=1;
-            //1.获取输入的内容
+            //1.1获取输入的内容
+            var atwhos=[];
             var input=document.getElementById("input_text");
             var data = input.innerHTML;
-            console.log(document.getElementById("editable").innerHTML);
+            //获取at数据
+            var ats = $("span[class='atwho-inserted']");
+            //将at数据存入数组
+            console.log(ats.length);
+            for (var i=0;i<ats.length;i++){
+                atwhos.push(ats[i].innerHTML.replace("@",""));
+            }
+            console.log(atwhos);
             //2.清空发送框
             input.innerHTML="";
+            document.getElementById("editable").innerHTML="";
             if (Group==false) {
                 console.log("发送消息给个人")
                 var json = {"toName": toName, "message": data,"group":false};
@@ -466,10 +509,14 @@
                 sessionStorage.setItem(toName, str);
             }else {
                 console.log("消息发送给小组");
-                var json = {"toName":UserGroup, "message": data,"group":true};
+                var json = {"toName":UserGroup, "message": data,"group":true,"atwhos":atwhos,"at":atwhos.length!=0};
                 //将数据展示在聊天区
                 console.log(json);
-                var str = "<div class=\"bubble-right\"><span>" + data + "</span></div></br></br></br>";
+                var at="";
+                for (var i=0;i<atwhos.length;i++){
+                    at +="<div style='color:lightskyblue;display: inline'>@"+atwhos[i]+"</div>";
+                }
+                var str = "<div class=\"bubble-right\"><span>" +at+ data + "</span></div></br></br></br>";
                 $("#content").append(str);
                 //将聊天记录存储到局部寄存器
 
