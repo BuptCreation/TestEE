@@ -12,6 +12,7 @@ import dao.impl.GroupDaoImpl;
 import pojo.Group;
 import service.GroupService;
 import utils.JsonConverter;
+import utils.MongoDao;
 import utils.MongoDaoImpl;
 import utils.MongoHelper;
 
@@ -46,13 +47,37 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<String> queryGroupStudent(String username) {
+        MongoDao mongoDao = new MongoDaoImpl();
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        List<String> result = new ArrayList<String>();
+        String table = "buptgroup";
+        BasicDBObject studentnameObj = new BasicDBObject("studentname", username);
+        try {
+            List<Map<String, Object>> querylist = mongoDao.queryByDoc(db, table, studentnameObj);
+            System.out.println(querylist);
+            int groupid = (int) querylist.get(0).get("groupid");
+            BasicDBObject groupidObj = new BasicDBObject("groupid",groupid);
+            List<Map<String, Object>> querylist2 = mongoDao.queryByDoc(db,table,groupidObj);
+            for (int i = 0; i < querylist2.size(); i++) {
+                String tempusername = querylist2.get(i).get("studentname").toString();
+                result.add(tempusername);
+            }
+            result.remove(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public void deleteGroup(Integer groupId) {
-        BasicDBObject query = new BasicDBObject("groupid",groupId);
+        BasicDBObject query = new BasicDBObject("groupid", groupId);
         MongoDaoImpl mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "buptgroup";
         try {
-            mongoDao.delete(db,table,query);
+            mongoDao.delete(db, table, query);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,15 +85,15 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void deleteStudent(Integer studentsId, String studentsName, Integer groupId) {
-        BasicDBObject studentsIdObj = new BasicDBObject("studentno",studentsId);
-        BasicDBObject studentsNameObj = new BasicDBObject("studentname",studentsName);
-        BasicDBObject groupIdObj = new BasicDBObject("groupid",groupId);
-        BasicDBObject andObj = new BasicDBObject("$and", Arrays.asList(studentsNameObj,studentsIdObj,groupIdObj));
+        BasicDBObject studentsIdObj = new BasicDBObject("studentno", studentsId);
+        BasicDBObject studentsNameObj = new BasicDBObject("studentname", studentsName);
+        BasicDBObject groupIdObj = new BasicDBObject("groupid", groupId);
+        BasicDBObject andObj = new BasicDBObject("$and", Arrays.asList(studentsNameObj, studentsIdObj, groupIdObj));
         MongoDaoImpl mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "buptgroup";
         try {
-            mongoDao.delete(db,table,andObj);
+            mongoDao.delete(db, table, andObj);
         } catch (Exception e) {
             e.printStackTrace();
         }
