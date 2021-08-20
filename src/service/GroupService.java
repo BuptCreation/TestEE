@@ -1,5 +1,7 @@
 package service;
 
+import java.util.List;
+
 /**
  * 类<code>GroupService</code>用于:定义Group类相关服务所需要的一系列基础函数
  *
@@ -9,6 +11,7 @@ package service;
  */
 public interface GroupService {
     public String loadGroup(String teacherName);
+    public List<String> queryGroupStudent(String username);
     public void deleteGroup(Integer groupId);
     public void deleteStudent(Integer studentsId,String studentsName, Integer groupId);
 }

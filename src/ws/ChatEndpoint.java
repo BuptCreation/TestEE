@@ -1,14 +1,25 @@
 package ws;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 import pojo.Message;
 import pojo.User;
+import service.MessageService;
+import service.impl.MessageServiceImpl;
 import utils.MessageUtils;
+import utils.MongoDao;
+import utils.MongoDaoImpl;
+import utils.MongoHelper;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -106,17 +117,30 @@ public class ChatEndpoint {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Message mess = mapper.readValue(message, Message.class);
+            if (mess.isat()==true){
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("toName",mess.getToName());
+                jsonObject.addProperty("message",mess.getMessage());
+                jsonObject.addProperty("isgroup",mess.isGroup());
+                jsonObject.addProperty("isat",mess.isat());
+                jsonObject.addProperty("sender",mess.getSender());
+                jsonObject.addProperty("atwhos", new Gson().toJson(mess.getAtwhos()));
+                //把上面的数据存到数据库相应位置中!
+                String json = new Gson().toJson(jsonObject);
+                MessageService messageService = new MessageServiceImpl();
+                messageService.saveMessage(json);
+            }
             System.out.println("收到数据"+mess.isGroup()+mess.getToName()+mess.isat()+mess.getAtwhos());
             if (false == mess.isGroup()) {
                 //不是群发消息
                 System.out.println("不是群发消息");
                 //获取要将数据发送给的指定用户
-                java.lang.String toName = mess.getToName();
+                String toName = mess.getToName();
                 //获取消息数据
-                java.lang.String data = mess.getMessage();
+                String data = mess.getMessage();
                 //获取当前登陆的用户
                 User loginUser = (User) httpSession.getAttribute("User");
-                java.lang.String resultMessage = MessageUtils.getMessage(false, loginUser.getUsername(), data);
+                String resultMessage = MessageUtils.getMessage(false, loginUser.getUsername(), data);
                 //获得对应的Session
                 System.out.println("发送给"+toName+"用户"+resultMessage);
                 onlineUsers.get(toName).session.getBasicRemote().sendText(resultMessage);
@@ -124,10 +148,10 @@ public class ChatEndpoint {
                 //群发消息
                 System.out.println("是群发消息");
                     //获取要将数据发送给的指定小组
-                    java.lang.String KeyGroup = mess.getToName();
+                    String KeyGroup = mess.getToName();
                     //获取消息
-                    java.lang.String data = mess.getMessage();
-                    java.lang.String resultMessage = MessageUtils.getGroupMessage(false, KeyGroup, data,mess.isat(),mess.getAtwhos(),mess.getSender());
+                    String data = mess.getMessage();
+                    String resultMessage = MessageUtils.getGroupMessage(false, KeyGroup, data,mess.isat(),mess.getAtwhos(),mess.getSender());
                     System.out.println("发送给" + KeyGroup + "小组" + resultMessage+"有无at？"+mess.isat()+"at了谁？"+mess.getAtwhos());
                     //获取对应的session发送数据 sendToGroup
                     broadcastGroupUsers(resultMessage, KeyGroup);

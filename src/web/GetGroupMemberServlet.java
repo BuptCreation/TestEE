@@ -1,8 +1,8 @@
 package web;
 
-import dao.impl.UserDaoImpl;
+import com.google.gson.Gson;
 import pojo.User;
-import utils.JsonConverter;
+import service.impl.GroupServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,23 +18,23 @@ import java.util.List;
  *
  * @author LuoSue
  * @version 1.0
- * @date 2021-08-05-22
+ * @date 2021-08-19-09
  */
-@WebServlet("/getallstudents")
-public class GetAllStudents extends HttpServlet {
+@WebServlet("/getgroupmemberservlet")
+public class GetGroupMemberServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            User loginuser = (User) req.getSession().getAttribute("User");
+            String username = loginuser.getUsername();
             resp.setContentType("application/json;charset=utf-8");
             PrintWriter out = resp.getWriter();
-            //连接数据库,获取用户
-            List<User> users= new UserDaoImpl().querybyIdentity("student");
-            JsonConverter converter = new JsonConverter();
-            //将学生转换为json类型
-            String output = converter.studentJson(users);
-            out.print(output);
-            System.out.println(output);
-        } catch (Exception e) {
+            List<String> studentslist = new GroupServiceImpl().queryGroupStudent(username);
+            Gson gson = new Gson();
+            String json = gson.toJson(studentslist);
+            out.print(json);
+            System.out.println(studentslist);
+        }catch (Exception e){
             e.printStackTrace();
         }
     }

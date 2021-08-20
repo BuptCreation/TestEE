@@ -13,10 +13,13 @@ import dao.impl.ArticleDaoImpl;
 import dao.impl.NewsDaoImpl;
 import org.bson.Document;
 import org.junit.Test;
+import utils.MongoDao;
+import utils.MongoDaoImpl;
 import utils.MongoHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类<code>Doc</code>用于：TODO
@@ -77,5 +80,32 @@ public class DataTest {
             list.add(studentname);
         }
         System.out.println(list);
+    }
+    @Test
+    public void testEmoji(){
+        System.out.println("😓");
+    }
+    @Test
+    public void testGroup(){
+        MongoDao mongoDao = new MongoDaoImpl();
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        List<String> result = new ArrayList<String>();
+        String table = "buptgroup";
+        BasicDBObject studentnameObj = new BasicDBObject("studentname", "student168");
+        try {
+            List<Map<String, Object>> querylist = mongoDao.queryByDoc(db, table, studentnameObj);
+            System.out.println(querylist);
+            int groupid = (int) querylist.get(0).get("groupid");
+            BasicDBObject groupidObj = new BasicDBObject("groupid",groupid);
+            List<Map<String, Object>> querylist2 = mongoDao.queryByDoc(db,table,groupidObj);
+            for (int i = 0; i < querylist2.size(); i++) {
+                String tempusername = querylist2.get(i).get("studentname").toString();
+                result.add(tempusername);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        result.remove("student168");
+        System.out.println(result);
     }
 }
