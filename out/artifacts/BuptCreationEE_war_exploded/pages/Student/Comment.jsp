@@ -213,7 +213,7 @@
         <div class="form-group">
             <div class="rating">
                 <!--标题展示        -->
-                <h2 class="text">连贯与衔接{{complete}}</h2>
+                <h2 class="text">任务完成度{{complete}}</h2>
                 <%--                <label>评分：</label>--%>
                 <!-- 选择表情       -->
                 <input type="radio" name="star4" id="star41" value="7" v-model="complete">
@@ -285,7 +285,7 @@
             postComments() {
                 if (this.user!=''&&this.content!='') {
                     var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,context:this.context,
-                        vocabulary:this.vocabulary,fluent: this.fluent,variety: this.variety,complete: this.complete}
+                        vocabulary:Number(this.vocabulary),fluent: Number(this.fluent),variety: Number(this.variety),complete: Number(this.complete)}
                     this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){
                         console.log(data);
                         this.loadComments();
