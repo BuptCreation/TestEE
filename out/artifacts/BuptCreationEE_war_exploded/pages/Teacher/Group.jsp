@@ -41,15 +41,15 @@
         <div>
             <div class="form-group">
                 <label>学号：</label>
-                <input type="text" class="form-control" v-model="student.id">
+                <input type="text" class="form-control" v-model="student.studentno">
             </div>
             <div class="form-group">
                 <label>学生用户名：</label>
-                <textarea class="form-control" v-model="student.username"></textarea>
+                <textarea class="form-control" v-model="student.studentname"></textarea>
             </div>
             <div class="form-group">
                 <label>小组号：</label>
-                <select class="form-control" v-model="student.groupId">
+                <select class="form-control" v-model="student.groupid">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -111,7 +111,8 @@
                         studentname: "bupt"+this.student.studentname,
                         groupid: Number(this.student.groupid),
                         teachername: '<%=loginUser.getUsername()%>',
-                        speeches: Number(0)
+                        speeches: Number(0),
+                        logins:Number(0)
                     }
                     this.$http.post("addstudenttogroupservlet",JSON.stringify(student)).then(function (data) {
                         console.log(student)
