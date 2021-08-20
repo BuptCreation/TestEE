@@ -4,7 +4,9 @@ package web;
 
 import dao.impl.NewsDaoImpl;
 import pojo.User;
+import service.GroupService;
 import service.UserService;
+import service.impl.GroupServiceImpl;
 import service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
@@ -48,11 +50,16 @@ public class LoginServlet extends HttpServlet {
                     System.out.println(loginUser);
                     int studentId = loginUser.getStudentNo();
                     String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);
+                    int groupid = userService.queryGroupId(studentId);
+                    //把groupid存到session中
+                    req.getSession().setAttribute("Groupid",groupid);
                     //user->group 并且把groupid+teacherusername
                     req.getSession().setAttribute("KeyGroup",KeyGroup);
                     //判断消息是否为空,为空则初始化消息
                     if(new NewsDaoImpl().getNews(studentId).size() == 0)
                         new NewsDaoImpl().initNews(studentId);
+                    GroupService groupService = new GroupServiceImpl();
+                    groupService.updatelogins(loginUser.getUsername());
                     resp.sendRedirect("pages/Student/Welcome.jsp");
                 }
                 else{

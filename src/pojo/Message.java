@@ -15,6 +15,7 @@ public class Message {
     private boolean isGroup;
     private boolean isat;
     private List<String> atwhos;
+    private int groupid;
     private String sender;
 
     public String getSender() {
@@ -63,6 +64,48 @@ public class Message {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isIsat() {
+        return isat;
+    }
+
+    public void setIsat(boolean isat) {
+        this.isat = isat;
+    }
+
+    public int getGroupid() {
+        return groupid;
+    }
+
+    public void setGroupid(int groupid) {
+        this.groupid = groupid;
+    }
+
+    public Message() {
+    }
+
+    public Message(String toName, String message, boolean isGroup, boolean isat, List<String> atwhos, int groupid, String sender) {
+        this.toName = toName;
+        this.message = message;
+        this.isGroup = isGroup;
+        this.isat = isat;
+        this.atwhos = atwhos;
+        this.groupid = groupid;
+        this.sender = sender;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "toName='" + toName + '\'' +
+                ", message='" + message + '\'' +
+                ", isGroup=" + isGroup +
+                ", isat=" + isat +
+                ", atwhos=" + atwhos +
+                ", groupid=" + groupid +
+                ", sender='" + sender + '\'' +
+                '}';
     }
 }
 

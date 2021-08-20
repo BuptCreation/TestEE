@@ -44,9 +44,12 @@ public class AddStudentToGroupServlet extends HttpServlet {
             System.out.println(sb);
             String acceptjson = sb.toString();
             JsonObject jsonObject = JsonParser.parseString(acceptjson).getAsJsonObject();
+            jsonObject.remove("studentname");
+            jsonObject.addProperty("studentname","bupt"+jsonObject.get("studentno").getAsString());
+            String json = new Gson().toJson(jsonObject);
             //保存到组中
             GroupDaoImpl groupDao = new GroupDaoImpl();
-            groupDao.saveGroup(acceptjson);
+            groupDao.saveGroup(json);
             //保存用户数据
             User user = new User();
             user.setStudentNo(jsonObject.get("studentno").getAsInt());

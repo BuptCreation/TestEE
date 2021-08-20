@@ -9,6 +9,7 @@ import org.bson.Document;
 import pojo.Message;
 import pojo.User;
 import service.MessageService;
+import service.impl.GroupServiceImpl;
 import service.impl.MessageServiceImpl;
 import utils.MessageUtils;
 import utils.MongoDao;
@@ -29,13 +30,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatEndpoint {
 
     //用来存储每个客户端对象对应的ChatEndpoint对象 string为用户名 ChatEndpoint对应一个终端
-    private static Map<java.lang.String,ChatEndpoint> onlineUsers = new ConcurrentHashMap<>();
+    private static Map<String,ChatEndpoint> onlineUsers = new ConcurrentHashMap<>();
     //!!      用来存储各个组
-    private static Map<java.lang.String,Map<java.lang.String,ChatEndpoint>> onlineGroups = new ConcurrentHashMap<>();
+    private static Map<String,Map<String,ChatEndpoint>> onlineGroups = new ConcurrentHashMap<>();
     //声明session对象 通过该对象可以发送消息给指定的用户，由于每一个ChatEndpoint都需要一个session
     private Session session;
     //声明小组用来存储该session属于哪一个组
-    private java.lang.String KeyGroup;
+    private String KeyGroup;
     //声明一个httpSession对象
     private HttpSession httpSession;
     @OnOpen
@@ -50,9 +51,9 @@ public class ChatEndpoint {
             User loginUser = (User) httpSession.getAttribute("User");
             //将登陆的用户加入group
             int groupid=1;
-            java.lang.String groupteacherUsername="teacher168";
+            String groupteacherUsername="teacher168";
             KeyGroup=groupid+groupteacherUsername;//为了确定唯一的group,必须如此做，将id与用户名相加
-            Map<java.lang.String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);
+            Map<String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);
             if (Group==null) {
                 //创建新的group
                Group =new ConcurrentHashMap<>();
@@ -65,7 +66,7 @@ public class ChatEndpoint {
             onlineUsers.put(loginUser.getUsername(), this);
             //然后将当前在线的该组的所有用户的用户名推送给所有用户
             //1.获取消息
-            java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup),false,null,null) ;
+            String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup),false,null,null) ;
 
 //            String message = MessageUtils.getMessage(true, null, getNames());
             //2.调用方法进行系统推送
@@ -77,10 +78,10 @@ public class ChatEndpoint {
             e.printStackTrace();
         }
     }
-    private void broadcastAllUsers(java.lang.String message){
+    private void broadcastAllUsers(String message){
         //要将该消息推送给所有客户端
-        Set<java.lang.String> names=onlineUsers.keySet();
-        for (java.lang.String name : names){
+        Set<String> names=onlineUsers.keySet();
+        for (String name : names){
             ChatEndpoint chatEndpoint= onlineUsers.get(name);
             //Remote中有sendText方法可以用来传递数据
             try {
@@ -90,11 +91,11 @@ public class ChatEndpoint {
             }
         }
     }
-    private void broadcastGroupUsers(java.lang.String message, java.lang.String KeyGroup){
+    private void broadcastGroupUsers(String message, java.lang.String KeyGroup){
         //小组成员
-        Map<java.lang.String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);
-        Set<java.lang.String> names=Group.keySet();
-        for (java.lang.String name : names){
+        Map<String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);
+        Set<String> names=Group.keySet();
+        for (String name : names){
             ChatEndpoint chatEndpoint = Group.get(name);
 
             try {
@@ -105,20 +106,37 @@ public class ChatEndpoint {
         }
     }
 
-    private Set<java.lang.String> getNames(){
+    private Set<String> getNames(){
         return onlineUsers.keySet();
     }
-    private Set<java.lang.String> getGroupNames(java.lang.String KeyGroup){
+    private Set<String> getGroupNames(String KeyGroup){
         return onlineGroups.get(KeyGroup).keySet();
     }
     @OnMessage
-    public void onMessage(java.lang.String message, Session session){
+    public void onMessage(String message, Session session){
         //将JSON数据message转换成message对象
         try {
             ObjectMapper mapper = new ObjectMapper();
             Message mess = mapper.readValue(message, Message.class);
             if (mess.isat()==true){
                 JsonObject jsonObject = new JsonObject();
+                String username = mess.getSender();
+                jsonObject.addProperty("groupid",new GroupServiceImpl().queryuserGroupid(username));
+                jsonObject.addProperty("toName",mess.getToName());
+                jsonObject.addProperty("message",mess.getMessage());
+                jsonObject.addProperty("isgroup",mess.isGroup());
+                jsonObject.addProperty("isat",mess.isat());
+                jsonObject.addProperty("sender",mess.getSender());
+                jsonObject.addProperty("atwhos", new Gson().toJson(mess.getAtwhos()));
+                //把上面的数据存到数据库相应位置中!
+                String json = new Gson().toJson(jsonObject);
+                MessageService messageService = new MessageServiceImpl();
+                messageService.saveMessage(json);
+            }
+            else {
+                JsonObject jsonObject = new JsonObject();
+                String username = mess.getSender();
+                jsonObject.addProperty("groupid",new GroupServiceImpl().queryuserGroupid(username));
                 jsonObject.addProperty("toName",mess.getToName());
                 jsonObject.addProperty("message",mess.getMessage());
                 jsonObject.addProperty("isgroup",mess.isGroup());

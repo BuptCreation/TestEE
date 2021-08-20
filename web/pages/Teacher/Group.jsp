@@ -111,7 +111,8 @@
                         studentname: "bupt"+this.student.studentname,
                         groupid: Number(this.student.groupid),
                         teachername: '<%=loginUser.getUsername()%>',
-                        speeches: Number(0)
+                        speeches: Number(0),
+                        logins:Number(0)
                     }
                     this.$http.post("addstudenttogroupservlet",JSON.stringify(student)).then(function (data) {
                         console.log(student)

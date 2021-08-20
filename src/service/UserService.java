@@ -31,9 +31,17 @@ public interface UserService {
     public boolean existsUsername(String username);
 
     /**
-     * 查找学生所对应的小组好以及教师名字
+     * 查找学生所对应的小组号以及教师名字
      * @param studentId
      * @return 如果返回Null，说明没有找到
      */
     public String queryGroupIdAndTeacherName(int studentId)throws Exception;
+
+    /**
+     * 查找学生所对应的小组号
+     * @param studentId
+     * @return
+     * @throws Exception
+     */
+    public int queryGroupId(int studentId) throws Exception;
 }

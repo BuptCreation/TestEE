@@ -13,6 +13,7 @@ public class Group {
     private String studentname;//学生姓名
     private int groupid;//小组号
     private int speeches;//群聊发言次数
+    private int logins;//登录次数
     private String teachername;//教师姓名
 
     public int get_id() {
@@ -63,16 +64,25 @@ public class Group {
         this.teachername = teachername;
     }
 
+    public int getLogins() {
+        return logins;
+    }
+
+    public void setLogins(int logins) {
+        this.logins = logins;
+    }
+
     public Group() {
     }
 
-    public Group(int _id, int studentno, String studentname, int groupid, int speeches, String teachername) {
+    public Group(int _id, int studentno, String studentname, int groupid, int speeches, String teachername,int logins) {
         this._id = _id;
         this.studentno = studentno;
         this.studentname = studentname;
         this.groupid = groupid;
         this.speeches = speeches;
         this.teachername = teachername;
+        this.logins = logins;
     }
 
     @Override
@@ -83,6 +93,7 @@ public class Group {
                 ", studentname='" + studentname + '\'' +
                 ", groupid=" + groupid +
                 ", speeches=" + speeches +
+                ", logins=" + logins +
                 ", teachername='" + teachername + '\'' +
                 '}';
     }

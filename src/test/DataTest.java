@@ -7,6 +7,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
 import dao.ArticleDao;
 import dao.NewsDao;
 import dao.impl.ArticleDaoImpl;
@@ -107,5 +108,42 @@ public class DataTest {
         }
         result.remove("student168");
         System.out.println(result);
+    }
+    @Test
+    public void dada(){
+        int id = 0;
+        BasicDBObject usernameObj = new BasicDBObject("studentname","student168");
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "buptgroup";
+        MongoDao mongoDao = new MongoDaoImpl();
+        try {
+            List<Map<String, Object>> list = mongoDao.queryByDoc(db,table,usernameObj);
+            if(list.size()==0){
+                System.out.println(0);
+            }
+            else {
+                String json = new Gson().toJson(list.get(0));
+                JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+                id = jsonObject.get("groupid").getAsInt();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(id);
+    }
+    @Test
+    public void TestUpdate(){
+        BasicDBObject usernameObj = new BasicDBObject("studentname","student168");
+        BasicDBObject updateDoc = new BasicDBObject("logins",1);
+        BasicDBObject doc = new BasicDBObject("$inc",updateDoc);
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "buptgroup";
+        MongoDao mongoDao = new MongoDaoImpl();
+        MongoCollection<Document> collection = db.getCollection(table);
+        try {
+            UpdateResult updateManyResult = collection.updateMany(usernameObj,doc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

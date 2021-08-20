@@ -14,4 +14,6 @@ public interface GroupService {
     public List<String> queryGroupStudent(String username);
     public void deleteGroup(Integer groupId);
     public void deleteStudent(Integer studentsId,String studentsName, Integer groupId);
+    public int queryuserGroupid(String username);
+    public void updatelogins(String username);
 }

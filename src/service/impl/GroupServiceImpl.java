@@ -6,9 +6,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
 import dao.GroupDao;
 import dao.impl.GroupDaoImpl;
+import org.bson.Document;
 import pojo.Group;
 import service.GroupService;
 import utils.JsonConverter;
@@ -94,6 +97,44 @@ public class GroupServiceImpl implements GroupService {
         String table = "buptgroup";
         try {
             mongoDao.delete(db, table, andObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public int queryuserGroupid(String username) {
+        int id = 0;
+        BasicDBObject usernameObj = new BasicDBObject("studentname",username);
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "buptgroup";
+        MongoDao mongoDao = new MongoDaoImpl();
+        try {
+            List<Map<String, Object>> list = mongoDao.queryByDoc(db,table,usernameObj);
+            if(list.size()==0){
+                return 0;
+            }
+            else {
+                String json = new Gson().toJson(list.get(0));
+                JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+                id = jsonObject.get("groupid").getAsInt();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    @Override
+    public void updatelogins(String username) {
+        BasicDBObject usernameObj = new BasicDBObject("studentname",username);
+        BasicDBObject updateDoc = new BasicDBObject("logins",1);
+        BasicDBObject doc = new BasicDBObject("$inc",updateDoc);
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "buptgroup";
+        MongoCollection<Document> collection = db.getCollection(table);
+        try {
+            UpdateResult updateManyResult = collection.updateMany(usernameObj,doc);
         } catch (Exception e) {
             e.printStackTrace();
         }

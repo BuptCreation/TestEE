@@ -30,15 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registUser(User user) {
-//        userDao.saveUser(user);
-//        String username = user.getUsername();
-//        User user2 = userDao.queryUserByUsername(username);
-//        userDao.MongosaveUser(user2);
         if(user.getIdentity().equals("student")){
             userDao.saveStudent(user);
-            String username = user.getUsername();
-            User user2 = userDao.queryUserByUsername(username);
-            userDao.MongosaveUser(user2);
         }
         if (user.getIdentity().equals("teacher")){
             userDao.saveTeacher(user);
@@ -64,7 +57,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String queryGroupIdAndTeacherName(int studentId) throws Exception{
-        MongoDao mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
         BasicDBObject studentIdObj = new BasicDBObject("studentno",studentId);
         String table = "buptgroup";
@@ -84,5 +76,27 @@ public class UserServiceImpl implements UserService {
         int groupid = jsonObject.get("groupid").getAsInt();
         String teachername = jsonObject.get("teachername").getAsString();
         return groupid +teachername;
+    }
+
+    @Override
+    public int queryGroupId(int studentId) throws Exception {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        BasicDBObject studentIdObj = new BasicDBObject("studentno",studentId);
+        String table = "buptgroup";
+        MongoCollection<Document> collection = db.getCollection(table);
+        FindIterable<Document> iterable = collection.find(studentIdObj);
+        Map<String, Object> jsonStrToMap = null;
+        MongoCursor<Document> cursor = iterable.iterator();
+        while (cursor.hasNext()) {
+            Document user = cursor.next();
+            String jsonString = user.toJson();
+            jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);// 这里用到我自己写的方法,主要是包json字符串转换成map格式,为后面做准备,方法放在后面
+        }
+        System.out.println(jsonStrToMap);
+        String json = new Gson().toJson(jsonStrToMap);
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+//        return jsonObject.get("groupid").getAsString() + jsonObject.get("teachername").getAsString();
+        int groupid = jsonObject.get("groupid").getAsInt();
+        return groupid;
     }
 }
