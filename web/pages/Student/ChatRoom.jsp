@@ -340,6 +340,9 @@
     var Group = true;
     var UserGroup = "1teacher168";//未初始化
     var isMe = false;
+    //心跳连接以及状态判定
+    var websocket_connected_count = 0;
+    var onclose_connected_count = 0;
     //点击好友名称展示相关消息
     window.onbeforeunload = function (event) {
         var count = {count: Count, id: Number(<%=loginUser.getStudentNo()%>)};
@@ -452,15 +455,19 @@
             }
         });
         var host = window.location.host;
-        // var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
-        var ws = new WebSocket("ws://" + "47.94.108.20:8080/BuptCreationEE" + "/chat");
+        var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
+        // var ws = new WebSocket("ws://" + "47.94.108.20:8080/BuptCreationEE" + "/chat");
         //建立连接之后
         ws.onopen = function (evt) {
+            // 成功建立连接后，重置心跳检测
+            heartCheck.reset().start();
             //在建立连接之后 需要做什么?
             $("#username").html("<div class=\"User\"><h3>用户:" + username + "</h3></div><div class=\"UState\" style=\"color: lawngreen \"><h3>在线</h3></div>");
         }
         //接受消息后进行触发
         ws.onmessage = function (evt) {
+            // 如果获取到消息，说明连接是正常的，重置心跳检测
+            heartCheck.reset().start();
             //获取服务端推送的消息
             var dataStr = evt.data;
             //将dataStr转换为json对象
@@ -573,7 +580,29 @@
             $("#username").html("<div class=\"User\"><h3>用户:" + username + "</h3></div><div class=\"UState\" style=\"color: orangered \"><h3>离线</h3></div>");
 
         }
-
+        //心跳连接代码,处于连接状态，发送信息，非连接状态 重制信息
+        var heartCheck = {
+            timeout: 55000,        // 一段时间（55秒）进行一次心跳，比server端设置的连接时间稍微小一点，在接近断开的情况下以通信的方式去重置连接时间。
+            serverTimeoutObj: null,
+            reset: function () {
+                clearTimeout(this.timeoutObj);
+                clearTimeout(this.serverTimeoutObj);
+                return this;
+            },
+            start: function () {
+                var self = this;
+                this.serverTimeoutObj = setInterval(function () {
+                    if (ws.readyState == 1) {
+                        console.log("连接状态，发送消息保持连接");
+                        websocket.send("ping");
+                        heartCheck.reset().start();    // 如果获取到消息，说明连接是正常的，重置心跳检测
+                    } else {
+                        console.log("断开状态，尝试重连");
+                        newWebSocket();
+                    }
+                }, this.timeout)
+            }
+        }
         //发送消息
         $("#submit").click(function () {
             //0.说话次数加一
