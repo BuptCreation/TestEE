@@ -455,8 +455,8 @@
             }
         });
         var host = window.location.host;
-        var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
-        // var ws = new WebSocket("ws://" + "47.94.108.20:8080/BuptCreationEE" + "/chat");
+        // var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
+        var ws = new WebSocket("ws://" + "47.94.108.20:8080/BuptCreationEE" + "/chat");
         //建立连接之后
         ws.onopen = function (evt) {
             // 成功建立连接后，重置心跳检测
@@ -594,7 +594,7 @@
                 this.serverTimeoutObj = setInterval(function () {
                     if (ws.readyState == 1) {
                         console.log("连接状态，发送消息保持连接");
-                        websocket.send("ping");
+                        ws.send("ping");
                         heartCheck.reset().start();    // 如果获取到消息，说明连接是正常的，重置心跳检测
                     } else {
                         console.log("断开状态，尝试重连");
