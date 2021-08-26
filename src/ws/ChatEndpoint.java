@@ -115,68 +115,71 @@ public class ChatEndpoint {
     @OnMessage
     public void onMessage(String message, Session session){
         //将JSON数据message转换成message对象
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            Message mess = mapper.readValue(message, Message.class);
-            if (mess.isat()==true){
-                JsonObject jsonObject = new JsonObject();
-                String username = mess.getSender();
-                jsonObject.addProperty("groupid",new GroupServiceImpl().queryuserGroupid(username));
-                jsonObject.addProperty("toName",mess.getToName());
-                jsonObject.addProperty("message",mess.getMessage());
-                jsonObject.addProperty("isgroup",mess.isGroup());
-                jsonObject.addProperty("isat",mess.isat());
-                jsonObject.addProperty("sender",mess.getSender());
-                jsonObject.addProperty("atwhos", new Gson().toJson(mess.getAtwhos()));
-                //把上面的数据存到数据库相应位置中!
-                String json = new Gson().toJson(jsonObject);
-                MessageService messageService = new MessageServiceImpl();
-                messageService.saveMessage(json);
-            }
-            else {
-                JsonObject jsonObject = new JsonObject();
-                String username = mess.getSender();
-                jsonObject.addProperty("groupid",new GroupServiceImpl().queryuserGroupid(username));
-                jsonObject.addProperty("toName",mess.getToName());
-                jsonObject.addProperty("message",mess.getMessage());
-                jsonObject.addProperty("isgroup",mess.isGroup());
-                jsonObject.addProperty("isat",mess.isat());
-                jsonObject.addProperty("sender",mess.getSender());
-                jsonObject.addProperty("atwhos", new Gson().toJson(mess.getAtwhos()));
-                //把上面的数据存到数据库相应位置中!
-                String json = new Gson().toJson(jsonObject);
-                MessageService messageService = new MessageServiceImpl();
-                messageService.saveMessage(json);
-            }
-            System.out.println("收到数据"+mess.isGroup()+mess.getToName()+mess.isat()+mess.getAtwhos());
-            if (false == mess.isGroup()) {
-                //不是群发消息
-                System.out.println("不是群发消息");
-                //获取要将数据发送给的指定用户
-                String toName = mess.getToName();
-                //获取消息数据
-                String data = mess.getMessage();
-                //获取当前登陆的用户
-                User loginUser = (User) httpSession.getAttribute("User");
-                String resultMessage = MessageUtils.getMessage(false, loginUser.getUsername(), data);
-                //获得对应的Session
-                System.out.println("发送给"+toName+"用户"+resultMessage);
-                onlineUsers.get(toName).session.getBasicRemote().sendText(resultMessage);
-            }else {
-                //群发消息
-                System.out.println("是群发消息");
+        if (message=="ping"){
+
+        }else {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                Message mess = mapper.readValue(message, Message.class);
+                if (mess.isat() == true) {
+                    JsonObject jsonObject = new JsonObject();
+                    String username = mess.getSender();
+                    jsonObject.addProperty("groupid", new GroupServiceImpl().queryuserGroupid(username));
+                    jsonObject.addProperty("toName", mess.getToName());
+                    jsonObject.addProperty("message", mess.getMessage());
+                    jsonObject.addProperty("isgroup", mess.isGroup());
+                    jsonObject.addProperty("isat", mess.isat());
+                    jsonObject.addProperty("sender", mess.getSender());
+                    jsonObject.addProperty("atwhos", new Gson().toJson(mess.getAtwhos()));
+                    //把上面的数据存到数据库相应位置中!
+                    String json = new Gson().toJson(jsonObject);
+                    MessageService messageService = new MessageServiceImpl();
+                    messageService.saveMessage(json);
+                } else {
+                    JsonObject jsonObject = new JsonObject();
+                    String username = mess.getSender();
+                    jsonObject.addProperty("groupid", new GroupServiceImpl().queryuserGroupid(username));
+                    jsonObject.addProperty("toName", mess.getToName());
+                    jsonObject.addProperty("message", mess.getMessage());
+                    jsonObject.addProperty("isgroup", mess.isGroup());
+                    jsonObject.addProperty("isat", mess.isat());
+                    jsonObject.addProperty("sender", mess.getSender());
+                    jsonObject.addProperty("atwhos", new Gson().toJson(mess.getAtwhos()));
+                    //把上面的数据存到数据库相应位置中!
+                    String json = new Gson().toJson(jsonObject);
+                    MessageService messageService = new MessageServiceImpl();
+                    messageService.saveMessage(json);
+                }
+                System.out.println("收到数据" + mess.isGroup() + mess.getToName() + mess.isat() + mess.getAtwhos());
+                if (false == mess.isGroup()) {
+                    //不是群发消息
+                    System.out.println("不是群发消息");
+                    //获取要将数据发送给的指定用户
+                    String toName = mess.getToName();
+                    //获取消息数据
+                    String data = mess.getMessage();
+                    //获取当前登陆的用户
+                    User loginUser = (User) httpSession.getAttribute("User");
+                    String resultMessage = MessageUtils.getMessage(false, loginUser.getUsername(), data);
+                    //获得对应的Session
+                    System.out.println("发送给" + toName + "用户" + resultMessage);
+                    onlineUsers.get(toName).session.getBasicRemote().sendText(resultMessage);
+                } else {
+                    //群发消息
+                    System.out.println("是群发消息");
                     //获取要将数据发送给的指定小组
                     String KeyGroup = mess.getToName();
                     //获取消息
                     String data = mess.getMessage();
-                    String resultMessage = MessageUtils.getGroupMessage(false, KeyGroup, data,mess.isat(),mess.getAtwhos(),mess.getSender());
-                    System.out.println("发送给" + KeyGroup + "小组" + resultMessage+"有无at？"+mess.isat()+"at了谁？"+mess.getAtwhos());
+                    String resultMessage = MessageUtils.getGroupMessage(false, KeyGroup, data, mess.isat(), mess.getAtwhos(), mess.getSender());
+                    System.out.println("发送给" + KeyGroup + "小组" + resultMessage + "有无at？" + mess.isat() + "at了谁？" + mess.getAtwhos());
                     //获取对应的session发送数据 sendToGroup
                     broadcastGroupUsers(resultMessage, KeyGroup);
-            }
+                }
 
-        }catch (Exception e){
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     @OnClose
