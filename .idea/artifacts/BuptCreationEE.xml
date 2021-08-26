@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="BuptCreationEE">
+    <output-path>$PROJECT_DIR$/out/artifacts/BuptCreationEE</output-path>
+    <root id="archive" name="BuptCreationEE.war">
+      <element id="artifact" artifact-name="BuptCreationEE:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -6,19 +6,14 @@ import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import dao.GroupDao;
 import org.bson.Document;
-import pojo.Group;
 import utils.JsonStrToMap;
 import utils.MongoDao;
 import utils.MongoDaoImpl;
 import utils.MongoHelper;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

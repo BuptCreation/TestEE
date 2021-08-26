@@ -18,7 +18,7 @@
 </head>
 <body>
 <!-- 导航栏区域   -->
-<%     User StudentUser=(User)request.getSession().getAttribute("User"); %> 
+<%    User StudentUser=(User)request.getSession().getAttribute("User");%> 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"> 
     <div class="container"> 
         <div class="navbar-header"> 
@@ -26,13 +26,13 @@
         </div> 
         <div id="navbar" class="collapse navbar-collapse"> 
             <ul class="nav navbar-nav"> 
-                <li><a href="pages/Student/My.jsp">我的&nbsp;</a></li> 
-                <li><a href="http://localhost:9001?name=<%=StudentUser.getUsername()%>">协同写作</a>
+                <li><a href="http://47.94.108.20:8080/BuptCreationEE/pages/Student/My.jsp">我的&nbsp;</a></li> 
+                <li><a href="http://47.94.108.20:9001?name=<%=StudentUser.getUsername()%>">协同写作</a>
                 </li>                 <li>
-                <a href="pages/Student/Showblog.jsp">作品评论</a>
+                <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Student/Showblog.jsp">作品评论</a>
             </li> 
                 <li>
-                    <a href="pages/Student/ChatRoom.jsp">聊天室</a>
+                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Student/ChatRoom.jsp">聊天室</a>
                 </li> 
             </ul> 
         </div> 
