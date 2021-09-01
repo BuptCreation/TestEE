@@ -18,7 +18,6 @@ import java.util.List;
  * @date 2021-08-04-22
  */
 public abstract class BaseDao {
-
     //使用DbUtils操作数据库
     private QueryRunner queryRunner = new QueryRunner();
 
