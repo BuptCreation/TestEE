@@ -41,7 +41,7 @@
         <header class="clearfix">
             <div class='container'>
                 <div class="intro">
-                    <a href="pages/Student/My.jsp"><h1>让创作更加美好</h1></a>
+                    <a href="pages/Student/My.jsp" title="点击进入主页"><h1>Click Here! 让创作更加美好</h1></a>
                     <p></p>
                 </div>
             </div>

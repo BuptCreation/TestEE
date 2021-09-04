@@ -24,7 +24,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a href=" " class="navbar-brand">智慧英语协同写作学生端</a >
+            <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Student/My.jsp" class="navbar-brand">智慧英语协同写作学生端</a >
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
