@@ -40,6 +40,9 @@
     <%--    <link rel="stylesheet" href="pages/Student/atwho.css" />--%>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="http://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
+    <%--标签样式    --%>
+    <link href="https://fonts.googleapis.com/css?family=Sen:400,700,800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/cb2ec89b0c.js" crossorigin="anonymous"></script>
     <style type="text/css">
         /*override atwho's style*/
         .atwho-inserted {
@@ -117,6 +120,7 @@
     .submit {
         border: none;
         color: white;
+        width: 70%;
         padding: 8px 16px;
         text-align: center;
         text-decoration: none;
@@ -129,6 +133,7 @@
         background-color: white;
         color: black;
         border: 2px solid #008CBA;
+        border-radius: 5px;
     }
 
     .submit:hover {
@@ -139,18 +144,22 @@
     #input_text {
         width: 690px;
     }
-
+    #editable:before
+    {
+        content:"@区域:";
+    }
     <%--    格式排版--%>
     #contains {
-        background-color: #666666;
+        background-color: #8c8c8c;
         width: 1000px;
         height: 700px;
         margin: auto;
+        border-radius: 5px;
     }
 
     #username {
         color: #ecf0f1;
-        background-color: #666666;
+        background-color: #8c8c8c;
         width: 1000px;
         height: 40px;
         border-radius: 50px 50px 0px 0px;
@@ -158,7 +167,7 @@
 
     #Inchat {
         text-align: center;
-        background-color: #666666;
+        background-color: #8c8c8c;
         width: 1000px;
         height: 50px;
     }
@@ -194,14 +203,14 @@
         border: 1px solid #8c8c8c;
         height: 270px;
         overflow-y: scroll;
-        background: antiquewhite;
+        background: whitesmoke;
     }
 
     #xtList {
         border: 1px solid #8c8c8c;
         height: 270px;
         overflow-y: scroll;
-        background: antiquewhite;
+        background: whitesmoke;
     }
 
     #input {
@@ -233,6 +242,79 @@
         resize: none;
         border: none;
         outline: none
+    }
+    .others {
+        display: flex;
+        background-color: #fff;
+        position: absolute;
+        top: 180px;
+        z-index: -1;
+        border-radius: 999px;
+        box-shadow: 0 0 25px -5px lightgray;
+        transition: 0.3s all ease-out;
+    }
+    .emoji-button {
+        position: relative;
+        /*display: none;*/
+        /*position: absolute;*/
+        top: 0px;
+        right: 0px;
+        transition: 0.3s all ease-out;
+        user-select: none;
+        cursor: pointer;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        width: 20px;
+        height: 20px;
+    }
+    .emoji{
+        position: relative;
+        display: none;
+        /*position: absolute;*/
+        top: 0px;
+        right: 0px;
+        transition: 0.3s all ease-out;
+        user-select: none;
+        cursor: pointer;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        width: 20px;
+        height: 20px;
+    }
+    .button-add{
+        border: none;
+        color: white;
+        width: 20%;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 30px;
+        margin: 4px 2px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+        background-color: white;
+        color: black;
+    }
+    .others-show {
+        top: 140px !important;
+        z-index: 10 !important;
+    }
+
+    .emoji-show {
+        display: flex !important;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        width: 300px !important;
+        height: 100px; !important;
+        overflow-y: scroll;
+        padding: 10px;
+        top: -135px !important;
+        right: 10px !important;
+        background-color: #fff;
+        box-shadow: 0 0 25px -5px lightgray;
+        border-radius: 5px 5px 0 5px;
     }
 </style>
 <body>
@@ -283,19 +365,19 @@
         <div id="input">
             <%--            <textarea type="text" id="input_text" style="width: 695px;height: 200px;"></textarea>--%>
             <div id="main">
-                <div id="editable" class="inputor" contentEditable="true" style="text-align: left"></div>
+              <div id="editable" class="inputor" contentEditable="true" style="text-align: left"></div>
             </div>
             <div id="app">
                 <!-- emojis start -->
-                <div class="emoji">
-                    <div class="emoji-list">
-                        <section v-for="(key, keyIndex) in Object.keys(emoji)" :key="keyIndex">
-          <span class="emoji-list-item" v-for="(item, index) in emoji[key]" :key="index" @click="insertEmoji(item)">
-            {{item}}
-          </span>
-                        </section>
-                    </div>
-                </div>
+<%--                <div class="emoji">--%>
+<%--                    <div class="emoji-list">--%>
+<%--                        <section v-for="(key, keyIndex) in Object.keys(emoji)" :key="keyIndex">--%>
+<%--          <span class="emoji-list-item" v-for="(item, index) in emoji[key]" :key="index" @click="insertEmoji(item)">--%>
+<%--            {{item}}--%>
+<%--          </span>--%>
+<%--                        </section>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
                 <!-- emojis end -->
 
                 <!-- editor start -->
@@ -310,8 +392,36 @@
                         id="input_text" style="text-align: left">
                 </div>
                 <!-- editor end -->
-            </div>
+<%--               发送按钮 --%>
             <button id="submit" class="submit" style="float: right;">发送</button>
+
+<%--      功能扩展按钮--%>
+            <%--以下--%>
+                <span class="button-add">
+                    <i class="fas fa-plus-circle"></i>
+                        <div class="others ">
+                            <div class="emoji-button" style="margin: 10px">
+                                <i class="far fa-laugh"></i>
+                            <div class="emoji">
+                                <div class="emoji-list">
+                                    <section v-for="(key, keyIndex) in Object.keys(emoji)" :key="keyIndex">
+                                        <span class="emoji-list-item" v-for="(item, index) in emoji[key]" :key="index" @click="insertEmoji(item)">
+                                        {{item}}
+                                        </span>
+                                    </section>
+                                </div>
+                            </div>
+                            </div>
+                             <span class="image-button" style="margin: 10px">
+                            <i class="far fa-image"></i>
+                            </span>
+                            <span>
+                            <i class="fas fa-paperclip" style="margin: 10px"></i>
+                            </span>
+                        </div>
+                </span>
+            </div>
+            <%--以上，测试数据            --%>
         </div>
     </div>
     <div id="right">
@@ -402,6 +512,23 @@
         }
     });
     $(function () {
+        $(".button-add").click(function(){
+            console.log("button-add已经被点击")
+            if ( $(".others").hasClass("others-show")){
+                $(".others").removeClass("others-show")
+            }else {
+                $(".others").addClass("others-show")
+            }
+        });
+        $(".emoji-button").click(function () {
+            console.log("emoji-button已经被点击")
+            if ($(".emoji").hasClass("emoji-show")){
+                $(".emoji").removeClass("emoji-show")
+            }else {
+                $(".emoji").addClass("emoji-show")
+            }
+            return false;
+        })
         $.ajax({
             //从getUsername处获得用户名
             url: "getUsername",

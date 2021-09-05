@@ -34,6 +34,7 @@ var preloader = (function(){
         page.addClass('loaded');
         btn.addClass('hideThis');
         preloader.animations();
+        // $('.words').addClass('lase');
       });  
     },
     

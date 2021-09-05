@@ -16,6 +16,7 @@ html,body{
 }
 .loaded{
   overflow-y:auto;
+
 }
 .main{
   display:none;
@@ -57,6 +58,9 @@ html,body{
   -moz-transition:all 1s ease;
   -o-transition:all 1s ease;
   transition:all 1s ease;
+}
+.lase{
+  opacity: 0.4;
 }
 .enter{
   position: absolute;
@@ -180,6 +184,9 @@ body{
     margin:4rem 0;
   }
 }
+
+F
+
 header h1{
   color:#fff;
   padding:0.4rem 0.6rem;
