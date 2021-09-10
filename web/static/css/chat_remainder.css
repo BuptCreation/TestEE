@@ -34,15 +34,15 @@ main {
 
 /*overall layout*/
 main {
-  width: 90%;
-  max-width: 1050px;
-  margin: 3em auto 0;
-  /*border: 1px solid var(--accentColor);*/
-  display: grid;
-  grid: repeat(5, fit-content(300px))/repeat(4, 1fr);
-  grid-template-areas: "colors typography typography typography" "colors buttons buttons links" "inputs inputs inputs inputs" "badges tooltips alerts alerts" "loading tooltips alerts alerts";
-  color: var(--foregroundColor);
-  text-align: left;
+  /*!*width: 90%;*!*/
+  /*max-width: 1050px;*/
+  /*!*margin: 3em auto 0;*!*/
+  /*!*border: 1px solid var(--accentColor);*!*/
+  /*display: grid;*/
+  /*grid: repeat(5, fit-content(300px))/repeat(4, 1fr);*/
+  /*grid-template-areas: "colors typography typography typography" "colors buttons buttons links" "inputs inputs inputs inputs" "badges tooltips alerts alerts" "loading tooltips alerts alerts";*/
+  /*color: var(--foregroundColor);*/
+  /*text-align: left;*/
 }
 
 main > section {
@@ -120,7 +120,7 @@ main > section h6.subheader {
 
 .alerts {
   grid-area: alerts;
-  padding: 40px 30px;
+  /*padding: 40px 30px;*/
 }
 
 .tooltips {

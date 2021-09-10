@@ -30,7 +30,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="http://47.94.108.20:8080/BuptCreationEE/pages/Student/My.jsp">我的&nbsp;</a ></li>
                 <li><a href="http://47.94.108.20:9001?name=<%=StudentUser.getUsername()%>">协同写作</a ></li>
-                <li><a href="http://47.94.108.20:8080/BuptCreationEE/pages/Student/Showblog.jsp">作品评论</a ></li>
+<%--                <li><a href="http://47.94.108.20:8080/BuptCreationEE/pages/Student/Showblog.jsp">作品评论</a ></li>--%>
                 <li><a href="http://47.94.108.20:8080/BuptCreationEE/pages/Student/ChatRoom.jsp">聊天室</a ></li>
             </ul>
         </div>

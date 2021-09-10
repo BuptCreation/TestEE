@@ -23,10 +23,10 @@ body {
 }
 
 .container {
-  width: 90%;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  text-align: center;
+  /*text-align: center;*/
 }
 
 h1 {

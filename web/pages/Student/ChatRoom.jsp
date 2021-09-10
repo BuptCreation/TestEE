@@ -56,6 +56,21 @@
 </head>
 <style>
     <%--    美化排版--%>
+    .alerts{
+        margin: 20px;
+        width: 30%;
+        float: right;
+    }
+
+    #contains {
+        background-color: #8c8c8c;
+        width: 60%;
+        height: 700px;
+        margin: 20px;
+        float: left;
+        border-radius: 5px;
+    }
+
     footer {
 
     }
@@ -142,25 +157,18 @@
     }
 
     #input_text {
-        width: 690px;
+        width: 100%;
     }
     #editable:before
     {
         content:"@区域:";
     }
     <%--    格式排版--%>
-    #contains {
-        background-color: #8c8c8c;
-        width: 1000px;
-        height: 700px;
-        margin: auto;
-        border-radius: 5px;
-    }
 
     #username {
         color: #ecf0f1;
         background-color: #8c8c8c;
-        width: 1000px;
+        width: 100%;
         height: 40px;
         border-radius: 50px 50px 0px 0px;
     }
@@ -168,14 +176,14 @@
     #Inchat {
         text-align: center;
         background-color: #8c8c8c;
-        width: 1000px;
+        width: 100%;
         height: 50px;
     }
 
     #left {
         border: 1px solid #8c8c8c;
         background-color: white;
-        width: 700px;
+        width: 70%;
         height: 640px;
         float: left;
         position: relative;
@@ -184,7 +192,7 @@
     #content {
         border: 1px solid #8c8c8c;
         background-color: white;
-        width: 700px;
+        width: 100%;
         height: 400px;
         /*display: none;*/
         visibility: hidden;
@@ -194,7 +202,7 @@
     #right {
         border: 1px solid #8c8c8c;
         background-color: #ecf0f1;
-        width: 300px;
+        width: 30%;
         height: 640px;
         float: right;
     }
@@ -214,7 +222,7 @@
     }
 
     #input {
-        width: 700px;
+        width: 100%;
         border: 1px solid #8c8c8c;
         margin-bottom: 0px;
         position: absolute;
@@ -235,7 +243,7 @@
 
     #hy {
         display: block;
-        width: 300px;
+        width: 30%;
     }
 
     textarea {
@@ -656,7 +664,7 @@
                                 } else {
                                     var alter = "<div class=\"alert status-primary\">" + res.atwhos[i] + "被" + res.sender + "at了" + "</div>";
                                 }
-                                $(".alerts").append(alter);
+                                $(".alerts").prepend(alter);
                             }
                             $(".alert").on("click", function () {
                                 $(this).hide("slow");

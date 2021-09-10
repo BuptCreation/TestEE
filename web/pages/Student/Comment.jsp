@@ -31,6 +31,7 @@
 <%--    背景--%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel="stylesheet" href="static/css/teacher-background-style.css">
+
 </head>
 <%--从session中获得user    把名字填入评论人--%>
 <%
@@ -38,7 +39,7 @@
 %>
     <%@include file="headleader.jsp"%>
 <%--背景--%>
-<div id="top-image"></div>
+<%--<div id="top-image"></div>--%>
 <%--  温馨提示--%>
     <div class="reminder">
         <div class="text">
@@ -55,21 +56,41 @@
 <%--    --%>
 <%--评论展示区--%>
 <div id="tmpl">
-    <div id="blog">
-        <h1>{{title}}</h1>
-        <h4>{{context}}</h4>
-        <h4>关键词:编使劲编</h4>
-        <h2 style="float: right">作者:营销号</h2>
+    <div class="card">
+        <div class="header" style="white-space: pre-wrap">
+            <h1>{{title}}</h1>
+            {{context}}
+        </div>
+
+        <div class="container-card">
+            <p>赵，钱，孙，李</p>
+        </div>
     </div>
+<%--评论展示区    --%>
     <div id="comment">
-        <ul class="list-group">
-            <li class="list-group-item" v-for="item in list" :key="item.id">
-                <span class="badge">评论人：{{ item.user }}</span>
-                {{ item.content }}
+<%--        <ul class="list-group">--%>
+<%--            <li class="list-group-item" v-for="item in list" :key="item.id">--%>
+<%--                <span class="badge">评论人：{{ item.user }}</span>--%>
+<%--                {{ item.content }}--%>
+<%--            </li>--%>
+
+<%--        </ul>--%>
+    <div class="box">
+        <ul id="first-list">
+            <li  v-for="item in list" :key="item.id">
+                <span></span>
+                <div class="title">《评论》</div>
+                <div class="info"> {{ item.content }}</div>
+                <div class="name">{{ item.user }}</div>
+                <div class="time">
+                    <span>JUN, 17<sup>th</sup></span>
+                    <span>12:00 AM</span>
+                </div>
             </li>
         </ul>
+    </div>
 <%--作品评论区--%>
-    <div v-show="permission === 'true'">
+    <div class="container-comment" v-show="permission === 'true'">
         <div class="form-group">
             <label>评论人：</label>
             <input type="text" class="form-control" v-model="user">
@@ -255,7 +276,7 @@
             </div>
         </div>
         <div class="form-group">
-            <input type="button" value="发表评论" class="btn btn-primary" @click="postComments">
+            <input type="button" value="发表评论" class="butt" @click="postComments">
         </div>
     </div>
     </div>
@@ -324,17 +345,171 @@
     })
 </script>
 <style>
-    #comment{
+    body{
+        margin: 0;
+        padding: 0;
+        background-image: url(static/img/commentback.JPG);
+        background-repeat: no-repeat;
+        background-size:cover;  /* 让背景图基于容器大小伸缩 */
+        background-attachment:fixed;
+        font-family: arial
+    }
+    .list-group{
         width: 40%;
         float: right;
-        padding: 10px;
+        margin: 10px;
+    }
+    .container-comment{
+        margin: 20px;
+        width: 55%;
+        float: left;
+        box-shadow: 10px 10px 5px #888888;
+        /*background: white;*/
     }
     #blog{
+        margin: 20px;
         width: 55%;
         float: left;
         box-shadow: 10px 10px 5px #888888;
         background: white;
     }
+    .box{
+        float: right;
+        /*margin:0 10%;*/
+        width: 40%;
+        height: 100%;
+        overflow-y:scroll;
+        padding: 10px 0 40px 60px
+
+    }
+
+    .box ul{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        transition: all 0.5s linear;
+        top:0
+    }
+
+    .box ul:last-of-type{top:80px}
+
+    .box ul:before{
+        content: "";
+        display: block;
+        width: 0;
+        height: 100%;
+        border:1px dashed #fff;
+        position: absolute;
+        top:0;
+        left:30px
+    }
+
+    .box ul li{
+        margin: 20px 60px 60px;
+        position: relative;
+        padding: 10px 20px;
+        background:rgba(255, 255, 255, 0.3);
+        color:#333333;
+        border-radius: 10px;
+        line-height: 20px;
+    }
+
+
+    .box ul li > span{
+        content: "";
+        display: block;
+        width: 0;
+        height: 100%;
+        border:1px solid #fff;
+        position: absolute;
+        top:0;
+        left:-30px
+    }
+
+    .box ul li > span:before,.box ul li > span:after{
+        content: "";
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background:#91b7de;
+        border:2px solid #fff;
+        position: absolute;
+        left:-5px
+    }
+
+    .box ul li > span:before{top:-10px}
+    .box ul li > span:after{top:95%}
+
+    .box .title{
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 5px
+    }
+    .box .info:first-letter{text-transform: capitalize;line-height: 1.7}
+
+    .box .name{
+        margin-top: 10px;
+        text-transform: capitalize;
+        font-style: italic;
+        text-align: right;
+        margin-right: 20px
+    }
+
+
+    .box .time span{
+        position: absolute;
+        left: -100px;
+        color:#333333;
+        font-size:80%;
+        font-weight: bold;
+    }
+    .box .time span:first-child{top:-16px}
+    .box .time span:last-child{top:94%}
+    div.card {
+        margin: 20px;
+        width: 55%;
+        /*height: 700px;*/
+        max-height: 800px;
+        overflow-x: hidden;
+        /*overflow-y: scroll;*/
+        float: left;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        /*text-align: center;*/
+    }
+
+    div.header {
+        /*overflow-y: scroll;*/
+        opacity: 0.5;
+        background:#91b7de;
+        color: white;
+        padding: 10px;
+        font-size: 20px;
+    }
+
+    div.container-card {
+        font-style: italic;
+        padding: 10px;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .butt {
+        font-size: 15px;
+        width: 100%;
+        height: 50px;
+        background-color: white;
+        color: black;
+        border: 2px solid #008CBA;
+    }
+
+    .butt:hover {
+        font-size: 30px;
+        background-color: #008CBA;
+        color: white;
+    }
+
 </style>
 <%--    温馨提示--%>
     <script  src="static/script/roll-script-teacher.js"></script>
