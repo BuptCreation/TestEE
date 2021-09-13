@@ -88,6 +88,7 @@
             context:'',
             user:'<%=loginUser.getUsername()%>',
             content: '',
+            writer:[],
             list:[
                 { time: Date.now(), user: '路人甲', content: '武汉加油' },
                 { time: Date.now(), user: '炮灰乙', content: '中国加油' },
@@ -128,6 +129,7 @@
             var blog = JSON.parse(localStorage.getItem('blog')||'[]')
             this.title=blog.title
             this.context=blog.context
+            this.writer=blog.writer
             var thisblog={title:this.title,context:this.context};
             this.$http.post("showcommentservlet",JSON.stringify(thisblog));
             this.loadComments();
