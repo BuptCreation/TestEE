@@ -9,10 +9,11 @@ package pojo;
 public class User {
     private Integer id; //默认id
     private String username; //用户名
+    private String nickname; //昵称
     private String password; //密码
     private String email; //邮箱
     private String identity; //身份，用于确认是教师还是学生
-    private int studentNo; //学号
+    private String studentno; //学号
 
     public Integer getId() {
         return id;
@@ -28,6 +29,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getPassword() {
@@ -46,26 +55,6 @@ public class User {
         this.email = email;
     }
 
-    public int getStudentNo() {
-        return studentNo;
-    }
-
-    public void setStudentNo(int studentNo) {
-        this.studentNo = studentNo;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", identity='" + identity + '\'' +
-                ", studentNo='" + studentNo + '\'' +
-                '}';
-    }
-
     public String getIdentity() {
         return identity;
     }
@@ -74,24 +63,47 @@ public class User {
         this.identity = identity;
     }
 
+    public String getStudentno() {
+        return studentno;
+    }
+
+    public void setStudentno(String studentno) {
+        this.studentno = studentno;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", identity='" + identity + '\'' +
+                ", studentNo=" + studentno +
+                '}';
+    }
+
     public User(){}
 
     public User(String identity) {
         this.identity = identity;
     }
 
-    public User(Integer id, String username, String password, String email, String identity, int studentNo) {
+    public User(Integer id, String username, String nickname, String password, String email, String identity, String studentno) {
         this.id = id;
         this.username = username;
+        this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.identity = identity;
-        this.studentNo = studentNo;
+        this.studentno = studentno;
     }
 
-    public User(Integer id, String username, String password, String email, String identity) {
+    public User(Integer id, String username,String nickname, String password, String email, String identity) {
         this.id = id;
         this.username = username;
+        this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.identity = identity;

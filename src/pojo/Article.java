@@ -8,18 +8,26 @@ package pojo;
  * @date 2021-07-21
  */
 public class Article {
-    private int id; //学号
-    private String title; //标题
-    private String author; //作者
-    private String content; //内容
+    private String textno; //文章号
+    private String title; //文章标题
+    private String description; //文章描述
+    private String content; //文章内容
+    private String teacherno; //教师是谁
+    private String groupid; //小组号
+    private int browsertimes; //浏览次数
     private int commentCount; //评论数
+    private double averagevocabularypoint; //词汇平均分
+    private double averagefluentpoint; //连贯与衔接平均分
+    private double averagevarietypoint; //语法多样性平均分
+    private double averagecompletepoint; //任务完成度平均分
+    private String date; //文章发表日期
 
-    public int getId() {
-        return id;
+    public String getTextno() {
+        return textno;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTextno(String textno) {
+        this.textno = textno;
     }
 
     public String getTitle() {
@@ -30,12 +38,12 @@ public class Article {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getDescription() {
+        return description;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getContent() {
@@ -46,6 +54,30 @@ public class Article {
         this.content = content;
     }
 
+    public String getTeacherno() {
+        return teacherno;
+    }
+
+    public void setTeacherno(String teacherno) {
+        this.teacherno = teacherno;
+    }
+
+    public String getGroupid() {
+        return groupid;
+    }
+
+    public void setGroupid(String groupid) {
+        this.groupid = groupid;
+    }
+
+    public int getBrowsertimes() {
+        return browsertimes;
+    }
+
+    public void setBrowsertimes(int browsertimes) {
+        this.browsertimes = browsertimes;
+    }
+
     public int getCommentCount() {
         return commentCount;
     }
@@ -54,14 +86,62 @@ public class Article {
         this.commentCount = commentCount;
     }
 
+    public double getAveragevocabularypoint() {
+        return averagevocabularypoint;
+    }
+
+    public void setAveragevocabularypoint(double averagevocabularypoint) {
+        this.averagevocabularypoint = averagevocabularypoint;
+    }
+
+    public double getAveragefluentpoint() {
+        return averagefluentpoint;
+    }
+
+    public void setAveragefluentpoint(double averagefluentpoint) {
+        this.averagefluentpoint = averagefluentpoint;
+    }
+
+    public double getAveragevarietypoint() {
+        return averagevarietypoint;
+    }
+
+    public void setAveragevarietypoint(double averagevarietypoint) {
+        this.averagevarietypoint = averagevarietypoint;
+    }
+
+    public double getAveragecompletepoint() {
+        return averagecompletepoint;
+    }
+
+    public void setAveragecompletepoint(double averagecompletepoint) {
+        this.averagecompletepoint = averagecompletepoint;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public Article() {
     }
 
-    public Article(int id, String title, String author, String content, int commentCount) {
-        this.id = id;
+    public Article(String textno, String title, String description, String content, String teacherno, String groupid, int browsertimes, int commentCount, double averagevocabularypoint, double averagefluentpoint, double averagevarietypoint, double averagecompletepoint, String date) {
+        this.textno = textno;
         this.title = title;
-        this.author = author;
+        this.description = description;
         this.content = content;
+        this.teacherno = teacherno;
+        this.groupid = groupid;
+        this.browsertimes = browsertimes;
         this.commentCount = commentCount;
+        this.averagevocabularypoint = averagevocabularypoint;
+        this.averagefluentpoint = averagefluentpoint;
+        this.averagevarietypoint = averagevarietypoint;
+        this.averagecompletepoint = averagecompletepoint;
+        this.date = date;
     }
 }

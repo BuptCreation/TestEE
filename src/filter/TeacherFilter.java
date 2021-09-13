@@ -24,7 +24,7 @@ public class TeacherFilter implements Filter {
             //不放行
             System.out.println("拦截器启动 请先登陆");
             HttpServletResponse res = (HttpServletResponse)servletResponse;
-            res.sendRedirect("/BuptCreationEE_war_exploded/pages/user/login.html");
+            res.sendRedirect("/BuptCreationEE/pages/user/login.html");
         }else {
             //让程序继续访问 放行
             filterChain.doFilter(servletRequest,servletResponse);

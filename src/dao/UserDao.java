@@ -45,12 +45,6 @@ public interface UserDao {
     public List<User> querybyIdentity(String identity);
 
     /**
-     * Mongo的保存用户
-     * @param user
-     */
-    public void MongosaveUser(User user);
-
-    /**
      * 保存教师信息
      * @param user
      * @return

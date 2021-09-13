@@ -13,11 +13,67 @@ import java.util.Map;
  * @date 2021-07-31-14
  */
 public interface ArticleDao {
-    public Article queryonearticle(int id);
-    public List<Map<String, Object>>queryallarticle(int id) throws Exception;
-    public void savearticle(String json) throws Exception;
-    public int queryCommentCount(String title) throws Exception;
-    public void updateCommentCount(String title,int commentCount);
-    public int quertStudentNo(String title);
-    public String queryArticleByAuthor(List<String> author);
+
+
+    /**
+     * 查找所有文章
+     *
+     * @param
+     * @return
+     * @throws Exception
+     */
+    public List<Article> queryallarticle() throws Exception;
+
+    /**
+     * 增加文章评论数，自增一
+     *
+     * @param textno
+     */
+    public void updateCommentCount(String textno) throws Exception;
+
+    /**
+     * 更新平均分
+     *
+     * @param textno
+     * @param averagepoint
+     * @throws Exception
+     */
+    public void updateAverageVocabularyPoint(String textno, double averagepoint) throws Exception;
+
+    /**
+     * 更新平均分
+     * @param textno
+     * @param averagepoint
+     * @throws Exception
+     */
+    public void updateAverageFluentPoint(String textno,double averagepoint) throws Exception;
+    /**
+     * 更新平均分
+     * @param textno
+     * @param averagepoint
+     * @throws Exception
+     */
+    public void updateAverageVarietyPoint(String textno,double averagepoint) throws Exception;
+    /**
+     * 更新平均分
+     * @param textno
+     * @param averagepoint
+     * @throws Exception
+     */
+    public void updateAverageCompletePoint(String textno,double averagepoint) throws Exception;
+
+    /**
+     * 更新浏览次数
+     * @param textno
+     * @throws Exception
+     */
+    public void updateBrowseTimes(String textno) throws Exception;
+
+    /**
+     * 根据文章号查询小组号
+     * @param textno
+     * @return
+     * @throws Exception
+     */
+    public String queryGroupidByTextno(String textno) throws Exception;
 }

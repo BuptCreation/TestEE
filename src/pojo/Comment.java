@@ -10,7 +10,7 @@ package pojo;
 public class Comment {
 
     private User user; //发表的用户
-    private int id; //发表事件
+    private int id; //发表时间的时间戳
     private String content; //内容
     private String title; //标题
     private String context; //不知道啥用
@@ -18,6 +18,7 @@ public class Comment {
     private int fluent; //连贯与衔接
     private int variety;//语法多样性
     private int complete;//任务完成度
+    private String date;//评论发表日期
 
     public User getUser() {
         return user;
@@ -91,7 +92,7 @@ public class Comment {
         this.complete = complete;
     }
 
-    public Comment(User user, int id, String content, String title, String context, int vocabulary, int fluent, int variety, int complete) {
+    public Comment(User user, int id, String content, String title, String context, int vocabulary, int fluent, int variety, int complete, String date) {
         this.user = user;
         this.id = id;
         this.content = content;
@@ -101,6 +102,7 @@ public class Comment {
         this.fluent = fluent;
         this.variety = variety;
         this.complete = complete;
+        this.date = date;
     }
 
     public Comment(){};
@@ -117,6 +119,7 @@ public class Comment {
                 ", fluent=" + fluent +
                 ", variety=" + variety +
                 ", complete=" + complete +
+                ", date='" + date + '\'' +
                 '}';
     }
 }

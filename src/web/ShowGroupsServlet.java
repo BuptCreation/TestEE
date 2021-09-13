@@ -27,7 +27,7 @@ public class ShowGroupsServlet extends HttpServlet {
             PrintWriter out = resp.getWriter();
             User loginUser=(User)req.getSession().getAttribute("User");
             //连接数据库,获取小组
-            java.lang.String groups = new GroupServiceImpl().loadGroup(loginUser.getUsername());
+            String groups = new GroupServiceImpl().loadGroup(loginUser.getUsername());
             out.print(groups);
             System.out.println(groups);
         } catch (Exception e) {

@@ -69,14 +69,14 @@ public class ShowCommentServlet extends HttpServlet {
             JsonArray jsonArray = JsonParser.parseString(output).getAsJsonArray();
             int count = jsonArray.size();
             JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-            String title = jsonObject.get("title").getAsString();
+            String textno = jsonObject.get("textno").getAsString();
             //更新文章评论数
             ArticleDao articleDao = new ArticleDaoImpl();
-            articleDao.updateCommentCount(title,count);
+            articleDao.updateCommentCount(textno);
             //更新消息为已经评论
             NewsDao newsDao = new NewsDaoImpl();
-            int studentNo = articleDao.quertStudentNo(title);
-            newsDao.updateNews(studentNo,count,title);
+            //String studentNo = articleDao.quertStudentNo(title);
+            //newsDao.updateNews(studentNo,count,title);
         } catch (Exception e) {
             e.printStackTrace();
         }

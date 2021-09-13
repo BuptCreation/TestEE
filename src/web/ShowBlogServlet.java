@@ -35,10 +35,10 @@ public class ShowBlogServlet extends HttpServlet {
             PrintWriter out = resp.getWriter();
             User loginUser=(User)req.getSession().getAttribute("User");
             //连接数据库,获取文章
-            List<Map<java.lang.String,Object>> articles = new ArticleDaoImpl().queryallarticle(loginUser.getStudentNo());
+            //List<Map<java.lang.String,Object>> articles = new ArticleDaoImpl().queryallarticle(loginUser.getStudentNo());
             JsonConverter converter = new JsonConverter();
             //将文章转换为json类型
-            java.lang.String output = converter.convertToJson(articles);
+            String output = null;//converter.convertToJson(articles);
             out.print(output);
             System.out.println(output);
         } catch (Exception e) {

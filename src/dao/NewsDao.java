@@ -1,5 +1,7 @@
 package dao;
 
+import pojo.News;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +13,35 @@ import java.util.Map;
  * @date 2021-08-11-13
  */
 public interface NewsDao {
-    public List<Map<String, Object>> getNews(int studentNo);
-    public void addNews(String json);
-    public void deleteNews();
-    public void updateNews(int studentNo,int count,String title);
-    public void initNews(int studentNo);
+    /**
+     * 根据用户名查找对应的消息
+     * @param username
+     * @return List<News>
+     */
+    public List<News> getNews(String username);
+
+    /**
+     * 添加消息
+     * @param json
+     */
+    public void addNews(News news);
+
+    /**
+     * 删除消息
+     */
+    public void deleteNews(String username, String date);
+
+    /**
+     * 更新用户消息
+     * @param studentno
+     * @param count
+     * @param title
+     */
+    public void updateNews(String studentno,int count,String title);
+
+    /**
+     * 生成消息
+     * @param studentno
+     */
+    public void initNews(String studentno);
 }

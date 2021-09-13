@@ -7,6 +7,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoDatabase;
 import dao.NewsDao;
 import org.bson.Document;
+import pojo.Message;
+import pojo.News;
 import utils.MongoDao;
 import utils.MongoDaoImpl;
 import utils.MongoHelper;
@@ -25,40 +27,56 @@ import java.util.Map;
  */
 public class NewsDaoImpl implements NewsDao {
     /**
-     *
      * 用于得到用户消息，返回一个List,包含了消息相关数据
-     * @param studentNo
+     *
+     * @param username
      * @return
      */
     @Override
-    public List<Map<String, Object>> getNews(int studentNo) {
+    public List<News> getNews(String username) {
         List<Map<String, Object>> list = null;
+        List<Map<String, Object>> list1 = null;
+        List<News> newslist = null;
+        News tempmessage = new News();//临时存储
+        News tempmessage1 = new News();
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        MongoDao mongoDao = new MongoDaoImpl();
+        BasicDBObject usernameObj = new BasicDBObject("username", username);
+        BasicDBObject towhoObj = new BasicDBObject("towho", username);
+        String table = "news";
         try {
-            MongoDao mongoDao = new MongoDaoImpl();
-            MongoDatabase db = MongoHelper.getMongoDataBase();
-
-            BasicDBObject studentNoObj = new BasicDBObject("studentNo", studentNo);
-            //BasicDBObject isCommentObj = new BasicDBObject("isComment", true);
-            //BasicDBObject andObj = new BasicDBObject("$and", Arrays.asList(studentNoObj, isCommentObj));
-
-            String table = "buptnews";
-            list = mongoDao.queryByDoc(db, table, studentNoObj);
+            list = mongoDao.queryByDoc(db, table, usernameObj);
+            list1 = mongoDao.queryByDoc(db, table, towhoObj);
+            for (Map<String, Object> map : list) {
+                String Json = new Gson().toJson(map);
+                tempmessage = new Gson().fromJson(Json, News.class);
+                System.out.println("tempmessage:" + tempmessage);
+                newslist.add(tempmessage);
+            }
+            for (Map<String, Object> stringObjectMap : list1) {
+                String Json = new Gson().toJson(stringObjectMap);
+                tempmessage1 = new Gson().fromJson(Json, News.class);
+                System.out.println("tempmessage1: " + tempmessage1);
+                newslist.add(tempmessage1);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+        return newslist;
     }
 
     /**
      * 用于添加消息
-     * @param json
+     *
+     * @param news
      */
     @Override
-    public void addNews(String json) {
+    public void addNews(News news) {
         try {
             MongoDao mongoDao = new MongoDaoImpl();
             MongoDatabase db = MongoHelper.getMongoDataBase();
-            String table = "buptnews";
+            String table = "news";
+            String json = new Gson().toJson(news);
             Document document = Document.parse(json);
             mongoDao.insert(db, table, document);
         } catch (Exception e) {
@@ -71,31 +89,33 @@ public class NewsDaoImpl implements NewsDao {
      * 用于删除用户消息
      */
     @Override
-    public void deleteNews() {
+    public void deleteNews(String username, String date) {
+        MongoDao mongoDao = new MongoDaoImpl();
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "news";
+        BasicDBObject usernameObj = new BasicDBObject("username", username).append("date", date);
+        BasicDBObject towhoObj = new BasicDBObject("towho", username).append("date", date);
         try {
-            MongoDao mongoDao = new MongoDaoImpl();
-            MongoDatabase db = MongoHelper.getMongoDataBase();
-            String table = "buptnews";
-            BasicDBObject isCommentObj = new BasicDBObject("isComment", true);
-            mongoDao.delete(db, table, isCommentObj);
+            if (mongoDao.delete(db, table, usernameObj) || mongoDao.delete(db, table, towhoObj))
+                System.out.println("删除成功！");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+
     /**
      * @param studentNo
      * @param count
-     * @param title
-     *
-     *  用于更新用户消息
+     * @param title     <p>
+     *                  用于更新用户消息
      */
     @Override
-    public void updateNews(int studentNo, int count, String title) {
+    public void updateNews(String studentNo, int count, String title) {
         try {
             MongoDao mongoDao = new MongoDaoImpl();
             MongoDatabase db = MongoHelper.getMongoDataBase();
-            String table = "buptnews";
+            String table = "news";
             BasicDBObject studentNoObj = new BasicDBObject("studentNo", studentNo);
             BasicDBObject isCommentObj = new BasicDBObject("isComment", true).
                     append("extraInfo", "您现在已经拥有: " + count + "条评论").
@@ -115,7 +135,7 @@ public class NewsDaoImpl implements NewsDao {
      * @param studentNo
      */
     @Override
-    public void initNews(int studentNo) {
+    public void initNews(String studentNo) {
         JsonArray jsonArray = new JsonArray();
         List<String> newsTypes = new ArrayList<String>() {{
             add("comment");//评论文章
@@ -126,15 +146,16 @@ public class NewsDaoImpl implements NewsDao {
         int size = newsTypes.size();
         for (int i = 0; i < size; i++) {
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("type",newsTypes.get(i));
-            jsonObject.addProperty("title","暂无");
-            jsonObject.addProperty("content","暂无");
-            jsonObject.addProperty("iscomment",false);
-            jsonObject.addProperty("extraInfo","暂无");
-            jsonObject.addProperty("studentNo",studentNo);
+            jsonObject.addProperty("type", newsTypes.get(i));
+            jsonObject.addProperty("title", "暂无");
+            jsonObject.addProperty("content", "暂无");
+            jsonObject.addProperty("iscomment", false);
+            jsonObject.addProperty("extraInfo", "暂无");
+            jsonObject.addProperty("studentNo", studentNo);
             String json = new Gson().toJson(jsonObject);
+            News news = new Gson().fromJson(json, News.class);
             NewsDao newsDao = new NewsDaoImpl();
-            newsDao.addNews(json);
+            newsDao.addNews(news);
         }
     }
 }

@@ -32,24 +32,24 @@ public class AddBlogServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //用于保存所获取到的数据流
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    req.getInputStream(), "utf-8"));
-            StringBuffer sb = new StringBuffer("");
-            String temp;
-            while ((temp = br.readLine()) != null) {
-                sb.append(temp);
-            }
-            br.close();
-            //获取到的json字符串
-            String acceptjson = sb.toString();
-            //保存
-            ArticleDaoImpl articleDao = new ArticleDaoImpl();
-            articleDao.savearticle(acceptjson);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        //用于保存所获取到的数据流
+//        try {
+//            BufferedReader br = new BufferedReader(new InputStreamReader(
+//                    req.getInputStream(), "utf-8"));
+//            StringBuffer sb = new StringBuffer("");
+//            String temp;
+//            while ((temp = br.readLine()) != null) {
+//                sb.append(temp);
+//            }
+//            br.close();
+//            //获取到的json字符串
+//            String acceptjson = sb.toString();
+//            //保存
+//            ArticleDaoImpl articleDao = new ArticleDaoImpl();
+//            articleDao.savearticle(acceptjson);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 

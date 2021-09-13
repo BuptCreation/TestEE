@@ -1,7 +1,6 @@
 package web;
 
 
-
 import dao.impl.NewsDaoImpl;
 import pojo.User;
 import service.GroupService;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 /**
  * 类<code>LoginServlet</code>用于:用户登录的servlet
  *
@@ -33,36 +33,35 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         // 调用 userService.login()登录处理业务
-        User loginUser = userService.login(new User(null, username, password, null, null,0));
+        User loginUser = userService.login(new User(null, username, null, password, null, null, null));
         // 如果等于null,说明登录 失败!
         if (loginUser == null) {
-            //   跳回登录页面
-            req.getRequestDispatcher("/pages/user/login.html").forward(req, resp);
+            //   跳到登录错误页面
+            resp.sendRedirect("http://47.94.108.20:8080/BuptCreationEE/pages/user/login_error.jsp");
         } else {
             // 登录 成功
             System.out.println("用户登陆成功");
             //传送json数据给谁谁
             //将数据存储到session
-            req.getSession().setAttribute("User",loginUser);
+            req.getSession().setAttribute("User", loginUser);
             try {
                 if (loginUser.getIdentity().equals("student")) {
                     //跳到学生端欢迎登陆主页
                     System.out.println(loginUser);
-                    int studentId = loginUser.getStudentNo();
+                    String studentId = loginUser.getStudentno();
                     String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);
-                    int groupid = userService.queryGroupId(studentId);
+                    String groupid = userService.queryGroupId(studentId);
                     //把groupid存到session中
-                    req.getSession().setAttribute("Groupid",groupid);
+                    req.getSession().setAttribute("Groupid", groupid);
                     //user->group 并且把groupid+teacherusername
-                    req.getSession().setAttribute("KeyGroup",KeyGroup);
+                    req.getSession().setAttribute("KeyGroup", KeyGroup);
                     //判断消息是否为空,为空则初始化消息
-                    if(new NewsDaoImpl().getNews(studentId).size() == 0)
+                    if (new NewsDaoImpl().getNews(loginUser.getUsername()).size() == 0)
                         new NewsDaoImpl().initNews(studentId);
                     GroupService groupService = new GroupServiceImpl();
                     groupService.updatelogins(loginUser.getUsername());
                     resp.sendRedirect("pages/Student/Welcome.jsp");
-                }
-                else{
+                } else {
                     //跳到教师端主页
                     resp.sendRedirect("pages/Teacher/Welcome.jsp");
                 }

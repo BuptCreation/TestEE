@@ -8,5 +8,5 @@ package service;
  * @date 2021-07-31-14
  */
 public interface NewsService {
-    public String loadNews(int studentNo);
+    public String loadNews(String username);
 }

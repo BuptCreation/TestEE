@@ -1,11 +1,14 @@
 package dao.impl;
 
+import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import dao.CommentDao;
 import org.bson.Document;
+import pojo.Comment;
 import utils.JsonStrToMap;
 import utils.MongoDao;
 import utils.MongoDaoImpl;
@@ -27,7 +30,7 @@ public class CommentDaoImpl implements CommentDao {
     public List<Map<String, Object>> queryallcomment() throws Exception {
         MongoDao mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
-        String table = "buptcomment";
+        String table = "comment";
         MongoCollection<Document> collection = db.getCollection(table);
         FindIterable<Document> iterable = collection.find();
 
@@ -43,12 +46,98 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public void savecomment(String json) throws Exception {
+    public void saveComment(Comment comment) throws Exception {
         MongoDao mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
-        String table = "buptcomment";
-        Document document = Document.parse(json);
-        mongoDao.insert(db, table, document);
-        System.out.println("插入成功！");
+        String table = "comment";
+        String Json = new Gson().toJson(comment);
+        Document document = Document.parse(Json);
+        try {
+            if (mongoDao.insert(db, table, document))
+                System.out.println("插入成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    @Override
+    public int getCommentCount(String textno) {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "comment";
+        BasicDBObject doc = new BasicDBObject("textno",textno);
+        MongoCollection<Document> collection = db.getCollection(table);
+        FindIterable<Document> iterable = collection.find(doc);
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        for (Document user : iterable) {
+            String jsonString = user.toJson();
+            Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
+            list.add(jsonStrToMap);
+        }
+        return list.size();
+    }
+
+    @Override
+    public int getAllvocabularypoints(String textno) {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "comment";
+        int allpoints = 0;
+        BasicDBObject doc = new BasicDBObject("textno",textno);
+        MongoCollection<Document> collection = db.getCollection(table);
+        FindIterable<Document> iterable = collection.find(doc);
+        for (Document user : iterable) {
+            String jsonString = user.toJson();
+            Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
+            allpoints += Integer.parseInt(jsonStrToMap.get("vocabulary").toString());
+        }
+        return allpoints;
+    }
+
+    @Override
+    public int getAllfluentpoints(String textno) {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "comment";
+        int allpoints = 0;
+        BasicDBObject doc = new BasicDBObject("textno",textno);
+        MongoCollection<Document> collection = db.getCollection(table);
+        FindIterable<Document> iterable = collection.find(doc);
+        for (Document user : iterable) {
+            String jsonString = user.toJson();
+            Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
+            allpoints += Integer.parseInt(jsonStrToMap.get("fluent").toString());
+        }
+        return allpoints;
+    }
+
+    @Override
+    public int getAllvarietypoints(String textno) {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "comment";
+        int allpoints = 0;
+        BasicDBObject doc = new BasicDBObject("textno",textno);
+        MongoCollection<Document> collection = db.getCollection(table);
+        FindIterable<Document> iterable = collection.find(doc);
+        for (Document user : iterable) {
+            String jsonString = user.toJson();
+            Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
+            allpoints += Integer.parseInt(jsonStrToMap.get("variety").toString());
+        }
+        return allpoints;
+    }
+
+    @Override
+    public int getAllcompletepoints(String textno) {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "comment";
+        int allpoints = 0;
+        BasicDBObject doc = new BasicDBObject("textno",textno);
+        MongoCollection<Document> collection = db.getCollection(table);
+        FindIterable<Document> iterable = collection.find(doc);
+        for (Document user : iterable) {
+            String jsonString = user.toJson();
+            Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
+            allpoints += Integer.parseInt(jsonStrToMap.get("complete").toString());
+        }
+        return allpoints;
+    }
+
 }

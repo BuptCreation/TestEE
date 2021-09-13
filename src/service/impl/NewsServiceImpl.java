@@ -1,7 +1,9 @@
 package service.impl;
 
+import com.google.gson.Gson;
 import dao.NewsDao;
 import dao.impl.NewsDaoImpl;
+import pojo.News;
 import service.NewsService;
 import utils.JsonConverter;
 
@@ -17,9 +19,9 @@ import java.util.Map;
  */
 public class NewsServiceImpl implements NewsService {
     @Override
-    public String loadNews(int studentNo) {
+    public String loadNews(String username) {
         NewsDao newsDao = new NewsDaoImpl();
-        List<Map<String, Object>> newsList = newsDao.getNews(studentNo);
-        return new JsonConverter().convertToJson(newsList);
+        List<News> newsList = newsDao.getNews(username);
+        return new Gson().toJson(newsList);
     }
 }

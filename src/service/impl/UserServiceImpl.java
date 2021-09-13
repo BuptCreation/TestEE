@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String queryGroupIdAndTeacherName(int studentId) throws Exception{
+    public String queryGroupIdAndTeacherName(String studentId) throws Exception{
         MongoDatabase db = MongoHelper.getMongoDataBase();
         BasicDBObject studentIdObj = new BasicDBObject("studentno",studentId);
         String table = "buptgroup";
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int queryGroupId(int studentId) throws Exception {
+    public String queryGroupId(String studentId) throws Exception {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         BasicDBObject studentIdObj = new BasicDBObject("studentno",studentId);
         String table = "buptgroup";
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
         String json = new Gson().toJson(jsonStrToMap);
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
 //        return jsonObject.get("groupid").getAsString() + jsonObject.get("teachername").getAsString();
-        int groupid = jsonObject.get("groupid").getAsInt();
+        String groupid = jsonObject.get("groupid").getAsString();
         return groupid;
     }
 }

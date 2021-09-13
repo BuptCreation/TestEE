@@ -8,6 +8,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
 import dao.ArticleDao;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -26,124 +27,112 @@ import java.util.*;
 public class ArticleDaoImpl implements ArticleDao {
 
     @Override
-    public Article queryonearticle(int id) {
-        MongoDatabase db = MongoHelper.getMongoDataBase();
-        String table = "buptarticle";
-        MongoCollection<Document> collection = db.getCollection(table);
-        Document document = collection.find(new BasicDBObject("id",id)).first();
-        JsonConverter converter = new JsonConverter();
-        String output = converter.convertToJson(Collections.singletonList(document));
-        Gson gson = new Gson();
-        Article article = gson.fromJson(output, Article.class);
-        return article;
-    }
-
-    @Override
-    public List<Map<String, Object>> queryallarticle(int id) throws Exception{
+    public List<Article> queryallarticle() throws Exception {
         MongoDao mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
-        String table = "buptarticle";
-        MongoCollection<Document> collection = db.getCollection(table);
-        FindIterable<Document> iterable = collection.find(new BasicDBObject("id", id));
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        MongoCursor<Document> cursor = iterable.iterator();
-        while (cursor.hasNext()) {
-            Document user = cursor.next();
-            String jsonString = user.toJson();
-            Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
-            list.add(jsonStrToMap);
+        String table = "article";
+        List<Map<String, Object>> list;
+        List<Article> articleList = new ArrayList<>();
+        list = mongoDao.queryAll(db, table);
+        for (Map<String, Object> stringObjectMap : list) {
+            String json = new Gson().toJson(stringObjectMap);
+            Article temp = new Gson().fromJson(json, Article.class);
+            articleList.add(temp);
         }
-        return list;
+        return articleList;
     }
 
-    @Override
-    public void savearticle(String json) throws Exception {
-        MongoDao mongoDao = new MongoDaoImpl();
-        MongoDatabase db = MongoHelper.getMongoDataBase();
-        String table = "buptarticle";
-        Document document = Document.parse(json);
-        mongoDao.insert(db, table, document);
-        System.out.println("插入成功！");
-    }
 
     @Override
-    public int queryCommentCount(String title) throws Exception {
+    public void updateCommentCount(String textno) throws Exception {
         MongoDatabase db = MongoHelper.getMongoDataBase();
-        String table = "buptarticle";
+        String table = "article";
+        BasicDBObject whereDoc = new BasicDBObject("textno",textno);
+        BasicDBObject updateDoc = new BasicDBObject("commentCount",1);
+        BasicDBObject resDoc = new BasicDBObject("$inc",updateDoc);
         MongoCollection<Document> collection = db.getCollection(table);
-
-        BasicDBObject titleObj = new BasicDBObject("title", title);
-
-        FindIterable<Document> iterable = collection.find(titleObj);
-        Map<String, Object> jsonStrToMap = null;
-        MongoCursor<Document> cursor = iterable.iterator();
-        while (cursor.hasNext()) {
-            Document user = cursor.next();
-            String jsonString = user.toJson();
-            jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);// 这里用到我自己写的方法,主要是包json字符串转换成map格式,为后面做准备,方法放在后面
-        }
-        String json = new Gson().toJson(jsonStrToMap);
-        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        return jsonObject.get("commentCount").getAsInt();
-    }
-
-    @Override
-    public void updateCommentCount(String title,int commentCount) {
         try {
-            MongoDao mongoDao = new MongoDaoImpl();
-            MongoDatabase db = MongoHelper.getMongoDataBase();
-            String table = "buptarticle";
-
-            BasicDBObject titleObj = new BasicDBObject("title", title);
-            BasicDBObject updateObj = new BasicDBObject("commentCount",commentCount);
-
-            mongoDao.updateOne(db,table,titleObj,updateObj);
-
-            System.out.println("更新成功！文章现有评论为: " + commentCount);
+            UpdateResult updateManyResult = collection.updateMany(whereDoc, resDoc);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public int quertStudentNo(String title) {
+    public void updateAverageVocabularyPoint(String textno, double averagepoint) throws Exception {
         MongoDatabase db = MongoHelper.getMongoDataBase();
-        String table = "buptarticle";
+        String table = "article";
+        BasicDBObject whereDoc = new BasicDBObject("textno",textno);
+        BasicDBObject updateDoc = new BasicDBObject("averagevocabularypoint",averagepoint);
+        BasicDBObject resDoc = new BasicDBObject("$set",updateDoc);
         MongoCollection<Document> collection = db.getCollection(table);
-
-        BasicDBObject titleObj = new BasicDBObject("title", title);
-
-        FindIterable<Document> iterable = collection.find(titleObj);
-        Map<String, Object> jsonStrToMap = null;
-        MongoCursor<Document> cursor = iterable.iterator();
-        while (cursor.hasNext()) {
-            Document user = cursor.next();
-            String jsonString = user.toJson();
-            jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);// 这里用到我自己写的方法,主要是包json字符串转换成map格式,为后面做准备,方法放在后面
-        }
-        String json = new Gson().toJson(jsonStrToMap);
-        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        return jsonObject.get("id").getAsInt();
+        UpdateResult updateManyResult = collection.updateMany(whereDoc, resDoc);
     }
 
     @Override
-    public String queryArticleByAuthor(List<String> author) {
+    public void updateAverageFluentPoint(String textno, double averagepoint) throws Exception {
         MongoDatabase db = MongoHelper.getMongoDataBase();
-        String table = "buptarticle";
-        int size = author.size();
+        String table = "article";
+        BasicDBObject whereDoc = new BasicDBObject("textno",textno);
+        BasicDBObject updateDoc = new BasicDBObject("averagefluentpoint",averagepoint);
+        BasicDBObject resDoc = new BasicDBObject("$set",updateDoc);
         MongoCollection<Document> collection = db.getCollection(table);
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        for (String s : author) {
-            BasicDBObject query = new BasicDBObject("author", s);
-            FindIterable<Document> iterable = collection.find(query);
-            for (Document user : iterable) {
-                String jsonString = user.toJson();
-                Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
-                list.add(jsonStrToMap);
-            }
-        }
-        return new Gson().toJson(list);
+        UpdateResult updateManyResult = collection.updateMany(whereDoc, resDoc);
     }
 
+    @Override
+    public void updateAverageVarietyPoint(String textno, double averagepoint) throws Exception {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "article";
+        BasicDBObject whereDoc = new BasicDBObject("textno",textno);
+        BasicDBObject updateDoc = new BasicDBObject("averagevarietypoint",averagepoint);
+        BasicDBObject resDoc = new BasicDBObject("$set",updateDoc);
+        MongoCollection<Document> collection = db.getCollection(table);
+        UpdateResult updateManyResult = collection.updateMany(whereDoc, resDoc);
+    }
 
+    @Override
+    public void updateAverageCompletePoint(String textno, double averagepoint) throws Exception {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "article";
+        BasicDBObject whereDoc = new BasicDBObject("textno",textno);
+        BasicDBObject updateDoc = new BasicDBObject("averagecompletepoint",averagepoint);
+        BasicDBObject resDoc = new BasicDBObject("$set",updateDoc);
+        MongoCollection<Document> collection = db.getCollection(table);
+        UpdateResult updateManyResult = collection.updateMany(whereDoc, resDoc);
+    }
+
+    @Override
+    public void updateBrowseTimes(String textno) throws Exception {
+        BasicDBObject textnoObj = new BasicDBObject("textno", textno);
+        BasicDBObject updateObj = new BasicDBObject("browsertimes", 1);
+        BasicDBObject resObj = new BasicDBObject("$inc", updateObj);
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "article";
+        MongoCollection<Document> collection = db.getCollection(table);
+        try {
+            UpdateResult updateManyResult = collection.updateMany(textnoObj, resObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String queryGroupidByTextno(String textno) throws Exception {
+        String groupid = null;
+        List<Map<String,Object>> list;
+        BasicDBObject textnoObj = new BasicDBObject("textno",textno);
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "article";
+        MongoDao mongoDao = new MongoDaoImpl();
+        try {
+            list = mongoDao.queryByDoc(db,table,textnoObj);
+            if(list.size() == 1){
+                groupid = list.get(0).get("groupno").toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return groupid;
+    }
 }

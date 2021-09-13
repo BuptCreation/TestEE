@@ -62,9 +62,9 @@ public class ShowGroupBlogServlet extends HttpServlet {
             List<String> authors = new GroupDaoImpl().queryAuthor(teacherName);
             System.out.println(authors);
             //调用函数,查找作者所对应的所有文章
-            String articales = new ArticleDaoImpl().queryArticleByAuthor(authors);
-            out.print(articales);
-            System.out.println(articales);
+            //String articales = new ArticleDaoImpl().queryArticleByAuthor(authors);
+            //out.print(articales);
+            //System.out.println(articales);
             System.out.println("查找成功！");
         }catch (Exception e){
             e.printStackTrace();

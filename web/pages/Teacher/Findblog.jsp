@@ -133,8 +133,11 @@
         <div class="blog">
             <h2 v-html="highlight(blog.textname)"></h2>
             <br/>
-            <article>{{blog.content|snippet}}</article>
-            <div class="detail"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;{{blog.averagepoint}}</div>
+            <article>{{blog.title|snippet}}</article>
+            <div class="detail"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;{{blog.averagevocabularypoint}}</div>
+            <div class="detail"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;{{blog.averagefluentpoint}}</div>
+            <div class="detail"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;{{blog.averagevarietypoint}}</div>
+            <div class="detail"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;{{blog.averagecompletepoint}}</div>
             <div class="detail"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;{{blog.browsertimes}}</div>
             <div class="detail"><span class="glyphicon glyphicon-comment"></span>&nbsp;{{blog.commentCount}}</div>
             <div class="detail"><span class="glyphicon glyphicon-user"></span><div v-for="writer in blog.writers">{{writer.username}}</div></div>

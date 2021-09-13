@@ -46,11 +46,11 @@ public class RegistServlet extends HttpServlet {
                 req.getRequestDispatcher("/pages/user/regist.html").forward(req, resp);
             } else {
                 //      可用
-//                调用Sservice保存到数据库
-                userService.registUser(new User(null, username, password, email, identity));
+//                调用Service保存到数据库
+                userService.registUser(new User(null, username,null, password, email, identity));
 //
-//        跳到注册成功页面 regist_success.html
-                req.getRequestDispatcher("/pages/user/regist_success.html").forward(req, resp);
+//        跳到登录页面 login.html
+                req.getRequestDispatcher("/pages/user/login.html").forward(req, resp);
             }
         } else {
             System.out.println("验证码[" + code + "]错误");

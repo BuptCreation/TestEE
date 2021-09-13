@@ -10,10 +10,13 @@ package pojo;
 public class News {
     private String type;//消息类型
     private String title;//文章标题
-    private String content;//文章内容
-    private boolean isComment;//是否评论文章
-    private String extraInfo;//额外消息
-    private int studentNo; //对应的学生学号
+    private String nickname; //昵称(当消息类型为writing或apply时可用)
+    private String username; //消息所有者的用户名
+    private String textno; //文章号
+    private String towho; //发给谁
+    private String groupid; //发给哪个组
+    private String standardDate; //标准时间
+    private String date; //CST表示时间
 
     public String getType() {
         return type;
@@ -31,48 +34,89 @@ public class News {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public boolean isComment() {
-        return isComment;
+    public String getUsername() {
+        return username;
     }
 
-    public void setComment(boolean comment) {
-        isComment = comment;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getExtraInfo() {
-        return extraInfo;
+    public String getTextno() {
+        return textno;
     }
 
-    public void setExtraInfo(String extraInfo) {
-        this.extraInfo = extraInfo;
+    public void setTextno(String textno) {
+        this.textno = textno;
     }
 
-    public int getStudentNo() {
-        return studentNo;
+    public String getTowho() {
+        return towho;
     }
 
-    public void setStudentNo(int studentNo) {
-        this.studentNo = studentNo;
+    public void setTowho(String towho) {
+        this.towho = towho;
+    }
+
+    public String getGroupid() {
+        return groupid;
+    }
+
+    public void setGroupid(String groupid) {
+        this.groupid = groupid;
+    }
+
+    public String getStandardDate() {
+        return standardDate;
+    }
+
+    public void setStandardDate(String standardDate) {
+        this.standardDate = standardDate;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public News() {
     }
 
-    public News(String type, String title, String content, boolean isComment, String extraInfo, int studentNo) {
+    public News(String type, String title, String nickname, String username, String textno, String towho, String groupid, String standardDate, String date) {
         this.type = type;
         this.title = title;
-        this.content = content;
-        this.isComment = isComment;
-        this.extraInfo = extraInfo;
-        this.studentNo = studentNo;
+        this.nickname = nickname;
+        this.username = username;
+        this.textno = textno;
+        this.towho = towho;
+        this.groupid = groupid;
+        this.standardDate = standardDate;
+        this.date = date;
     }
 
+    @Override
+    public String toString() {
+        return "News{" +
+                "type='" + type + '\'' +
+                ", title='" + title + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", username='" + username + '\'' +
+                ", textno='" + textno + '\'' +
+                ", towho='" + towho + '\'' +
+                ", groupid='" + groupid + '\'' +
+                ", standardDate='" + standardDate + '\'' +
+                ", date='" + date + '\'' +
+                '}';
+    }
 }
