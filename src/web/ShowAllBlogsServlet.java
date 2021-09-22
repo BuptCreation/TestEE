@@ -49,6 +49,7 @@ public class ShowAllBlogsServlet extends HttpServlet {
             }
             String finals = new Gson().toJson(jsonArray);
             out.print(finals);
+            System.out.println(finals);
         } catch (Exception e) {
             e.printStackTrace();
         }

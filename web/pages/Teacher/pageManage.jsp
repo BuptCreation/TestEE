@@ -1,8 +1,8 @@
-<%@ page import="pojo.User" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: tigers
-  Date: 2021/9/1
-  Time: 7:49 上午
+  Date: 2021/9/22
+  Time: 8:36 下午
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -111,14 +111,6 @@
 </head>
 <body>
 
-<%
-    User loginUser=(User)request.getSession().getAttribute("User");
-%>
-
-<%@include file="headleader.jsp"%>
-<br/>
-<br/>
-<br/>
 <div id="show_blogs" style="overflow-y: scroll">
     <%-- 搜索栏     --%>
     <div class="search bar1">
@@ -132,6 +124,7 @@
     <blog class="single-blog" v-for="blog in filterblogs">
         <div class="blog">
             <h2 v-html="highlight(blog.title)"></h2>
+            <h3 v-html="blog.state"></h3>
             <br/>
             <article>{{blog.content|snippet}}</article>
             <div class="detail"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;{{blog.averagevocabularypoint}}</div>
@@ -143,7 +136,7 @@
             <br/>
             <br/>
             <div class="detail"><span class="glyphicon glyphicon-user"></span>{{blog.writer|cut}}</div>
-            <button class="butt" v-on:click="goComment(blog.title,blog.content,'true',blog.textno,blog.writer)"><span class="glyphicon glyphicon-pencil"></span>评论</button>
+            <button class="butt" v-on:click="goComment(blog.title,blog.content,'true',blog.textno,blog.writer)"><span class="glyphicon glyphicon-pencil"></span>邀请评论</button>
             <br/>
         </div>
     </blog>
@@ -168,6 +161,10 @@
             highlight(value){
                 val=value.replace(this.search,"<span class=highlight>"+this.search+"</span>")
                 return val;
+            }
+            ,
+            Invite(){
+
             }
             ,
             goComment(title, body ,permission,textno,writer) {
