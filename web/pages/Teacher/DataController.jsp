@@ -77,7 +77,7 @@
                 <a href="#"><i class="fa fa-fw fa-cog"></i> Third page</a>
             </li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-plus"></i> Dropdown <span class="caret"></span></a>
+                <a href="pages/Teacher/DataController.jsp#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-plus"></i> Dropdown <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li class="dropdown-header">Dropdown heading</li>
                     <li><a href="#">Action</a></li>
@@ -110,25 +110,6 @@
             <div id="app">
                 <router-view></router-view>
             </div>
-<%--            <div class="row">--%>
-<%--                <div class="col-lg-8 col-lg-offset-2">--%>
-<%--                    <h1 class="page-header">Awesome Bootstrap 3 Sidebar Navigation</h1>--%>
-<%--                    <p class="lead">Originally authored by  maridlcrmn  on Bootsnipp and then converted to Less and customized further by j_holtslander who is building a collection of great Bootstrap 3 navbars.</p>--%>
-<%--                    <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere consectetur est at lobortis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta sem malesuada magna mollis euismod. Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue.</p>--%>
-<%--                    <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras mattis consectetur purus sit amet fermentum.</p>--%>
-<%--                    <p>Donec id elit non mi porta gravida at eget metus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Maecenas faucibus mollis interdum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean lacinia bibendum nulla sed consectetur.</p>--%>
-<%--                    <h3>A heading in the mix.</h3>--%>
-<%--                    <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Cras mattis consectetur purus sit amet fermentum. Curabitur blandit tempus porttitor. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>--%>
-<%--                    <blockquote>Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere consectetur est at lobortis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta sem malesuada magna mollis euismod. Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue.</blockquote>--%>
-<%--                    <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras mattis consectetur purus sit amet fermentum.</p>--%>
-<%--                    <p>Donec id elit non mi porta gravida at eget metus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Maecenas faucibus mollis interdum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean lacinia bibendum nulla sed consectetur.</p>--%>
-<%--                    <h3>Another heading for typography's sake.</h3>--%>
-<%--                    <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Cras mattis consectetur purus sit amet fermentum. Curabitur blandit tempus porttitor. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>--%>
-<%--                    <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere consectetur est at lobortis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta sem malesuada magna mollis euismod. Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue.</p>--%>
-<%--                    <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras mattis consectetur purus sit amet fermentum.</p>--%>
-<%--                    <p>Donec id elit non mi porta gravida at eget metus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Maecenas faucibus mollis interdum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean lacinia bibendum nulla sed consectetur.</p>--%>
-<%--                </div>--%>
-<%--            </div>--%>
         </div>
     </div>
     <!-- /#page-content-wrapper -->
@@ -141,6 +122,38 @@
         <iframe id="mainiframe" width="100%" height="700px" src="pages/Teacher/pageManage.jsp"  frameborder="0" scrolling="auto"></iframe>
     </div>
 </template>
+
+<%--路由跳转程序--%>
+<script>
+    //1.局部定义组件
+    const pageManage = {
+        template:"#pageManage"
+    };
+    //2.数组定义切换规则，数组中的一个对象就是一个规则,前一个是hash 后一个组件
+    const routes=[
+        {
+            path:'/pageManage',
+            component:pageManage,
+        },
+        {path:'/',redirect:'/pageManage'},
+    ]
+
+    //3.根据规则创建对象
+    const router=new VueRouter({
+        routes:routes,
+        linkActiveClass: ""
+    });
+    let vue = new Vue({
+        el:'#app',
+        //4.将对象绑定到vue实例上，然后通过hashi就可以局部路由了
+        router:router,
+        //专门用于定义局部组件的
+        components:{
+            pageManage:pageManage
+        }
+
+    })
+</script>
 <script src="static/script/bootstrap-fornav.min.js"></script>
 <script src="static/script/jquery-1.8.3-fornav.min.js"></script>
 <script type="text/javascript">
@@ -177,38 +190,6 @@
             $('#wrapper').toggleClass('toggled');
         });
     });
-</script>
-
-<%--路由跳转程序--%>
-<script>
-    //1.局部定义组件
-    const pageManage = {
-        template:"#pageManage"
-    };
-    //2.数组定义切换规则，数组中的一个对象就是一个规则,前一个是hash 后一个组件
-    const routes=[
-        {
-            path:'/pageManage',
-            component:pageManage,
-        },
-        {path:'/',redirect:'/pageManage'},
-    ]
-
-    //3.根据规则创建对象
-    const router=new VueRouter({
-        routes:routes,
-        linkActiveClass: ""
-    });
-    let vue = new Vue({
-        el:'#app',
-        //4.将对象绑定到vue实例上，然后通过hashi就可以局部路由了
-        router:router,
-        //专门用于定义局部组件的
-        components:{
-            pageManage:pageManage
-        }
-
-    })
 </script>
 </body>
 </html>

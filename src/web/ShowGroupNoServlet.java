@@ -10,6 +10,7 @@ import utils.MongoDaoImpl;
 import utils.MongoHelper;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,7 @@ import java.util.Map;
  * @version 1.0
  * @date 2021-09-23-19
  */
+@WebServlet("/showgroupnoservlet")
 public class ShowGroupNoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,7 +38,7 @@ public class ShowGroupNoServlet extends HttpServlet {
             MongoDatabase db = MongoHelper.getMongoDataBase();
             MongoDao mongoDao = new MongoDaoImpl();
             String table = "buptgroup";
-            BasicDBObject teacherObj = new BasicDBObject("teachername", loginUser);
+            BasicDBObject teacherObj = new BasicDBObject("teachername", loginUser.getUsername());
             List<Map<String, Object>> list = mongoDao.queryByDoc(db, table, teacherObj);
             List<String> grouplist = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
@@ -51,10 +53,7 @@ public class ShowGroupNoServlet extends HttpServlet {
             }
             grouplist.clear();
             grouplist.addAll(result);
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("group", grouplist.toString());
-            String json = new Gson().toJson(jsonObject);
-            out.print(json);
+            out.print(grouplist);
         } catch (Exception e) {
             e.printStackTrace();
         }

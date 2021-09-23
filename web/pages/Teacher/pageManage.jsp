@@ -133,9 +133,9 @@
 <body>
 
 <div id="show_blogs" style="overflow-y: scroll">
-    inviteGroup={{inviteGroup}}
-    textno={{textno}}
-    mask={{mask}}
+<%--    inviteGroup={{inviteGroup}}--%>
+<%--    textno={{textno}}--%>
+<%--    mask={{mask}}--%>
     <%--邀请弹窗    --%>
     <transition>
     <div class="mask" v-if="mask" @click="close()">
@@ -161,8 +161,9 @@
     <%-- 具体博客           --%>
     <blog class="single-blog" v-for="blog in filterblogs">
         <div class="blog">
+            <h3 v-html="State(blog.has1writed,blog.has2writed,blog.has3writed)"></h3>
+            <br/>
             <h2 v-html="highlight(blog.title)"></h2>
-            <h3 v-html="blog.state"></h3>
             <br/>
             <article>{{blog.content|snippet}}</article>
             <div class="detail"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;{{blog.averagevocabularypoint}}</div>
@@ -200,6 +201,10 @@
                 this.blogs = data.body;
                 console.log(this.blogs);
             })
+            this.$http.get('showgroupnoservlet').then(function(data){
+                this.groups=data.body;
+                console.log(data.body);
+            })
         },
         methods: {
             highlight(value){
@@ -218,9 +223,20 @@
                 this.textno="";
                 this.inviteGroup=[];
             },
+            State(has1writed,has2writed,has3writed){
+                if (has3writed==true){
+                    return "<span style='color: greenyellow'>三稿已完成</span>"
+                }else if (has2writed==true){
+                    return "<span style='color: lightskyblue'>二稿已完成</span>"
+                }else if (has1writed==true){
+                    return "<span style='color: #64bdba'>一稿已完成</span>"
+                }else{
+                    return "<span style='color: gray'>未交稿</span>"
+                }
+            },
            Sent(){
                var invite = {textno:this.textno,inviteGroup:this.inviteGroup}
-               this.$http.post('www.baidu.com',JSON.stringify(invite)).then(function(data){
+               this.$http.post('https://jsonplaceholder.typicode.com/posts/',JSON.stringify(invite)).then(function(data){
                    console.log(data);
                })
                alert("已发送");
