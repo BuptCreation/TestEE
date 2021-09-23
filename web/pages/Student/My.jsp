@@ -40,18 +40,6 @@
 
                 <section class="timeline">
                     <ul class="messages">
-                        <li>
-                            <div>
-                                <time>2021</time> 我们将使用一段拉丁文测试数据In mattis elit vitae odio posuere, nec maximus massa varius. Suspendisse varius volutpat mattis. Vestibulum id magna est.
-                                <button onclick=goComment("2005",)>评论</button>
-                            </div>
-                        </li>
-                        <li>
-                                                 <div>
-                                                     <time><span  class="label label-info">作品互评</span></time>您已经被分配到评论文章message.title点击按钮进行评论<br/>
-                            <button class="btn btn-info btn-lg" onclick=goComment("123","123","false")><span class="glyphicon glyphicon-pencil"></span>评论</button>
-                                                 </div>
-                               </li>
                     </ul>
                 </section>
                 &darr;</h1>

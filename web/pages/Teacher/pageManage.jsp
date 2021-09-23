@@ -19,6 +19,9 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js"></script>
     <%--bootstrap导入    --%>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <%--复选框美化    --%>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="static/css/style-checkbox.css">
     <style>
         <%--按钮美化--%>
         .butt {
@@ -107,11 +110,46 @@
             float: left;
             padding: 10px;
         }
+        .mask{
+            z-index: 999;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .box{
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            width: 30%;
+        }
     </style>
 </head>
 <body>
 
 <div id="show_blogs" style="overflow-y: scroll">
+    inviteGroup={{inviteGroup}}
+    textno={{textno}}
+    mask={{mask}}
+    <%--邀请弹窗    --%>
+    <transition>
+    <div class="mask" v-if="mask" @click="close()">
+        <%--click.stop阻止冒泡        --%>
+        <div class="box" @click.stop="">
+            <div v-for="group in groups" >
+                <input :id="group" :value="group" type="checkbox" value="group" v-model="inviteGroup"/>
+                <label :for="group">小组{{group}}</label>
+            </div>
+            <button class="butt" @click="Sent()"></span>邀请</button>
+        </div>
+
+    </div>
+    </transition>
     <%-- 搜索栏     --%>
     <div class="search bar1">
         <form>
@@ -136,7 +174,7 @@
             <br/>
             <br/>
             <div class="detail"><span class="glyphicon glyphicon-user"></span>{{blog.writer|cut}}</div>
-            <button class="butt" v-on:click="goComment(blog.title,blog.content,'true',blog.textno,blog.writer)"><span class="glyphicon glyphicon-pencil"></span>邀请评论</button>
+            <button class="butt" @click="Invite(blog.textno)"><span class="glyphicon glyphicon-pencil"></span>邀请评论</button>
             <br/>
         </div>
     </blog>
@@ -147,14 +185,20 @@
     var vm = new Vue({
         el:'#show_blogs',
         data:{
+            inviteGroup:[],
             blogs:[],
             search:"",
-            test:"success"
+            test:"success",
+            groups:[
+                1,2,3,4
+            ],
+            textno:"",
+            mask:false
         },
         created(){
             this.$http.get('showallblogsservlet').then(function(data){
                 this.blogs = data.body;
-                console.log(data);
+                console.log(this.blogs);
             })
         },
         methods: {
@@ -163,17 +207,24 @@
                 return val;
             }
             ,
-            Invite(){
-
+            Invite(textno){
+                this.textno=textno;
+                this.mask=!this.mask;
             }
             ,
-            goComment(title, body ,permission,textno,writer) {
-                //跳转到评论页面
-                commentblog = {title: title, content: body,permission: permission,textno: textno,writer: writer}
-                console.log(commentblog)
-                localStorage.setItem('blog', JSON.stringify(commentblog))
-                window.location.href = "pages/Teacher/Comment.jsp"
-            }
+            close(){
+                //归零
+                this.mask=!this.mask;
+                this.textno="";
+                this.inviteGroup=[];
+            },
+           Sent(){
+               var invite = {textno:this.textno,inviteGroup:this.inviteGroup}
+               this.$http.post('www.baidu.com',JSON.stringify(invite)).then(function(data){
+                   console.log(data);
+               })
+               alert("已发送");
+           }
         },
         computed:{
             filterblogs:function(){

@@ -12,6 +12,8 @@
     <title>查看文章</title>
     <!--    基础路径-->
     <base href="../../">
+    <%-- form表单   --%>
+    <link rel="stylesheet" href="./style-checkbox.css">
     <!--    vue-基础包导入-->
     <script src="static/vue/vue.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
