@@ -31,17 +31,7 @@ public class CommentDaoImpl implements CommentDao {
         MongoDao mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "comment";
-        MongoCollection<Document> collection = db.getCollection(table);
-        FindIterable<Document> iterable = collection.find();
-
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        MongoCursor<Document> cursor = iterable.iterator();
-        while (cursor.hasNext()) {
-            Document user = cursor.next();
-            String jsonString = user.toJson();
-            Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
-            list.add(jsonStrToMap);
-        }
+        List<Map<String, Object>> list = mongoDao.queryAll(db, table);
         return list;
     }
 
@@ -61,18 +51,12 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public int getCommentCount(String textno) {
+    public int getCommentCount(String textno) throws Exception {
+        MongoDao mongoDao = new MongoDaoImpl();
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "comment";
-        BasicDBObject doc = new BasicDBObject("textno",textno);
-        MongoCollection<Document> collection = db.getCollection(table);
-        FindIterable<Document> iterable = collection.find(doc);
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        for (Document user : iterable) {
-            String jsonString = user.toJson();
-            Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
-            list.add(jsonStrToMap);
-        }
+        BasicDBObject doc = new BasicDBObject("textno", textno);
+        List<Map<String, Object>> list = mongoDao.queryByDoc(db, table, doc);
         return list.size();
     }
 
@@ -81,7 +65,7 @@ public class CommentDaoImpl implements CommentDao {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "comment";
         int allpoints = 0;
-        BasicDBObject doc = new BasicDBObject("textno",textno);
+        BasicDBObject doc = new BasicDBObject("textno", textno);
         MongoCollection<Document> collection = db.getCollection(table);
         FindIterable<Document> iterable = collection.find(doc);
         for (Document user : iterable) {
@@ -97,7 +81,7 @@ public class CommentDaoImpl implements CommentDao {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "comment";
         int allpoints = 0;
-        BasicDBObject doc = new BasicDBObject("textno",textno);
+        BasicDBObject doc = new BasicDBObject("textno", textno);
         MongoCollection<Document> collection = db.getCollection(table);
         FindIterable<Document> iterable = collection.find(doc);
         for (Document user : iterable) {
@@ -113,7 +97,7 @@ public class CommentDaoImpl implements CommentDao {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "comment";
         int allpoints = 0;
-        BasicDBObject doc = new BasicDBObject("textno",textno);
+        BasicDBObject doc = new BasicDBObject("textno", textno);
         MongoCollection<Document> collection = db.getCollection(table);
         FindIterable<Document> iterable = collection.find(doc);
         for (Document user : iterable) {
@@ -129,7 +113,7 @@ public class CommentDaoImpl implements CommentDao {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "comment";
         int allpoints = 0;
-        BasicDBObject doc = new BasicDBObject("textno",textno);
+        BasicDBObject doc = new BasicDBObject("textno", textno);
         MongoCollection<Document> collection = db.getCollection(table);
         FindIterable<Document> iterable = collection.find(doc);
         for (Document user : iterable) {

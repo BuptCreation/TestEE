@@ -13,7 +13,7 @@ public class Article {
     private String description; //文章描述
     private String content; //文章内容
     private String teacherno; //教师是谁
-    private String groupnumber;//小组号
+    private String groupno;//小组号
     private int browsertimes; //浏览次数
     private int commentCount; //评论数
     private double averagevocabularypoint; //词汇平均分
@@ -120,22 +120,22 @@ public class Article {
 
     public Article() {
     }
-    public String getGroupnumber() {
-        return groupnumber;
+    public String getGroupno() {
+        return groupno;
     }
 
-    public void setGroupnumber(String groupnumber) {
-        this.groupnumber = groupnumber;
+    public void setGroupno(String groupno) {
+        this.groupno = groupno;
     }
 
 
-    public Article(String textno, String title, String description, String content, String teacherno, String groupnumber, int browsertimes, int commentCount, double averagevocabularypoint, double averagefluentpoint, double averagevarietypoint, double averagecompletepoint, String date) {
+    public Article(String textno, String title, String description, String content, String teacherno, String groupno, int browsertimes, int commentCount, double averagevocabularypoint, double averagefluentpoint, double averagevarietypoint, double averagecompletepoint, String date) {
         this.textno = textno;
         this.title = title;
         this.description = description;
         this.content = content;
         this.teacherno = teacherno;
-        this.groupnumber = groupnumber;
+        this.groupno = groupno;
         this.browsertimes = browsertimes;
         this.commentCount = commentCount;
         this.averagevocabularypoint = averagevocabularypoint;

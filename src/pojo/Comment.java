@@ -9,10 +9,10 @@ package pojo;
  */
 public class Comment {
 
-    private User user; //发表的用户
+    private String user; //发表的用户
     private int id; //发表时间的时间戳
     private String content; //内容
-    private String title; //标题
+    private String textno; //文章号
     private String context; //不知道啥用
     private int vocabulary; //词汇使用
     private int fluent; //连贯与衔接
@@ -20,11 +20,11 @@ public class Comment {
     private int complete;//任务完成度
     private String date;//评论发表日期
 
-    public User getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -44,12 +44,12 @@ public class Comment {
         this.content = content;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTextno() {
+        return textno;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTextno(String textno) {
+        this.textno = textno;
     }
 
     public String getContext() {
@@ -92,11 +92,11 @@ public class Comment {
         this.complete = complete;
     }
 
-    public Comment(User user, int id, String content, String title, String context, int vocabulary, int fluent, int variety, int complete, String date) {
+    public Comment(String user, int id, String content, String textno, String context, int vocabulary, int fluent, int variety, int complete, String date) {
         this.user = user;
         this.id = id;
         this.content = content;
-        this.title = title;
+        this.textno = textno;
         this.context = context;
         this.vocabulary = vocabulary;
         this.fluent = fluent;
@@ -105,7 +105,10 @@ public class Comment {
         this.date = date;
     }
 
-    public Comment(){};
+    public Comment() {
+    }
+
+    ;
 
     @Override
     public String toString() {
@@ -113,7 +116,7 @@ public class Comment {
                 "user=" + user +
                 ", id=" + id +
                 ", content='" + content + '\'' +
-                ", title='" + title + '\'' +
+                ", textno='" + textno + '\'' +
                 ", context='" + context + '\'' +
                 ", vocabulary=" + vocabulary +
                 ", fluent=" + fluent +

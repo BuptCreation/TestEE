@@ -15,27 +15,31 @@ import java.util.Map;
 public interface CommentDao {
     /**
      * 查找并显示所有的评论
+     *
      * @return
      * @throws Exception
      */
-    public List<Map<String, Object>> queryallcomment()throws Exception;
+    public List<Map<String, Object>> queryallcomment() throws Exception;
 
     /**
      * 保存评论
+     *
      * @param comment
      * @throws Exception
      */
-    public void saveComment(Comment comment)throws Exception;
+    public void saveComment(Comment comment) throws Exception;
 
     /**
      * 获取对应文章的评论个数
+     *
      * @param textno
      * @return 评论个数
      */
-    public int getCommentCount(String textno);
+    public int getCommentCount(String textno) throws Exception;
 
     /**
      * 获取一篇文章的所有vocabulary评分
+     *
      * @param textno
      * @return
      */
@@ -43,6 +47,7 @@ public interface CommentDao {
 
     /**
      * 获取一篇文章的所有fluent评分
+     *
      * @param textno
      * @return
      */
@@ -50,6 +55,7 @@ public interface CommentDao {
 
     /**
      * 获取一篇文章的所有variety评分
+     *
      * @param textno
      * @return
      */
@@ -57,6 +63,7 @@ public interface CommentDao {
 
     /**
      * 获取一篇文章的所有complete评分
+     *
      * @param textno
      * @return
      */

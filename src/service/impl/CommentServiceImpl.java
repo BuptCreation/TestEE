@@ -32,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Map<String, Object>> getComments(String json) throws Exception {
         MongoDao mongoDao = new MongoDaoImpl();
-        String table = "buptcomment";
+        String table = "comment";
         MongoDatabase db = MongoHelper.getMongoDataBase();
         MongoCollection<Document> collection = db.getCollection(table);
 

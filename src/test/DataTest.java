@@ -27,6 +27,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 类<code>Doc</code>用于：TODO
@@ -176,5 +177,80 @@ public class DataTest {
         }
         String finals = new Gson().toJson(jsonArray);
         System.out.println(finals);
+    }
+    @Test
+    public void Test4(){
+        ArticleDao articleDao = new ArticleDaoImpl();
+        List<Article> list = null;
+        try {
+            list = articleDao.queryallarticle();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(list.get(0).getGroupno());
+    }
+    @Test
+    public void Test5(){
+        ArticleDao articleDao = new ArticleDaoImpl();
+        GroupDao groupDao = new GroupDaoImpl();
+        List<Article> articleList;
+        List<Map<String, Object>> list;
+        JsonArray jsonArray = new JsonArray();
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        MongoDao mongoDao = new MongoDaoImpl();
+        String table = "articlethreepartern";
+        try {
+            articleList = articleDao.queryallarticle();
+            for (int i = 0; i < articleList.size(); i++) {
+
+                String textno = articleList.get(i).getTextno();
+                String groupid = articleDao.queryGroupidByTextno(textno);
+                List<String> authorList = groupDao.queryAuthorByGroupId(groupid);
+
+                list = mongoDao.queryByDoc(db, table, new BasicDBObject("textno", textno));
+                System.out.println(list);
+                String json = new Gson().toJson(articleList.get(i));
+                JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+
+                for (int j = 0; j < list.size(); j++) {
+                    String content = list.get(j).get("content").toString();
+                    if (Objects.equals(list.get(j).get("partern").toString(), "1")) {
+                        if (Objects.equals(content, " ")) {
+                            boolean has1writed = false;
+                            jsonObject.addProperty("has1writed", has1writed);
+                        }
+                        else{
+                            boolean has1writed = true;
+                            jsonObject.addProperty("has1writed", has1writed);
+                        }
+                    } else if (Objects.equals(list.get(j).get("partern").toString(), "2")) {
+                        if (Objects.equals(content, " ")) {
+                            boolean has2writed = false;
+                            jsonObject.addProperty("has2writed", has2writed);
+                        }
+                        else{
+                            boolean has2writed = true;
+                            jsonObject.addProperty("has2writed", has2writed);
+                        }
+                    } else if (Objects.equals(list.get(j).get("partern").toString(), "3")) {
+                        if (Objects.equals(content, " ")) {
+                            boolean has3writed = false;
+                            jsonObject.addProperty("has3writed", has3writed);
+                        }
+                        else{
+                            boolean has3writed = true;
+                            jsonObject.addProperty("has3writed", has3writed);
+                        }
+                    }
+                }
+
+                jsonObject.addProperty("writer", String.valueOf(authorList));
+                jsonArray.add(jsonObject);
+            }
+            String finals = new Gson().toJson(jsonArray);
+            System.out.println(finals);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

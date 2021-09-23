@@ -25,7 +25,7 @@ public class ShowGroupsServlet extends HttpServlet {
         try {
             resp.setContentType("application/json;charset=utf-8");
             PrintWriter out = resp.getWriter();
-            User loginUser=(User)req.getSession().getAttribute("User");
+            User loginUser = (User) req.getSession().getAttribute("User");
             //连接数据库,获取小组
             String groups = new GroupServiceImpl().loadGroup(loginUser.getUsername());
             out.print(groups);
