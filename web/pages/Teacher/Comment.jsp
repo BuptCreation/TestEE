@@ -285,6 +285,7 @@
     var vm = new Vue({
         el: "#tmpl" ,
         data:{
+            textno:"",
             permission:"false",
             title:'',
             context:'',
@@ -305,7 +306,7 @@
             //评论发布
             postComments() {
                 if (this.user!=''&&this.content!='') {
-                    var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,context:this.context,
+                    var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,textno:this.textno,context:this.context,
                         vocabulary:Number(this.vocabulary),fluent: Number(this.fluent),variety: Number(this.variety),complete: Number(this.complete)}
                     this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){
                         console.log(data);
@@ -336,8 +337,9 @@
             this.title=blog.title
             this.context=blog.content
             this.permission=blog.permission
+            this.textno=blog.textno
             console.log(this.permission)
-            var thisblog={title:this.title,context:this.context};
+            var thisblog={title:this.title,context:this.context,textno:this.textno};
             this.$http.post("showcommentservlet",JSON.stringify(thisblog));
             this.loadComments();
         }

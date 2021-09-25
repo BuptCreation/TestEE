@@ -58,12 +58,12 @@
         $.getJSON("shownewsservlet",function (data) {
             //1.给用户引导；固定 2。给用户提示信息
             $.each(data,function (i,message) {
-                if (message.type=="comment") {
+                if (message.type=="invite") {
                     //用户的message（type:信息类型）
                     //个人主页，收到提示  提示他去评论对应作品
                     var str = " <li>\n" +
                         "                            <div>\n" +
-                        "                               "+"<time><span  class=\"label label-info\">作品互评</span></time>"+"您已经被分配到评论文章{"+message.title + "}点击按钮进行评论 \n"+"<br/>"+
+                        "                               "+"<time><span  class=\"label label-info\">作品互评</span></time>"+"老师邀请您评论小组"+message.groupid+"的文章《"+message.title + "》点击按钮进行评论 \n"+"<br/>"+
                         "<button class=\"btn btn-info btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"true"+"\")'><span class=\"glyphicon glyphicon-pencil\"></span>评论</button>"+
                         "                            </div>\n" +
                         "       </li>";

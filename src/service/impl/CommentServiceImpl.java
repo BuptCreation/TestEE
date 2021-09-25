@@ -37,9 +37,9 @@ public class CommentServiceImpl implements CommentService {
         MongoCollection<Document> collection = db.getCollection(table);
 
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        String title = jsonObject.get("title").getAsString();
+        String title = jsonObject.get("textno").getAsString();
 
-        BasicDBObject titleObj = new BasicDBObject("title",title);
+        BasicDBObject titleObj = new BasicDBObject("textno",title);
 
         FindIterable<Document> iterable = collection.find(titleObj);
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();

@@ -57,11 +57,12 @@ public class AddCommentServlet extends HttpServlet {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String times = format.format(date.getTime());
             //插入评论
-            Comment comment = new Comment(null, 0, jsonObject.get("content").getAsString(), jsonObject.get("title").getAsString(), jsonObject.get("context").getAsString(), jsonObject.get("vocabulary").getAsInt(), jsonObject.get("fluent").getAsInt(), jsonObject.get("variety").getAsInt(), jsonObject.get("complete").getAsInt(), times);
+            Comment comment = new Comment(null, 0, jsonObject.get("content").getAsString(), jsonObject.get("textno").getAsString(), jsonObject.get("context").getAsString(), jsonObject.get("vocabulary").getAsInt(), jsonObject.get("fluent").getAsInt(), jsonObject.get("variety").getAsInt(), jsonObject.get("complete").getAsInt(), times);
             CommentDao commentDao = new CommentDaoImpl();
             commentDao.saveComment(comment);
 
             //对应文章评论数+1
+            System.out.println("评论加一被调用了");
             articleDao.updateCommentCount(textno);
 
             //更新对应文章均分
