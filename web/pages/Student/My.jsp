@@ -48,9 +48,9 @@
 
 <script>
     var messages;
-    function goComment(title,body,permission){
+    function goComment(title,body,permission,textno){
         console.log("点击事件触发")
-        commentblog={title:title,content:body,permission:permission}
+        commentblog={title:title,content:body,permission:permission,textno:textno}
         localStorage.setItem('blog',JSON.stringify(commentblog))
         window.location.href="pages/Student/Comment.jsp"
     }
@@ -58,22 +58,23 @@
         $.getJSON("shownewsservlet",function (data) {
             //1.给用户引导；固定 2。给用户提示信息
             $.each(data,function (i,message) {
+                console.log(message)
                 if (message.type=="invite") {
                     //用户的message（type:信息类型）
                     //个人主页，收到提示  提示他去评论对应作品
                     var str = " <li>\n" +
-                        "                            <div>\n" +
-                        "                               "+"<time><span  class=\"label label-info\">作品互评</span></time>"+"老师邀请您评论小组"+message.groupid+"的文章《"+message.title + "》点击按钮进行评论 \n"+"<br/>"+
-                        "<button class=\"btn btn-info btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"true"+"\")'><span class=\"glyphicon glyphicon-pencil\"></span>评论</button>"+
+                        "                            <div style='font-size:large'>\n" +
+                        "                               "+message.date+"<br/><br/><time><span  class=\"label label-info\">作品互评</span></time>"+"老师邀请您评论小组"+message.groupid+"的文章《"+message.title + "》点击按钮进行评论 \n"+"<br/>"+
+                        "<button class=\"btn btn-info btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"true"+"\",\""+message.textno+"\")'><span class=\"glyphicon glyphicon-pencil\"></span>评论</button>"+
                         "                            </div>\n" +
                         "       </li>";
                     $(".messages").append(str);
-                }else if (message.type=="commentfinished"){
+                }else if (message.type=="suggest"){
                     //个人主页，收到提示 我的作品已经被人评论完了
                     var str = " <li>\n" +
-                        "                            <div>\n" +
-                        "                               "+"<time><span  class=\"label label-success\">作品互评</span></time>"+"您的文章{"+message.title + "}已经互评完毕，点击按钮查看结果 \n"+"<br/>"+
-                        "<button class=\"btn btn-success btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"false"+"\")'><span class=\"glyphicon glyphicon-search\"></span>查看</button>"+
+                        "                            <div style='font-size:large'>\n" +
+                        "                               "+message.date+"<br/><br/><time><span  class=\"label label-success\">作品互评</span></time>"+"您的文章《"+message.title + "》有新的评论了，点击查看结果 \n"+"<br/>"+
+                        "<button class=\"btn btn-success btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"false"+"\",\""+message.textno+"\")'><span class=\"glyphicon glyphicon-search\"></span>查看</button>"+
                         "                            </div>\n" +
                         "       </li>";
                     $(".messages").append(str);

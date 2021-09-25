@@ -63,28 +63,24 @@
         </div>
 
         <div class="container-card">
-            <p>赵，钱，孙，李</p>
+            <p>{{date}}</p>
         </div>
     </div>
 <%--评论展示区    --%>
     <div id="comment">
-<%--        <ul class="list-group">--%>
-<%--            <li class="list-group-item" v-for="item in list" :key="item.id">--%>
-<%--                <span class="badge">评论人：{{ item.user }}</span>--%>
-<%--                {{ item.content }}--%>
-<%--            </li>--%>
-
-<%--        </ul>--%>
     <div class="box">
         <ul id="first-list">
             <li  v-for="item in list" :key="item.id">
                 <span></span>
-                <div class="title">《评论》</div>
+                <div class="title">完成度:{{item.complete}}分</div>
+                <div class="title">连贯:{{item.fluent}}分</div>
+                <div class="title">语法:{{item.variety}}分</div>
+                <div class="title">词汇:{{item.vocabulary}}分</div>
                 <div class="info"> {{ item.content }}</div>
                 <div class="name">{{ item.user }}</div>
                 <div class="time">
-                    <span>JUN, 17<sup>th</sup></span>
-                    <span>12:00 AM</span>
+                    <span>{{item.date.slice(0,10)}}</span>
+                    <span>{{item.date.slice(11,19)}}</span>
                 </div>
             </li>
         </ul>
@@ -285,6 +281,8 @@
     var vm = new Vue({
         el: "#tmpl" ,
         data:{
+            date:"",
+            textno:"",
             permission:"false",
             title:'',
             context:'',
@@ -305,7 +303,7 @@
             //评论发布
             postComments() {
                 if (this.user!=''&&this.content!='') {
-                    var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,context:this.context,
+                    var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,textno:this.textno,context:this.context,
                         vocabulary:Number(this.vocabulary),fluent: Number(this.fluent),variety: Number(this.variety),complete: Number(this.complete)}
                     this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){
                         console.log(data);
@@ -327,17 +325,27 @@
                 this.$http.get("showcommentservlet")
                     .then(function (data) {
                         this.list = data.body.slice(0,10);
-                        console.log(this.blogs);
+                        console.log(this.list);
                     })
             }
         },
         created(){
             var blog=JSON.parse(localStorage.getItem('blog')||'[]')
             this.title=blog.title
+
             this.context=blog.content
             this.permission=blog.permission
+            this.textno=blog.textno
             console.log(this.permission)
-            var thisblog={title:this.title,context:this.context};
+            var thisblog={title:this.title,context:this.context,textno:this.textno};
+            //加载整篇文章
+            this.$http.post("showcontentbytextnoservlet",JSON.stringify(thisblog)).then(function () {
+                this.$http.get("showcontentbytextnoservlet").then(function(data){
+                    console.log();
+                    this.date=data.data.date;
+                    this.context=data.data.content;
+                });
+            })
             this.$http.post("showcommentservlet",JSON.stringify(thisblog));
             this.loadComments();
         }

@@ -68,23 +68,19 @@
     </div>
 <%--评论展示区    --%>
     <div id="comment">
-<%--        <ul class="list-group">--%>
-<%--            <li class="list-group-item" v-for="item in list" :key="item.id">--%>
-<%--                <span class="badge">评论人：{{ item.user }}</span>--%>
-<%--                {{ item.content }}--%>
-<%--            </li>--%>
-
-<%--        </ul>--%>
     <div class="box">
         <ul id="first-list">
             <li  v-for="item in list" :key="item.id">
                 <span></span>
-                <div class="title">《评论》</div>
+                <div class="title">完成度-{{item.complete}}分</div>
+                <div class="title">连贯-{{item.fluent}}分</div>
+                <div class="title">语法-{{item.variety}}分</div>
+                <div class="title">词汇-{{item.vocabulary}}分</div>
                 <div class="info"> {{ item.content }}</div>
                 <div class="name">{{ item.user }}</div>
                 <div class="time">
-                    <span>JUN, 17<sup>th</sup></span>
-                    <span>12:00 AM</span>
+                    <span>{{item.date.slice(0,10)}}</span>
+                    <span>{{item.date.slice(11,19)}}</span>
                 </div>
             </li>
         </ul>
@@ -328,7 +324,7 @@
                 this.$http.get("showcommentservlet")
                     .then(function (data) {
                         this.list = data.body.slice(0,10);
-                        console.log(this.blogs);
+                        console.log(this.list);
                     })
             }
         },
