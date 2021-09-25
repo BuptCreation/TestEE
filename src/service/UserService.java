@@ -35,7 +35,7 @@ public interface UserService {
      * @param studentId
      * @return 如果返回Null，说明没有找到
      */
-    public String queryGroupIdAndTeacherName(String studentId)throws Exception;
+    public String queryGroupIdAndTeacherName(int studentId)throws Exception;
 
     /**
      * 查找学生所对应的小组号
@@ -43,5 +43,5 @@ public interface UserService {
      * @return
      * @throws Exception
      */
-    public String queryGroupId(String studentId) throws Exception;
+    public String queryGroupId(int studentId) throws Exception;
 }

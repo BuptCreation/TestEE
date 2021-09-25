@@ -15,6 +15,7 @@ import java.util.Map;
 public interface NewsDao {
     /**
      * 根据用户名查找对应的消息
+     *
      * @param username
      * @return List<News>
      */
@@ -22,7 +23,8 @@ public interface NewsDao {
 
     /**
      * 添加消息
-     * @param json
+     *
+     * @param news
      */
     public void addNews(News news);
 
@@ -33,14 +35,16 @@ public interface NewsDao {
 
     /**
      * 更新用户消息
+     *
      * @param studentno
      * @param count
      * @param title
      */
-    public void updateNews(String studentno,int count,String title);
+    public void updateNews(String studentno, int count, String title);
 
     /**
      * 生成消息
+     *
      * @param studentno
      */
     public void initNews(String studentno);

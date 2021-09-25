@@ -5,11 +5,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dao.ArticleDao;
 import dao.CommentDao;
+import dao.GroupDao;
 import dao.NewsDao;
 import dao.impl.ArticleDaoImpl;
 import dao.impl.CommentDaoImpl;
+import dao.impl.GroupDaoImpl;
 import dao.impl.NewsDaoImpl;
 import pojo.Comment;
+import pojo.News;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +25,7 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类<code>AddCommentServlet</code>用于:添加评论的servlet
@@ -52,7 +56,7 @@ public class AddCommentServlet extends HttpServlet {
             //取东西
             String textno = jsonObject.get("textno").getAsString();
             String title = jsonObject.get("title").getAsString();
-            String nickname = jsonObject.get("user").getAsString();
+            String username = jsonObject.get("user").getAsString();
             Date date = new Date();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String times = format.format(date.getTime());
@@ -91,6 +95,14 @@ public class AddCommentServlet extends HttpServlet {
             articleDao.updateAverageCompletePoint(textno, avercompletepoints);
 
             //插入消息部分
+            GroupDao groupDao = new GroupDaoImpl();
+            String groupno = articleDao.queryGroupidByTextno(textno);
+            List<String> authors = groupDao.queryAuthorByGroupId(groupno);
+            for (int i = 0; i < authors.size(); i++) {
+                News news = new News("suggest", title, authors.get(i), textno, groupno, date.toString(), times);
+                NewsDao newsDao = new NewsDaoImpl();
+                newsDao.addNews(news);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

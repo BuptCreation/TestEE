@@ -463,7 +463,7 @@
     var onclose_connected_count = 0;
     //点击好友名称展示相关消息
     window.onbeforeunload = function (event) {
-        var count = {count: Count, id: Number(<%=loginUser.getStudentNo()%>)};
+        var count = {count: Count, id: Number(<%=loginUser.getStudentno()%>)};
         $.post("updatecountservlet", JSON.stringify(count)).then(function (data) {
             console.log(data);
         });

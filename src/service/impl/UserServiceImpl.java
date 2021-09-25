@@ -16,6 +16,8 @@ import pojo.User;
 import service.UserService;
 import utils.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 /**
  * 类<code>UserServiceImpl</code>用于:实现User类相关服务所需要的一系列基础函数
@@ -56,21 +58,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String queryGroupIdAndTeacherName(String studentId) throws Exception{
+    public String queryGroupIdAndTeacherName(int studentId) throws Exception{
         MongoDatabase db = MongoHelper.getMongoDataBase();
         BasicDBObject studentIdObj = new BasicDBObject("studentno",studentId);
         String table = "buptgroup";
-        MongoCollection<Document> collection = db.getCollection(table);
-        FindIterable<Document> iterable = collection.find(studentIdObj);
-        Map<String, Object> jsonStrToMap = null;
-        MongoCursor<Document> cursor = iterable.iterator();
-        while (cursor.hasNext()) {
-            Document user = cursor.next();
-            String jsonString = user.toJson();
-            jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);// 这里用到我自己写的方法,主要是包json字符串转换成map格式,为后面做准备,方法放在后面
-        }
-        System.out.println(jsonStrToMap);
-        String json = new Gson().toJson(jsonStrToMap);
+        MongoDao mongoDao = new MongoDaoImpl();
+        List<Map<String,Object>> list;
+        list = mongoDao.queryByDoc(db,table,studentIdObj);
+        System.out.println(list);
+        String json = list.get(0).toString();
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
 //        return jsonObject.get("groupid").getAsString() + jsonObject.get("teachername").getAsString();
         int groupid = jsonObject.get("groupid").getAsInt();
@@ -79,7 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String queryGroupId(String studentId) throws Exception {
+    public String queryGroupId(int studentId) throws Exception {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         BasicDBObject studentIdObj = new BasicDBObject("studentno",studentId);
         String table = "buptgroup";

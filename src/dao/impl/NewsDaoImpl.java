@@ -3,6 +3,7 @@ package dao.impl;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoDatabase;
 import dao.NewsDao;
@@ -34,30 +35,27 @@ public class NewsDaoImpl implements NewsDao {
      */
     @Override
     public List<News> getNews(String username) {
-        List<Map<String, Object>> list = null;
-        List<Map<String, Object>> list1 = null;
-        List<News> newslist = null;
+        List<Map<String, Object>> list;
+        List<News> newslist = new ArrayList<>();
         News tempmessage = new News();//临时存储
-        News tempmessage1 = new News();
         MongoDatabase db = MongoHelper.getMongoDataBase();
         MongoDao mongoDao = new MongoDaoImpl();
         BasicDBObject usernameObj = new BasicDBObject("username", username);
-        BasicDBObject towhoObj = new BasicDBObject("towho", username);
         String table = "news";
         try {
             list = mongoDao.queryByDoc(db, table, usernameObj);
-            list1 = mongoDao.queryByDoc(db, table, towhoObj);
             for (Map<String, Object> map : list) {
                 String Json = new Gson().toJson(map);
-                tempmessage = new Gson().fromJson(Json, News.class);
+                JsonObject jsonObject = JsonParser.parseString(Json).getAsJsonObject();
+                tempmessage.setType(jsonObject.get("type").getAsString());
+                tempmessage.setTitle(jsonObject.get("title").getAsString());
+                tempmessage.setUsername(jsonObject.get("username").getAsString());
+                tempmessage.setUsername(jsonObject.get("textno").getAsString());
+                tempmessage.setGroupid(jsonObject.get("groupid").getAsString());
+                tempmessage.setDate(jsonObject.get("date").getAsString());
+                tempmessage.setStandardDate(jsonObject.get("standardDate").getAsString());
                 System.out.println("tempmessage:" + tempmessage);
                 newslist.add(tempmessage);
-            }
-            for (Map<String, Object> stringObjectMap : list1) {
-                String Json = new Gson().toJson(stringObjectMap);
-                tempmessage1 = new Gson().fromJson(Json, News.class);
-                System.out.println("tempmessage1: " + tempmessage1);
-                newslist.add(tempmessage1);
             }
         } catch (Exception e) {
             e.printStackTrace();
