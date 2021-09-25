@@ -66,7 +66,6 @@ public class AddCommentServlet extends HttpServlet {
             commentDao.saveComment(comment);
 
             //对应文章评论数+1
-            System.out.println("评论加一被调用了");
             articleDao.updateCommentCount(textno);
 
             //更新对应文章均分

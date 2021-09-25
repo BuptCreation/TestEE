@@ -25,6 +25,12 @@ public interface ArticleDao {
     public List<Article> queryallarticle() throws Exception;
 
     /**
+     * 更新文章评论数
+     * @throws Exception
+     */
+    public void freshCommentCount(String textno) throws Exception;
+
+    /**
      * 增加文章评论数，自增一
      *
      * @param textno

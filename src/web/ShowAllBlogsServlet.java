@@ -53,6 +53,7 @@ public class ShowAllBlogsServlet extends HttpServlet {
             for (int i = 0; i < articleList.size(); i++) {
                 String textno = articleList.get(i).getTextno();
                 String groupid = articleDao.queryGroupidByTextno(textno);
+                articleDao.freshCommentCount(textno);
                 List<String> authorList = groupDao.queryAuthorByGroupId(groupid);
                 list = mongoDao.queryByDoc(db, table, new BasicDBObject("textno", textno));
                 String json = new Gson().toJson(articleList.get(i));

@@ -70,11 +70,8 @@ public class ShowCommentServlet extends HttpServlet {
             int count = jsonArray.size();
             JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
             String textno = jsonObject.get("textno").getAsString();
-            //更新文章评论数
             ArticleDao articleDao = new ArticleDaoImpl();
-            articleDao.updateCommentCount(textno);
             //更新消息为已经评论
-            NewsDao newsDao = new NewsDaoImpl();
             articleDao.updateBrowseTimes(textno);
         } catch (Exception e) {
             e.printStackTrace();

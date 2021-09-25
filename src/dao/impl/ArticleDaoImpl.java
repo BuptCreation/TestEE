@@ -10,6 +10,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.UpdateResult;
 import dao.ArticleDao;
+import dao.CommentDao;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import pojo.Article;
@@ -42,17 +43,32 @@ public class ArticleDaoImpl implements ArticleDao {
         return articleList;
     }
 
+    @Override
+    public void freshCommentCount(String textno) throws Exception {
+        MongoDao mongoDao = new MongoDaoImpl();
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "article";
+        List<Map<String, Object>> list;
+        BasicDBObject textnoObj = new BasicDBObject("textno", textno);
+        int comment;
+        CommentDao commentDao = new CommentDaoImpl();
+        comment = commentDao.getCommentCount(textno);
+        BasicDBObject countObj = new BasicDBObject("commentCount", comment);
+        mongoDao.updateOne(db, table, textnoObj, countObj);
+    }
+
 
     @Override
     public void updateCommentCount(String textno) throws Exception {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "article";
-        BasicDBObject whereDoc = new BasicDBObject("textno",textno);
-        BasicDBObject updateDoc = new BasicDBObject("commentCount",1);
-        BasicDBObject resDoc = new BasicDBObject("$inc",updateDoc);
+        BasicDBObject whereDoc = new BasicDBObject("textno", textno);
+        BasicDBObject updateDoc = new BasicDBObject("commentCount", 1);
+        BasicDBObject resDoc = new BasicDBObject("$inc", updateDoc);
         MongoCollection<Document> collection = db.getCollection(table);
         try {
             UpdateResult updateManyResult = collection.updateMany(whereDoc, resDoc);
+            System.out.println("评论数+1!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,9 +78,9 @@ public class ArticleDaoImpl implements ArticleDao {
     public void updateAverageVocabularyPoint(String textno, double averagepoint) throws Exception {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "article";
-        BasicDBObject whereDoc = new BasicDBObject("textno",textno);
-        BasicDBObject updateDoc = new BasicDBObject("averagevocabularypoint",averagepoint);
-        BasicDBObject resDoc = new BasicDBObject("$set",updateDoc);
+        BasicDBObject whereDoc = new BasicDBObject("textno", textno);
+        BasicDBObject updateDoc = new BasicDBObject("averagevocabularypoint", averagepoint);
+        BasicDBObject resDoc = new BasicDBObject("$set", updateDoc);
         MongoCollection<Document> collection = db.getCollection(table);
         UpdateResult updateManyResult = collection.updateMany(whereDoc, resDoc);
     }
@@ -73,9 +89,9 @@ public class ArticleDaoImpl implements ArticleDao {
     public void updateAverageFluentPoint(String textno, double averagepoint) throws Exception {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "article";
-        BasicDBObject whereDoc = new BasicDBObject("textno",textno);
-        BasicDBObject updateDoc = new BasicDBObject("averagefluentpoint",averagepoint);
-        BasicDBObject resDoc = new BasicDBObject("$set",updateDoc);
+        BasicDBObject whereDoc = new BasicDBObject("textno", textno);
+        BasicDBObject updateDoc = new BasicDBObject("averagefluentpoint", averagepoint);
+        BasicDBObject resDoc = new BasicDBObject("$set", updateDoc);
         MongoCollection<Document> collection = db.getCollection(table);
         UpdateResult updateManyResult = collection.updateMany(whereDoc, resDoc);
     }
@@ -84,9 +100,9 @@ public class ArticleDaoImpl implements ArticleDao {
     public void updateAverageVarietyPoint(String textno, double averagepoint) throws Exception {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "article";
-        BasicDBObject whereDoc = new BasicDBObject("textno",textno);
-        BasicDBObject updateDoc = new BasicDBObject("averagevarietypoint",averagepoint);
-        BasicDBObject resDoc = new BasicDBObject("$set",updateDoc);
+        BasicDBObject whereDoc = new BasicDBObject("textno", textno);
+        BasicDBObject updateDoc = new BasicDBObject("averagevarietypoint", averagepoint);
+        BasicDBObject resDoc = new BasicDBObject("$set", updateDoc);
         MongoCollection<Document> collection = db.getCollection(table);
         UpdateResult updateManyResult = collection.updateMany(whereDoc, resDoc);
     }
@@ -95,9 +111,9 @@ public class ArticleDaoImpl implements ArticleDao {
     public void updateAverageCompletePoint(String textno, double averagepoint) throws Exception {
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "article";
-        BasicDBObject whereDoc = new BasicDBObject("textno",textno);
-        BasicDBObject updateDoc = new BasicDBObject("averagecompletepoint",averagepoint);
-        BasicDBObject resDoc = new BasicDBObject("$set",updateDoc);
+        BasicDBObject whereDoc = new BasicDBObject("textno", textno);
+        BasicDBObject updateDoc = new BasicDBObject("averagecompletepoint", averagepoint);
+        BasicDBObject resDoc = new BasicDBObject("$set", updateDoc);
         MongoCollection<Document> collection = db.getCollection(table);
         UpdateResult updateManyResult = collection.updateMany(whereDoc, resDoc);
     }
@@ -112,6 +128,7 @@ public class ArticleDaoImpl implements ArticleDao {
         MongoCollection<Document> collection = db.getCollection(table);
         try {
             UpdateResult updateManyResult = collection.updateMany(textnoObj, resObj);
+            System.out.println("浏览次数+1!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,14 +137,14 @@ public class ArticleDaoImpl implements ArticleDao {
     @Override
     public String queryGroupidByTextno(String textno) throws Exception {
         String groupid = null;
-        List<Map<String,Object>> list;
-        BasicDBObject textnoObj = new BasicDBObject("textno",textno);
+        List<Map<String, Object>> list;
+        BasicDBObject textnoObj = new BasicDBObject("textno", textno);
         MongoDatabase db = MongoHelper.getMongoDataBase();
         String table = "article";
         MongoDao mongoDao = new MongoDaoImpl();
         try {
-            list = mongoDao.queryByDoc(db,table,textnoObj);
-            if(list.size() == 1){
+            list = mongoDao.queryByDoc(db, table, textnoObj);
+            if (list.size() == 1) {
                 groupid = list.get(0).get("groupno").toString();
             }
         } catch (Exception e) {
@@ -135,4 +152,5 @@ public class ArticleDaoImpl implements ArticleDao {
         }
         return groupid;
     }
+
 }
