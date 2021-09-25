@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <%--    <meta name="viewport" content="width=device-width, initial-scale=1.0">--%>
-    <title>数据监控中心</title>
+    <title>学情监控</title>
     <link rel="stylesheet" href="static/css/bootstrap.css">
     <link rel="stylesheet" href="static/css/style-fornav.css">
     <%--    vue包导入--%>
@@ -43,7 +43,7 @@
                     <a href="http://47.94.108.20:8082/teacherpage?name=<%=StudentUser.getUsername()%>">任务发布</a>
                 </li>
                 <li>
-                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/DataController.jsp">数据监控中心</a>
+                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/DataController.jsp">学情监控</a>
                 </li>
                 <li>
                     <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/Group.jsp">小组管理</a>
