@@ -48,7 +48,8 @@ public class LoginServlet extends HttpServlet {
                 if (loginUser.getIdentity().equals("student")) {
                     //跳到学生端欢迎登陆主页
                     System.out.println(loginUser);
-                    String studentId = loginUser.getStudentno();
+                    int studentId = Integer.parseInt(loginUser.getStudentno());
+                    System.out.println(studentId);
                     String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);
                     String groupid = userService.queryGroupId(studentId);
                     //把groupid存到session中
@@ -56,8 +57,8 @@ public class LoginServlet extends HttpServlet {
                     //user->group 并且把groupid+teacherusername
                     req.getSession().setAttribute("KeyGroup", KeyGroup);
                     //判断消息是否为空,为空则初始化消息
-                    if (new NewsDaoImpl().getNews(loginUser.getUsername()).size() == 0)
-                        new NewsDaoImpl().initNews(studentId);
+                    //if (new NewsDaoImpl().getNews(loginUser.getUsername()).size() == 0)
+                        //new NewsDaoImpl().initNews(String.valueOf(studentId));
                     GroupService groupService = new GroupServiceImpl();
                     groupService.updatelogins(loginUser.getUsername());
                     resp.sendRedirect("pages/Student/Welcome.jsp");

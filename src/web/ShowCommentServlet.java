@@ -75,8 +75,7 @@ public class ShowCommentServlet extends HttpServlet {
             articleDao.updateCommentCount(textno);
             //更新消息为已经评论
             NewsDao newsDao = new NewsDaoImpl();
-            //String studentNo = articleDao.quertStudentNo(title);
-            //newsDao.updateNews(studentNo,count,title);
+            articleDao.updateBrowseTimes(textno);
         } catch (Exception e) {
             e.printStackTrace();
         }

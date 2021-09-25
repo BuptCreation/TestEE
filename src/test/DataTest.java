@@ -8,6 +8,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.internal.MongoDatabaseImpl;
 import com.mongodb.client.result.UpdateResult;
 import dao.ArticleDao;
 import dao.GroupDao;
@@ -178,8 +179,9 @@ public class DataTest {
         String finals = new Gson().toJson(jsonArray);
         System.out.println(finals);
     }
+
     @Test
-    public void Test4(){
+    public void Test4() {
         ArticleDao articleDao = new ArticleDaoImpl();
         List<Article> list = null;
         try {
@@ -189,8 +191,9 @@ public class DataTest {
         }
         System.out.println(list.get(0).getGroupno());
     }
+
     @Test
-    public void Test5(){
+    public void Test5() {
         ArticleDao articleDao = new ArticleDaoImpl();
         GroupDao groupDao = new GroupDaoImpl();
         List<Article> articleList;
@@ -218,8 +221,7 @@ public class DataTest {
                         if (Objects.equals(content, " ")) {
                             boolean has1writed = false;
                             jsonObject.addProperty("has1writed", has1writed);
-                        }
-                        else{
+                        } else {
                             boolean has1writed = true;
                             jsonObject.addProperty("has1writed", has1writed);
                         }
@@ -227,8 +229,7 @@ public class DataTest {
                         if (Objects.equals(content, " ")) {
                             boolean has2writed = false;
                             jsonObject.addProperty("has2writed", has2writed);
-                        }
-                        else{
+                        } else {
                             boolean has2writed = true;
                             jsonObject.addProperty("has2writed", has2writed);
                         }
@@ -236,8 +237,7 @@ public class DataTest {
                         if (Objects.equals(content, " ")) {
                             boolean has3writed = false;
                             jsonObject.addProperty("has3writed", has3writed);
-                        }
-                        else{
+                        } else {
                             boolean has3writed = true;
                             jsonObject.addProperty("has3writed", has3writed);
                         }
@@ -252,5 +252,43 @@ public class DataTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void Test18() {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "buptgroup";
+        BasicDBObject dbObject = new BasicDBObject("studentno", 2019211924);
+        try {
+            List<Map<String, Object>> list = new MongoDaoImpl().queryByDoc(db, table, dbObject);
+            System.out.println(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void Test19() {
+        List<Map<String, Object>> list = null;
+        List<News> newslist = null;
+        News tempmessage;//临时存储
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        MongoDao mongoDao = new MongoDaoImpl();
+        BasicDBObject usernameObj = new BasicDBObject("username", "bupt2019211925");
+        String table = "news";
+        try {
+            list = mongoDao.queryByDoc(db, table, usernameObj);
+            for (Map<String, Object> map : list) {
+                String Json = new Gson().toJson(map);
+                System.out.println(Json);
+                tempmessage = new Gson().fromJson(Json, News.class);
+                System.out.println("tempmessage:" + tempmessage);
+                newslist.add(tempmessage);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(newslist);
     }
 }

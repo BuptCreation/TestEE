@@ -10,10 +10,8 @@ package pojo;
 public class News {
     private String type;//消息类型
     private String title;//文章标题
-    private String nickname; //昵称(当消息类型为writing或apply时可用)
     private String username; //消息所有者的用户名
     private String textno; //文章号
-    private String towho; //发给谁
     private String groupid; //发给哪个组
     private String standardDate; //标准时间
     private String date; //CST表示时间
@@ -34,14 +32,6 @@ public class News {
         this.title = title;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -56,14 +46,6 @@ public class News {
 
     public void setTextno(String textno) {
         this.textno = textno;
-    }
-
-    public String getTowho() {
-        return towho;
-    }
-
-    public void setTowho(String towho) {
-        this.towho = towho;
     }
 
     public String getGroupid() {
@@ -93,13 +75,11 @@ public class News {
     public News() {
     }
 
-    public News(String type, String title, String nickname, String username, String textno, String towho, String groupid, String standardDate, String date) {
+    public News(String type, String title, String username, String textno, String groupid, String standardDate, String date) {
         this.type = type;
         this.title = title;
-        this.nickname = nickname;
         this.username = username;
         this.textno = textno;
-        this.towho = towho;
         this.groupid = groupid;
         this.standardDate = standardDate;
         this.date = date;
@@ -110,10 +90,8 @@ public class News {
         return "News{" +
                 "type='" + type + '\'' +
                 ", title='" + title + '\'' +
-                ", nickname='" + nickname + '\'' +
                 ", username='" + username + '\'' +
                 ", textno='" + textno + '\'' +
-                ", towho='" + towho + '\'' +
                 ", groupid='" + groupid + '\'' +
                 ", standardDate='" + standardDate + '\'' +
                 ", date='" + date + '\'' +

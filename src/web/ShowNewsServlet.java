@@ -27,7 +27,7 @@ public class ShowNewsServlet extends HttpServlet {
             PrintWriter out = resp.getWriter();
             User loginUser=(User)req.getSession().getAttribute("User");
             //连接数据库,获取消息
-            java.lang.String NewsList = new NewsServiceImpl().loadNews(loginUser.getUsername());
+            String NewsList = new NewsServiceImpl().loadNews(loginUser.getUsername());
             out.print(NewsList);
             System.out.println(NewsList);
         } catch (Exception e) {
