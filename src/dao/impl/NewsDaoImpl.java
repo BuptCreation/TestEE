@@ -3,19 +3,16 @@ package dao.impl;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoDatabase;
 import dao.NewsDao;
 import org.bson.Document;
-import pojo.Message;
 import pojo.News;
 import utils.MongoDao;
 import utils.MongoDaoImpl;
 import utils.MongoHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -40,20 +37,13 @@ public class NewsDaoImpl implements NewsDao {
         News tempmessage = new News();//临时存储
         MongoDatabase db = MongoHelper.getMongoDataBase();
         MongoDao mongoDao = new MongoDaoImpl();
-        BasicDBObject usernameObj = new BasicDBObject("username", username);
+        BasicDBObject usernameObj = new BasicDBObject("username", "bupt2019211925");
         String table = "news";
         try {
             list = mongoDao.queryByDoc(db, table, usernameObj);
             for (Map<String, Object> map : list) {
                 String Json = new Gson().toJson(map);
-                JsonObject jsonObject = JsonParser.parseString(Json).getAsJsonObject();
-                tempmessage.setType(jsonObject.get("type").getAsString());
-                tempmessage.setTitle(jsonObject.get("title").getAsString());
-                tempmessage.setUsername(jsonObject.get("username").getAsString());
-                tempmessage.setUsername(jsonObject.get("textno").getAsString());
-                tempmessage.setGroupid(jsonObject.get("groupid").getAsString());
-                tempmessage.setDate(jsonObject.get("date").getAsString());
-                tempmessage.setStandardDate(jsonObject.get("standardDate").getAsString());
+                tempmessage = new Gson().fromJson(Json, News.class);
                 System.out.println("tempmessage:" + tempmessage);
                 newslist.add(tempmessage);
             }

@@ -291,4 +291,56 @@ public class DataTest {
         }
         System.out.println(newslist);
     }
+
+    @Test
+    public void Test20() {
+        List<Map<String, Object>> list;
+        List<News> newslist = new ArrayList<>();
+        News tempmessage = new News();//临时存储
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        MongoDao mongoDao = new MongoDaoImpl();
+        BasicDBObject usernameObj = new BasicDBObject("username", "bupt2019211925");
+        String table = "news";
+        try {
+            list = mongoDao.queryByDoc(db, table, usernameObj);
+            for (Map<String, Object> map : list) {
+                String Json = new Gson().toJson(map);
+                JsonObject jsonObject = JsonParser.parseString(Json).getAsJsonObject();
+                tempmessage.setType(jsonObject.get("type").getAsString());
+                tempmessage.setTitle(jsonObject.get("title").getAsString());
+                tempmessage.setUsername(jsonObject.get("username").getAsString());
+                tempmessage.setTextno(jsonObject.get("textno").getAsString());
+                tempmessage.setGroupid(jsonObject.get("groupid").getAsString());
+                tempmessage.setDate(jsonObject.get("date").getAsString());
+                tempmessage.setStandardDate(jsonObject.get("standardDate").getAsString());
+                System.out.println("tempmessage:" + tempmessage);
+                newslist.add(tempmessage);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(newslist);
+    }
+    @Test
+    public void Test21(){
+        List<Map<String, Object>> list;
+        List<News> newslist = new ArrayList<>();
+        News tempmessage = new News();//临时存储
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        MongoDao mongoDao = new MongoDaoImpl();
+        BasicDBObject usernameObj = new BasicDBObject("username", "bupt2019211925");
+        String table = "news";
+        try {
+            list = mongoDao.queryByDoc(db, table, usernameObj);
+            for (Map<String, Object> map : list) {
+                String Json = new Gson().toJson(map);
+                tempmessage = new Gson().fromJson(Json, News.class);
+                System.out.println("tempmessage:" + tempmessage);
+                newslist.add(tempmessage);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(newslist);
+    }
 }

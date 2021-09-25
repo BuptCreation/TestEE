@@ -8,6 +8,7 @@ import dao.NewsDao;
 import dao.impl.GroupDaoImpl;
 import dao.impl.NewsDaoImpl;
 import pojo.News;
+import pojo.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,6 +50,7 @@ public class AddNewsServlet extends HttpServlet {
             JsonObject jsonObject = JsonParser.parseString(acceptjson).getAsJsonObject();
             //消息生成
             NewsDao newsDao = new NewsDaoImpl();
+            User loginUser=(User)req.getSession().getAttribute("User");
             //日期
             Date date = new Date();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -64,7 +66,7 @@ public class AddNewsServlet extends HttpServlet {
                     GroupDao groupDao = new GroupDaoImpl();
                     List<String> users = groupDao.queryAuthorByGroupId(groups.get(i).getAsString());
                     for (String user : users) {
-                        News news = new News(jsonObject.get("type").getAsString(), title, user, textno,groups.get(i).getAsString(), date.toString(), times);
+                        News news = new News(jsonObject.get("type").getAsString(), title, user, loginUser.getUsername(),textno,groups.get(i).getAsString(), date.toString(), times);
                         //插入消息
                         newsDao.addNews(news);
                     }

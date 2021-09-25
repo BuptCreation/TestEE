@@ -13,6 +13,7 @@ import dao.impl.GroupDaoImpl;
 import dao.impl.NewsDaoImpl;
 import pojo.Comment;
 import pojo.News;
+import pojo.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,6 +54,7 @@ public class AddCommentServlet extends HttpServlet {
             String acceptjson = sb.toString();
             System.out.println("评论" + acceptjson);
             JsonObject jsonObject = JsonParser.parseString(acceptjson).getAsJsonObject();
+            User loginUser = (User) req.getSession().getAttribute("User");
             //取东西
             String textno = jsonObject.get("textno").getAsString();
             String title = jsonObject.get("title").getAsString();
@@ -99,7 +101,7 @@ public class AddCommentServlet extends HttpServlet {
             String groupno = articleDao.queryGroupidByTextno(textno);
             List<String> authors = groupDao.queryAuthorByGroupId(groupno);
             for (int i = 0; i < authors.size(); i++) {
-                News news = new News("suggest", title, authors.get(i), textno, groupno, date.toString(), times);
+                News news = new News("suggest", title, authors.get(i), loginUser.getUsername(), textno, groupno, date.toString(), times);
                 NewsDao newsDao = new NewsDaoImpl();
                 newsDao.addNews(news);
             }
