@@ -28,24 +28,20 @@
 <%--从session中获得user    --%>
 <div class="app">
     <div id="GroupManager">
-        <ul class="list-group" v-for="group in groups" :key="group.id">
-            <li class="list-group-item" v-for="student in group" :key="student.id">
+        <div style="overflow-y: scroll;max-height: 800px">
+        <ul class="list-group">
+            <li style="margin: 20px" class="list-group-item" v-for="student in groups" :key="student.id">
 
                 <span class="badge">小组号：{{student.groupid}}</span>
                 学号：{{ student.studentno }}
                  用户名：{{ student.studentname }}
             </li>
-            <br/>
         </ul>
-
+        </div>
         <div>
             <div class="form-group">
                 <label>学号：</label>
                 <input type="text" class="form-control" v-model="student.studentno">
-            </div>
-            <div class="form-group">
-                <label>学生用户名：</label>
-                <textarea class="form-control" v-model="student.studentname"></textarea>
             </div>
             <div class="form-group">
                 <label>小组号：</label>
@@ -62,6 +58,19 @@
                     <option value="10">10</option>
                     <option value="11">11</option>
                     <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+
                 </select>
             </div>
             <div class="form-group">
@@ -74,7 +83,7 @@
     User loginUser=(User)request.getSession().getAttribute("User");
 %>
 <script type="text/javascript">
-    var vm = new Vue({
+        var vm = new Vue({
         el: ".app" ,
         data:{
 
@@ -105,7 +114,7 @@
         methods: {
             //学生注册
             PostStudent(){
-                if (this.student.groupid !=''&&this.student.studentname!=''&&this.studentno!=''){
+                if (this.student.groupid !=''&&this.studentno!=''){
                     var student = {
                         studentno: Number(this.student.studentno),
                         studentname: "bupt"+this.student.studentname,
@@ -116,48 +125,24 @@
                     }
                     this.$http.post("addstudenttogroupservlet",JSON.stringify(student)).then(function (data) {
                         console.log(student)
+                        this.LoadStudents()
                     })
-
                 }
             },
             //学生加载
             LoadStudents(){
                 this.$http.get("showgroupsservlet").then(function(data){
-                    this.groups=data.body;
+                    this.groups=data.body[0];
                     console.log(this.groups);
+                    console.log(sortByKey(this.groups,'groupid'))
                 })
             }
-            // //评论发布
-            // postComments() {
-            //     if (this.user != '' && this.content != '') {
-            //         var comment = {
-            //             id: Date.now(),
-            //             user: this.user,
-            //             content: this.content,
-            //             title: this.title,
-            //             context: this.context
-            //         }
-            //         this.$http.post('addcommentsevlet', JSON.stringify(comment)).then(function (data) {
-            //             console.log(data);
-            //             console.log(comment)
-            //         })
-            //         //
-            //         // var list = JSON.parse(localStorage.getItem('cmts') || '[]')
-            //         // list.unshift(comment)
-            //         // localStorage.setItem('cmts', JSON.stringify(list))
-            //         // this.user = this.content = ''
-            //         // this.$emit('func')
-            //         this.list=list
-            //     }
-            // },
-            // loadComments(){
-            //     //var list = JSON.parse(localStorage.getItem('cmts') || '[]')
-            //     //this.list = list
-            //     this.$http.get("showcommentservlet")
-            //         .then(function (data) {
-            //             this.groups = data.body;
-            //             console.log(this.groups);
-            //         })
+        },
+        computed:{
+            // //学生排序
+            // sortStudent: function (array){
+            //     console.log(array)
+            //     return sortByKey(array, 'groupid');//将studet数组中的数据按照年龄进行排序
             // }
         },
         created(){
@@ -165,6 +150,15 @@
         }
 
     })
+    //数组对象方法排序:
+    function sortByKey(array, key) {
+        return array.sort(function (a, b) {
+            console.log(key)
+            var x = a[key];
+            var y = b[key];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+    }
 </script>
 </body>
 </html>

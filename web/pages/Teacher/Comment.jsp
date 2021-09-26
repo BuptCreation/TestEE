@@ -63,28 +63,28 @@
         </div>
 
         <div class="container-card">
-            <p>赵，钱，孙，李</p>
+            <p>{{date}}</p>
         </div>
     </div>
-<%--评论展示区    --%>
+    <%--评论展示区    --%>
     <div id="comment">
-    <div class="box">
-        <ul id="first-list">
-            <li  v-for="item in list" :key="item.id">
-                <span></span>
-                <div class="title">完成度-{{item.complete}}分</div>
-                <div class="title">连贯-{{item.fluent}}分</div>
-                <div class="title">语法-{{item.variety}}分</div>
-                <div class="title">词汇-{{item.vocabulary}}分</div>
-                <div class="info"> {{ item.content }}</div>
-                <div class="name">{{ item.user }}</div>
-                <div class="time">
-                    <span>{{item.date.slice(0,10)}}</span>
-                    <span>{{item.date.slice(11,19)}}</span>
-                </div>
-            </li>
-        </ul>
-    </div>
+        <div class="box">
+            <ul id="first-list">
+                <li  v-for="item in list" :key="item.id">
+                    <span></span>
+                    <div class="title">完成度:{{item.complete}}分</div>
+                    <div class="title">连贯:{{item.fluent}}分</div>
+                    <div class="title">语法:{{item.variety}}分</div>
+                    <div class="title">词汇:{{item.vocabulary}}分</div>
+                    <div class="info"> {{ item.content }}</div>
+                    <div class="name">{{ item.user }}</div>
+                    <div class="time">
+                        <span>{{item.date.slice(0,10)}}</span>
+                        <span>{{item.date.slice(11,19)}}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
 <%--作品评论区--%>
     <div class="container-comment" v-show="permission === 'true'">
         <div class="form-group">

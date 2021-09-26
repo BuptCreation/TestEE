@@ -79,6 +79,9 @@
             <li>
                 <a href="pages/Teacher/DataController.jsp#/Logincount"><i class="fa fa-fw fa-cog"></i>登陆次数</a>
             </li>
+            <li>
+                <a href="pages/Teacher/DataController.jsp#/Racergraph"><i class="fa fa-fw fa-bank"></i>认知图</a>
+            </li>
 <%--            <li class="dropdown">--%>
 <%--                <a href="pages/Teacher/DataController.jsp#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-plus"></i> Dropdown <span class="caret"></span></a>--%>
 <%--                <ul class="dropdown-menu" role="menu">--%>
@@ -91,7 +94,7 @@
 <%--                </ul>--%>
 <%--            </li>--%>
             <li>
-                <a href="pages/Teacher/DataController.jsp#/Talknet"><i class="fa fa-fw fa-bank"></i> 关系网络</a>
+                <a href="pages/Teacher/DataController.jsp#/Talknet"><i class="fa fa-fw fa-dropbox"></i> 关系网络</a>
             </li>
 <%--            <li>--%>
 <%--                <a href="#"><i class="fa fa-fw fa-dropbox"></i> Page 5</a>--%>
@@ -128,25 +131,31 @@
 <!--时间轴模版-->
 <template id="Timeline">
     <div class="Timeline">
-        <iframe width="100%" height="700px" src="http://localhost:8082/Timeline"  frameborder="0" scrolling="auto"></iframe>
+        <iframe width="100%" height="700px" src="http://47.94.108.20:8082/Timeline"  frameborder="0" scrolling="auto"></iframe>
     </div>
 </template>
-<!--教师页面模版-->
+<!--关系网模版-->
 <template id="Talknet">
     <div class="Talknet">
-        <iframe  width="100%" height="700px" src="http://localhost:8082/Talknet"  frameborder="0" scrolling="auto"></iframe>
+        <iframe  width="100%" height="700px" src="http://47.94.108.20:8082/Talknet"  frameborder="0" scrolling="auto"></iframe>
     </div>
 </template>
-<!--教师页面模版-->
+<!--评论次数模版-->
 <template id="Talkcount">
     <div class="Talkcount">
-        <iframe  width="100%" height="700px" src="http://localhost:8082/Talkcount"  frameborder="0" scrolling="auto"></iframe>
+        <iframe  width="100%" height="700px" src="http://47.94.108.20:8082/Talkcount"  frameborder="0" scrolling="auto"></iframe>
     </div>
 </template>
-<!--教师页面模版-->
+<!--登陆次数模版-->
 <template id="Logincount">
     <div class="Logincount">
-        <iframe width="100%" height="700px" src="http://localhost:8082/Logincount"  frameborder="0" scrolling="auto"></iframe>
+        <iframe width="100%" height="700px" src="http://47.94.108.20:8082/Logincount"  frameborder="0" scrolling="auto"></iframe>
+    </div>
+</template>
+<!--认知图模版-->
+<template id="Racergraph">
+    <div class="Racergraph">
+        <iframe width="100%" height="700px" src="http://47.94.108.20:8082/Racergraph"  frameborder="0" scrolling="auto"></iframe>
     </div>
 </template>
 <%--路由跳转程序--%>
@@ -166,6 +175,9 @@
     };
     const Logincount = {
         template:"#Logincount"
+    };
+    const Racergraph = {
+        template:"#Racergraph"
     };
     //2.数组定义切换规则，数组中的一个对象就是一个规则,前一个是hash 后一个组件
     const routes=[
@@ -189,6 +201,10 @@
             path:'/Talkcount',
             component:Talkcount,
         },
+        {
+            path:'/Racergraph',
+            component:Racergraph,
+        },
         {path:'/',redirect:'/pageManage'},
 
     ]
@@ -208,7 +224,8 @@
             Talkcount:Talkcount,
             Talknet:Talknet,
             Timeline:Timeline,
-            Logincount:Logincount
+            Logincount:Logincount,
+            Racergraph:Racergraph
         }
 
     })

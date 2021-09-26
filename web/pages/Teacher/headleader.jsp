@@ -30,7 +30,7 @@
                 <li><a href="http://47.94.108.20:8082/teacherpage?name=<%=StudentUser.getUsername()%>">任务发布</a>
                 </li>
                 <li>
-                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/DataController.jsp">数据监控中心</a>
+                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/DataController.jsp">学情监控</a>
                 </li>
                 <li>
                 <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/Group.jsp">小组管理</a>
