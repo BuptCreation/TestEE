@@ -37,7 +37,7 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/My.jsp">我的</a>
+                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/user/login.html">我的</a>
                 </li>
                 <li>
                     <a href="http://47.94.108.20:8082/teacherpage?name=<%=StudentUser.getUsername()%>">任务发布</a>

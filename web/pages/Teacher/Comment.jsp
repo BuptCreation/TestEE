@@ -334,6 +334,7 @@
             this.context=blog.content
             this.permission=blog.permission
             this.textno=blog.textno
+            this.date=
             console.log(this.permission)
             var thisblog={title:this.title,context:this.context,textno:this.textno};
             this.$http.post("showcommentservlet",JSON.stringify(thisblog));

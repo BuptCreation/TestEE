@@ -156,8 +156,67 @@ new Vue({
     submit (e) {
       const value = e.target.innerHTML.replace(/[\n\r]$/, '')
       if (value) {
-        console.info('Submit text', { value })
-        e.target.innerText = ''
+        Count += 1;
+        //1.1获取输入的内容
+        var atwhos = [];
+        var input = document.getElementById("input_text");
+        var data = input.innerHTML;
+        //获取at数据
+        var ats = $("span[class='atwho-inserted']");
+        //将at数据存入数组
+        console.log(ats.length);
+        for (var i = 0; i < ats.length; i++) {
+          atwhos.push(ats[i].innerHTML.replace("@", ""));
+        }
+        console.log(atwhos);
+        //2.清空发送框
+        input.innerHTML = "";
+        document.getElementById("editable").innerHTML = "";
+        if (Group == false) {
+          console.log("发送消息给个人")
+          var json = {"toName": toName, "message": data, "group": false};
+          //将数据展示在聊天区
+          var str = "<div class=\"bubble-right\"><span>" + data + "</span></div></br></br></br>";
+          $("#content").append(str);
+          $('#content').scrollTop( $('#content')[0].scrollHeight );
+          //将聊天记录存储到局部寄存器
+
+          var chatData = sessionStorage.getItem(toName);
+          if (chatData != null) {
+            str = chatData + str;
+          }
+          sessionStorage.setItem(toName, str);
+        } else {
+          console.log("消息发送给小组");
+          var json = {
+            "toName": UserGroup,
+            "message": data,
+            "group": true,
+            "atwhos": atwhos,
+            "at": atwhos.length != 0,
+            "sender": username
+          };
+          //将数据展示在聊天区
+          console.log(json);
+          var at = "";
+          for (var i = 0; i < atwhos.length; i++) {
+            at += "<div style='color:lightskyblue;display: inline'>@" + atwhos[i] + "</div>";
+          }
+          var str = "<div class=\"bubble-right\"><span>" + at + data + "</span></div></br></br></br>";
+          $("#content").append(str);
+          //滚动条定位
+          $('#content').scrollTop( $('#content')[0].scrollHeight );
+          //将聊天记录存储到局部寄存器
+
+          var chatData = sessionStorage.getItem(UserGroup);
+          if (chatData != null) {
+            str = chatData + str;
+          }
+          sessionStorage.setItem(UserGroup, str);
+          isMe = true;
+        }
+        //3.发送数据
+        ws.send(JSON.stringify(json));
       }
     },
     async onPaste (e) {
