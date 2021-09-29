@@ -545,7 +545,7 @@
             <%
         String keyGroup = (String)request.getSession().getAttribute("KeyGroup");
     %>
-            success: function (res) {
+            success: function (res){
                 username = res;
                 UserGroup = "<%=keyGroup%>";
             },
@@ -590,8 +590,8 @@
             }
         });
         var host = window.location.host;
-        // var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat");
-        var ws = new WebSocket("ws://" + "47.94.108.20:8080/BuptCreationEE" + "/chat");
+        //var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE"+"/chat");
+         var ws = new WebSocket("ws://" + "47.94.108.20:8080/BuptCreationEE" + "/chat");
         //建立连接之后
         ws.onopen = function (evt) {
             // 成功建立连接后，重置心跳检测

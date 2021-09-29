@@ -63,7 +63,7 @@
         </div>
 
         <div class="container-card">
-            <p>{{date}}</p>
+            <p></p>
         </div>
     </div>
     <%--评论展示区    --%>

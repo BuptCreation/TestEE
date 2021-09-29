@@ -36,7 +36,7 @@
                 <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/Group.jsp">小组管理</a>
                 </li>
                 <li>
-                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/Showblog.jsp">文章浏览</a>
+                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/Findblog.jsp">文章浏览</a>
                 </li>
             </ul>
         </div>

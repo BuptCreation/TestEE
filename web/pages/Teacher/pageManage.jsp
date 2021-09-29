@@ -175,7 +175,7 @@
             <br/>
             <br/>
             <div class="detail"><span class="glyphicon glyphicon-user"></span>{{blog.writer|cut}}</div>
-            <button class="butt" @click="Invite(blog.textno)"><span class="glyphicon glyphicon-pencil"></span>邀请评论</button>
+            <button class="butt" @click="Invite(blog.textno,blog.title)"><span class="glyphicon glyphicon-pencil"></span>邀请评论</button>
             <br/>
         </div>
     </blog>
@@ -186,6 +186,7 @@
     var vm = new Vue({
         el:'#show_blogs',
         data:{
+            title:"",
             inviteGroup:[],
             blogs:[],
             search:"",
@@ -212,7 +213,8 @@
                 return val;
             }
             ,
-            Invite(textno){
+            Invite(textno,title){
+                this.title=title
                 this.textno=textno;
                 this.mask=!this.mask;
             }
@@ -235,8 +237,8 @@
                 }
             },
            Sent(){
-               var invite = {textno:this.textno,inviteGroup:this.inviteGroup}
-               this.$http.post('https://jsonplaceholder.typicode.com/posts/',JSON.stringify(invite)).then(function(data){
+               var invite = {textno:this.textno,inviteGroup:this.inviteGroup,type:"invite",title:this.title}
+               this.$http.post('addnewsservlet',JSON.stringify(invite)).then(function(data){
                    console.log(data);
                })
                alert("已发送");

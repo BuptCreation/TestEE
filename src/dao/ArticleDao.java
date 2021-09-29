@@ -82,4 +82,12 @@ public interface ArticleDao {
      * @throws Exception
      */
     public String queryGroupidByTextno(String textno) throws Exception;
+
+    /**
+     * 根据教师名字查找文章
+     * @param teachername
+     * @return
+     * @throws Exception
+     */
+    public List<Article> queryTextByTeacherName(String teachername) throws Exception;
 }

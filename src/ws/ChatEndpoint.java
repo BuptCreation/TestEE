@@ -51,8 +51,7 @@ public class ChatEndpoint {
             User loginUser = (User) httpSession.getAttribute("User");
             //将登陆的用户加入group
             int groupid=1;
-            String groupteacherUsername="teacher168";
-            KeyGroup=groupid+groupteacherUsername;//为了确定唯一的group,必须如此做，将id与用户名相加
+            KeyGroup=httpSession.getAttribute("KeyGroup").toString();//为了确定唯一的group,必须如此做，将id与用户名相加
             Map<String,ChatEndpoint> Group=onlineGroups.get(KeyGroup);
             if (Group==null) {
                 //创建新的group

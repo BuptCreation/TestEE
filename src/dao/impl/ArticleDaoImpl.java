@@ -153,4 +153,21 @@ public class ArticleDaoImpl implements ArticleDao {
         return groupid;
     }
 
+    @Override
+    public List<Article> queryTextByTeacherName(String teachername) throws Exception {
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        MongoDao mongoDao = new MongoDaoImpl();
+        String table = "article";
+        BasicDBObject teachernameObj = new BasicDBObject("teacherno",teachername);
+        List<Map<String,Object>> list;
+        List<Article> articleList = new ArrayList<>();
+        list = mongoDao.queryByDoc(db, table,teachernameObj);
+        for (Map<String, Object> stringObjectMap : list) {
+            String json = new Gson().toJson(stringObjectMap);
+            Article temp = new Gson().fromJson(json, Article.class);
+            articleList.add(temp);
+        }
+        return articleList;
+    }
+
 }

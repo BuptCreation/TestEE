@@ -37,7 +37,7 @@ public class NewsDaoImpl implements NewsDao {
         News tempmessage = new News();//临时存储
         MongoDatabase db = MongoHelper.getMongoDataBase();
         MongoDao mongoDao = new MongoDaoImpl();
-        BasicDBObject usernameObj = new BasicDBObject("username", "bupt2019211925");
+        BasicDBObject usernameObj = new BasicDBObject("username", username);
         String table = "news";
         try {
             list = mongoDao.queryByDoc(db, table, usernameObj);

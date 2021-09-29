@@ -42,14 +42,14 @@
                 <li>
                     <a href="http://47.94.108.20:8082/teacherpage?name=<%=StudentUser.getUsername()%>">任务发布</a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/DataController.jsp">学情监控</a>
                 </li>
                 <li>
                     <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/Group.jsp">小组管理</a>
                 </li>
                 <li>
-                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/Showblog.jsp">文章浏览</a>
+                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/Findblog.jsp">文章浏览</a>
                 </li>
             </ul>
         </div>
@@ -80,7 +80,7 @@
                 <a href="pages/Teacher/DataController.jsp#/Logincount"><i class="fa fa-fw fa-cog"></i>登陆次数</a>
             </li>
             <li>
-                <a href="pages/Teacher/DataController.jsp#/Racergraph"><i class="fa fa-fw fa-bank"></i>认知图</a>
+                <a href="pages/Teacher/DataController.jsp#/Razergraph"><i class="fa fa-fw fa-bank"></i>认知图</a>
             </li>
 <%--            <li class="dropdown">--%>
 <%--                <a href="pages/Teacher/DataController.jsp#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-plus"></i> Dropdown <span class="caret"></span></a>--%>
@@ -153,9 +153,9 @@
     </div>
 </template>
 <!--认知图模版-->
-<template id="Racergraph">
-    <div class="Racergraph">
-        <iframe width="100%" height="700px" src="http://47.94.108.20:8082/Racergraph"  frameborder="0" scrolling="auto"></iframe>
+<template id="Razergraph">
+    <div class="Razergraph">
+        <iframe width="100%" height="700px" src="http://47.94.108.20:8082/Razergraph"  frameborder="0" scrolling="auto"></iframe>
     </div>
 </template>
 <%--路由跳转程序--%>
@@ -176,8 +176,8 @@
     const Logincount = {
         template:"#Logincount"
     };
-    const Racergraph = {
-        template:"#Racergraph"
+    const Razergraph = {
+        template:"#Razergraph"
     };
     //2.数组定义切换规则，数组中的一个对象就是一个规则,前一个是hash 后一个组件
     const routes=[
@@ -202,8 +202,8 @@
             component:Talkcount,
         },
         {
-            path:'/Racergraph',
-            component:Racergraph,
+            path:'/Razergraph',
+            component:Razergraph,
         },
         {path:'/',redirect:'/pageManage'},
 
@@ -225,7 +225,7 @@
             Talknet:Talknet,
             Timeline:Timeline,
             Logincount:Logincount,
-            Racergraph:Racergraph
+            Razergraph:Razergraph
         }
 
     })

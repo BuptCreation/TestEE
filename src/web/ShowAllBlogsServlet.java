@@ -11,6 +11,7 @@ import dao.GroupDao;
 import dao.impl.ArticleDaoImpl;
 import dao.impl.GroupDaoImpl;
 import pojo.Article;
+import pojo.User;
 import utils.MongoDao;
 import utils.MongoDaoImpl;
 import utils.MongoHelper;
@@ -41,6 +42,8 @@ public class ShowAllBlogsServlet extends HttpServlet {
         resp.setContentType("application/json;charset=utf-8");
         PrintWriter out = resp.getWriter();
         ArticleDao articleDao = new ArticleDaoImpl();
+        //登陆人
+        User loginuser = (User)req.getSession().getAttribute("User");
         GroupDao groupDao = new GroupDaoImpl();
         List<Article> articleList;
         List<Map<String, Object>> list = new ArrayList<>();
@@ -49,7 +52,7 @@ public class ShowAllBlogsServlet extends HttpServlet {
         MongoDao mongoDao = new MongoDaoImpl();
         String table = "articlethreepartern";
         try {
-            articleList = articleDao.queryallarticle();
+            articleList = articleDao.queryTextByTeacherName(loginuser.getUsername());
             for (int i = 0; i < articleList.size(); i++) {
                 String textno = articleList.get(i).getTextno();
                 String groupid = articleDao.queryGroupidByTextno(textno);
