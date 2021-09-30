@@ -38,7 +38,7 @@ public class RegistServlet extends HttpServlet {
         String identity = req.getParameter("identity");
         //int studentNo = Integer.parseInt(req.getParameter("studentNo"));
 //        2、检查 验证码是否正确  === 写死,要求验证码为:abcde
-        if ("abcde".equalsIgnoreCase(code)) {
+//        if ("abcde".equalsIgnoreCase(code)) {
 //        3、检查 用户名是否可用
             if (userService.existsUsername(username)) {
                 System.out.println("用户名[" + username + "]已存在!");
@@ -52,9 +52,10 @@ public class RegistServlet extends HttpServlet {
 //        跳到登录页面 login.html
                 req.getRequestDispatcher("/pages/user/login.html").forward(req, resp);
             }
-        } else {
-            System.out.println("验证码[" + code + "]错误");
-            req.getRequestDispatcher("/pages/user/regist.html").forward(req, resp);
-        }
+//        }
+//        else {
+//            System.out.println("验证码[" + code + "]错误");
+//            req.getRequestDispatcher("/pages/user/regist.html").forward(req, resp);
+//        }
     }
 }
