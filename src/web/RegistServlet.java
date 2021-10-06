@@ -31,8 +31,10 @@ public class RegistServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //  1、获取请求的参数
+        req.setCharacterEncoding("UTF-8");
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        String nickname = req.getParameter("nickname");
         String email = req.getParameter("email");
         String code = req.getParameter("code");
         String identity = req.getParameter("identity");
@@ -47,8 +49,9 @@ public class RegistServlet extends HttpServlet {
             } else {
                 //      可用
 //                调用Service保存到数据库
-                userService.registUser(new User(null, username,null, password, email, identity));
-//
+                System.out.println(nickname);
+                userService.registUser(new User(null, username,nickname, password, email, identity));
+                System.out.println("注册成功！");
 //        跳到登录页面 login.html
                 req.getRequestDispatcher("/pages/user/login.html").forward(req, resp);
             }

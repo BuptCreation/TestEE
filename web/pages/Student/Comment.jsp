@@ -85,7 +85,7 @@
         </ul>
     </div>
 <%--作品评论区--%>
-    <div class="container-comment" v-show="permission !== 'true'">
+    <div class="container-comment" >
         <div class="form-group">
             <label>评论人：</label>
             <input type="text" class="form-control" v-model="user">

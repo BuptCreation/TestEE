@@ -14,10 +14,11 @@ public class Comment {
     private String content; //内容
     private String textno; //文章号
     private String context; //不知道啥用
-    private int vocabulary; //词汇使用
-    private int fluent; //连贯与衔接
-    private int variety;//语法多样性
-    private int complete;//任务完成度
+    private double vocabulary; //词汇运用
+    private double fluent; //结构与衔接
+    private double variety;//语法使用
+    private double complete;//写作内容
+    private double specification; //写作规范
     private String date;//评论发表日期
 
     public String getUser() {
@@ -60,39 +61,42 @@ public class Comment {
         this.context = context;
     }
 
-    public int getVocabulary() {
+    public double getVocabulary() {
         return vocabulary;
     }
 
-    public void setVocabulary(int vocabulary) {
+    public void setVocabulary(double vocabulary) {
         this.vocabulary = vocabulary;
     }
 
-    public int getFluent() {
+    public double getFluent() {
         return fluent;
     }
 
-    public void setFluent(int fluent) {
+    public void setFluent(double fluent) {
         this.fluent = fluent;
     }
 
-    public int getVariety() {
+    public double getVariety() {
         return variety;
     }
 
-    public void setVariety(int variety) {
+    public void setVariety(double variety) {
         this.variety = variety;
     }
 
-    public int getComplete() {
+    public double getComplete() {
         return complete;
     }
 
-    public void setComplete(int complete) {
+    public void setComplete(double complete) {
         this.complete = complete;
     }
 
-    public Comment(String user, int id, String content, String textno, String context, int vocabulary, int fluent, int variety, int complete, String date) {
+    public Comment() {
+    }
+
+    public Comment(String user, int id, String content, String textno, String context, double vocabulary, double fluent, double variety, double complete, double specification, String date) {
         this.user = user;
         this.id = id;
         this.content = content;
@@ -102,18 +106,14 @@ public class Comment {
         this.fluent = fluent;
         this.variety = variety;
         this.complete = complete;
+        this.specification = specification;
         this.date = date;
     }
-
-    public Comment() {
-    }
-
-    ;
 
     @Override
     public String toString() {
         return "Comment{" +
-                "user=" + user +
+                "user='" + user + '\'' +
                 ", id=" + id +
                 ", content='" + content + '\'' +
                 ", textno='" + textno + '\'' +
@@ -122,6 +122,7 @@ public class Comment {
                 ", fluent=" + fluent +
                 ", variety=" + variety +
                 ", complete=" + complete +
+                ", specification=" + specification +
                 ", date='" + date + '\'' +
                 '}';
     }

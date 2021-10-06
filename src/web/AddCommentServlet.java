@@ -63,7 +63,7 @@ public class AddCommentServlet extends HttpServlet {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String times = format.format(date.getTime());
             //插入评论
-            Comment comment = new Comment(null, 0, jsonObject.get("content").getAsString(), jsonObject.get("textno").getAsString(), jsonObject.get("context").getAsString(), jsonObject.get("vocabulary").getAsInt(), jsonObject.get("fluent").getAsInt(), jsonObject.get("variety").getAsInt(), jsonObject.get("complete").getAsInt(), times);
+            Comment comment = new Comment(username, 0, jsonObject.get("content").getAsString(), jsonObject.get("textno").getAsString(), jsonObject.get("context").getAsString(), jsonObject.get("vocabulary").getAsDouble(), jsonObject.get("fluent").getAsDouble(), jsonObject.get("variety").getAsDouble(), jsonObject.get("complete").getAsDouble(), jsonObject.get("specification").getAsDouble(), times);
             CommentDao commentDao = new CommentDaoImpl();
             commentDao.saveComment(comment);
 
