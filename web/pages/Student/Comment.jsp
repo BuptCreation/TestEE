@@ -12,12 +12,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, inital-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>卿欲使我评点一二乎？</title>
+    <title>评论区</title>
     <%--    基础地址--%>
     <base href="../../">
-<%--  评分样式导入  --%>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link href="static/css/grade-style.css" rel="stylesheet"/>
 <%--    vue包导入--%>
     <script src="static/vue/vue.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
@@ -31,7 +28,8 @@
 <%--    背景--%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel="stylesheet" href="static/css/teacher-background-style.css">
-
+<%--打分部分样式--%>
+    <link type="text/css" href="static/css/score-style.css" rel="stylesheet" />
 </head>
 <%--从session中获得user    把名字填入评论人--%>
 <%
@@ -66,6 +64,7 @@
             <p>{{date}}</p>
         </div>
     </div>
+
 <%--评论展示区    --%>
     <div id="comment">
     <div class="box">
@@ -86,7 +85,7 @@
         </ul>
     </div>
 <%--作品评论区--%>
-    <div class="container-comment" v-show="permission === 'true'">
+    <div class="container-comment" v-show="permission !== 'true'">
         <div class="form-group">
             <label>评论人：</label>
             <input type="text" class="form-control" v-model="user">
@@ -96,187 +95,82 @@
             <textarea class="form-control" v-model="content"></textarea>
         </div>
         <div class="form-group">
-            <div class="rating">
-                <!--标题展示        -->
-                <h2 class="text">词汇使用{{vocabulary}}</h2>
-<%--                <label>评分：</label>--%>
-                <!-- 选择表情       -->
-                <input type="radio" name="star1" id="star1" value="7" v-model="vocabulary">
-                <label for="star1">
-                    <img src="static/img/非常出色.png" alt="">
-                    <h4>非常出色</h4>
-                </label>
-                <input type="radio" name="star1" id="star2" value="6" v-model="vocabulary">
-                <label for="star2">
-                    <img src="static/img/优秀.png" alt="">
-                    <h4>优秀</h4>
-                </label>
-                <input type="radio" name="star1" id="star3"  value="5" v-model="vocabulary">
-                <label for="star3">
-                    <img src="static/img/良好.png" alt="">
-                    <h4>良好</h4>
-                </label>
-                <!-- 默认选择的表情       -->
-                <input type="radio" name="star1" id="star4"  value="4" v-model="vocabulary" checked="checked">
-                <label for="star4">
-                    <img src="static/img/尚可.png" alt="">
-                    <h4>尚可</h4>
-                </label>
-                <input type="radio" name="star1" id="star5"  value="3" v-model="vocabulary">
-                <label for="star5">
-                    <img src="static/img/略差.png" alt="">
-                    <h4>略差</h4>
-                </label>
-                <input type="radio" name="star1" id="star6"  value="2" v-model="vocabulary">
-                <label for="star6">
-                    <img src="static/img/较差.png" alt="">
-                    <h4>较差</h4>
-                </label>
-                <input type="radio" name="star1" id="star7"  value="1" v-model="vocabulary">
-                <label for="star7">
-                    <img src="static/img/特别差.png" alt="">
-                    <h4>特别差</h4>
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="rating">
-                <!--标题展示        -->
-                <h2 class="text">连贯与衔接{{fluent}}</h2>
-                <%--                <label>评分：</label>--%>
-                <!-- 选择表情       -->
-                <input type="radio" name="star2" id="star21" value="7" v-model="fluent">
-                <label for="star21">
-                    <img src="static/img/非常出色.png" alt="">
-                    <h4>非常出色</h4>
-                </label>
-                <input type="radio" name="star2" id="star22" value="6" v-model="fluent">
-                <label for="star22">
-                    <img src="static/img/优秀.png" alt="">
-                    <h4>优秀</h4>
-                </label>
-                <input type="radio" name="star2" id="star23"  value="5" v-model="fluent">
-                <label for="star23">
-                    <img src="static/img/良好.png" alt="">
-                    <h4>良好</h4>
-                </label>
-                <!-- 默认选择的表情       -->
-                <input type="radio" name="star2" id="star24"  value="4" v-model="fluent" checked="checked">
-                <label for="star24">
-                    <img src="static/img/尚可.png" alt="">
-                    <h4>尚可</h4>
-                </label>
-                <input type="radio" name="star2" id="star25"  value="3" v-model="fluent">
-                <label for="star25">
-                    <img src="static/img/略差.png" alt="">
-                    <h4>略差</h4>
-                </label>
-                <input type="radio" name="star2" id="star26"  value="2" v-model="fluent">
-                <label for="star26">
-                    <img src="static/img/较差.png" alt="">
-                    <h4>较差</h4>
-                </label>
-                <input type="radio" name="star2" id="star27"  value="1" v-model="fluent">
-                <label for="star27">
-                    <img src="static/img/特别差.png" alt="">
-                    <h4>特别差</h4>
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="rating">
-                <!--标题展示        -->
-                <h2 class="text">语法多样性{{variety}}</h2>
-                <%--                <label>评分：</label>--%>
-                <!-- 选择表情       -->
-                <input type="radio" name="star3" id="star31" value="7" v-model="variety">
-                <label for="star31">
-                    <img src="static/img/非常出色.png" alt="">
-                    <h4>非常出色</h4>
-                </label>
-                <input type="radio" name="star3" id="star32" value="6" v-model="variety">
-                <label for="star32">
-                    <img src="static/img/优秀.png" alt="">
-                    <h4>优秀</h4>
-                </label>
-                <input type="radio" name="star3" id="star33"  value="5" v-model="variety">
-                <label for="star33">
-                    <img src="static/img/良好.png" alt="">
-                    <h4>良好</h4>
-                </label>
-                <!-- 默认选择的表情       -->
-                <input type="radio" name="star3" id="star34"  value="4" v-model="variety" checked="checked">
-                <label for="star34">
-                    <img src="static/img/尚可.png" alt="">
-                    <h4>尚可</h4>
-                </label>
-                <input type="radio" name="star3" id="star35"  value="3" v-model="variety">
-                <label for="star35">
-                    <img src="static/img/略差.png" alt="">
-                    <h4>略差</h4>
-                </label>
-                <input type="radio" name="star3" id="star36"  value="2" v-model="variety">
-                <label for="star36">
-                    <img src="static/img/较差.png" alt="">
-                    <h4>较差</h4>
-                </label>
-                <input type="radio" name="star3" id="star37"  value="1" v-model="variety">
-                <label for="star37">
-                    <img src="static/img/特别差.png" alt="">
-                    <h4>特别差</h4>
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="rating">
-                <!--标题展示        -->
-                <h2 class="text">任务完成度{{complete}}</h2>
-                <%--                <label>评分：</label>--%>
-                <!-- 选择表情       -->
-                <input type="radio" name="star4" id="star41" value="7" v-model="complete">
-                <label for="star41">
-                    <img src="static/img/非常出色.png" alt="">
-                    <h4>非常出色</h4>
-                </label>
-                <input type="radio" name="star4" id="star42" value="6" v-model="complete">
-                <label for="star42">
-                    <img src="static/img/优秀.png" alt="">
-                    <h4>优秀</h4>
-                </label>
-                <input type="radio" name="star4" id="star43"  value="5" v-model="complete">
-                <label for="star43">
-                    <img src="static/img/良好.png" alt="">
-                    <h4>良好</h4>
-                </label>
-                <!-- 默认选择的表情       -->
-                <input type="radio" name="star4" id="star44"  value="4" v-model="complete" checked="checked">
-                <label for="star44">
-                    <img src="static/img/尚可.png" alt="">
-                    <h4>尚可</h4>
-                </label>
-                <input type="radio" name="star4" id="star45"  value="3" v-model="complete">
-                <label for="star45">
-                    <img src="static/img/略差.png" alt="">
-                    <h4>略差</h4>
-                </label>
-                <input type="radio" name="star4" id="star46"  value="2" v-model="complete">
-                <label for="star46">
-                    <img src="static/img/较差.png" alt="">
-                    <h4>较差</h4>
-                </label>
-                <input type="radio" name="star4" id="star47"  value="1" v-model="complete">
-                <label for="star47">
-                    <img src="static/img/特别差.png" alt="">
-                    <h4>特别差</h4>
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
             <input type="button" value="发表评论" class="butt" @click="postComments">
         </div>
     </div>
     </div>
 </div>
+<%--   打分区     --%>
+<div class="container-comment" v-show="permission === 'true'">
+<div class="grade_warp">
+
+    <div class="User_ratings User_grade" id="div_fraction0">
+        <div class="ratings_title01"><p><span>写作内容</span>-你觉得这篇文章的内容出色吗？<i>分数越高表示越优秀。</i></p></div>
+        <div class="ratings_bars">
+            <span id="title0">0</span>
+            <span class="bars_10">0</span>
+            <div class="scale" id="bar0">
+                <div></div>
+                <span id="btn0"></span>
+            </div>
+            <span class="bars_10">10</span>
+        </div>
+    </div>
+
+    <div class="User_ratings User_grade" id="div_fraction1">
+        <div class="ratings_title01"><p><span>结构与衔接</span>-你觉得这篇文章在结构与衔接上优秀吗？<i>分数越高表示越优秀。</i></p></div>
+        <div class="ratings_bars">
+            <span id="title1">0</span>
+            <span class="bars_10">0</span>
+            <div class="scale" id="bar1">
+                <div></div>
+                <span id="btn1"></span>
+            </div>
+            <span class="bars_10">10</span>
+        </div>
+    </div>
+
+    <div class="User_ratings User_grade" id="div_fraction2">
+        <div class="ratings_title01"><p><span>词汇运用</span>-你觉得这篇文章在词汇运用上优秀吗？<i>分数越高表示越优秀。</i></p></div>
+        <div class="ratings_bars">
+            <span id="title2">0</span>
+            <span class="bars_10">0</span>
+            <div class="scale" id="bar2">
+                <div></div>
+                <span id="btn2"></span>
+            </div>
+            <span class="bars_10">10</span>
+        </div>
+    </div>
+
+    <div class="User_ratings User_grade" id="div_fraction3">
+        <div class="ratings_title01"><p><span>语法使用</span>-你觉得这篇文章在语法使用上可行吗？<i>分数越高表示越可行。</i></p></div>
+        <div class="ratings_bars">
+            <span id="title3">0</span>
+            <span class="bars_10">0</span>
+            <div class="scale" id="bar3">
+                <div></div>
+                <span id="btn3"></span>
+            </div>
+            <span class="bars_10">10</span>
+        </div>
+    </div>
+
+    <div class="User_ratings User_grade" id="div_fraction4">
+        <div class="ratings_title01"><p><span>写作规范</span>-你觉得这篇文章写作规范吗？<i>分数越高表示越优秀。</i></p></div>
+        <div class="ratings_bars">
+            <span id="title4">0</span>
+            <span class="bars_10">0</span>
+            <div class="scale" id="bar4">
+                <div></div>
+                <span id="btn4"></span>
+            </div>
+            <span class="bars_10">10</span>
+        </div>
+    </div>
+</div>
+</div>
+<p style="clear:both"></p>
 <script type="text/javascript">
     var vm = new Vue({
         el: "#tmpl" ,
@@ -303,9 +197,14 @@
             //评论发布
             postComments() {
                 if (this.user!=''&&this.content!='') {
+                   var vocabulary = document.getElementById("title2").innerText;
+                    var fluent = document.getElementById("title1").innerText;
+                    var variety = document.getElementById("title3").innerText;
+                    var complete = document.getElementById("title0").innerText;
+                    var specification = document.getElementById("title4").innerText;
                     var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,textno:this.textno,context:this.context,
-                        vocabulary:Number(this.vocabulary),fluent: Number(this.fluent),variety: Number(this.variety),complete: Number(this.complete)}
-                    this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){
+                        vocabulary:parseFloat(vocabulary),fluent: parseFloat(fluent),variety:parseFloat(variety),complete:parseFloat(complete),specification:parseFloat(specification)}
+                        this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){
                         console.log(data);
                         this.loadComments();
                     })
@@ -341,7 +240,6 @@
             //加载整篇文章
             this.$http.post("showcontentbytextnoservlet",JSON.stringify(thisblog)).then(function () {
                 this.$http.get("showcontentbytextnoservlet").then(function(data){
-                    console.log();
                     this.date=data.data.date;
                     this.context=data.data.content;
                 });
@@ -349,8 +247,45 @@
             this.$http.post("showcommentservlet",JSON.stringify(thisblog));
             this.loadComments();
         }
-
     })
+</script>
+<script>
+    //尝试初始化打分功能
+    scale = function (btn, bar, title) {
+        this.btn = document.getElementById(btn);
+        this.bar = document.getElementById(bar);
+        this.title = document.getElementById(title);
+        this.step = this.bar.getElementsByTagName("DIV")[0];
+
+        this.init();
+    };
+    scale.prototype = {
+        init: function () {
+            var f = this, g = document, b = window, m = Math;
+            f.btn.onmousedown = function (e) {
+                var x = (e || b.event).clientX;
+                var l = this.offsetLeft;
+                var max = f.bar.offsetWidth - this.offsetWidth;
+                g.onmousemove = function (e) {
+                    var thisX = (e || b.event).clientX;
+                    var to = m.min(max, m.max(-2, l + (thisX - x)));
+                    f.btn.style.left = to + 'px';
+                    f.ondrag(m.round(m.max(0, to / max) * 100), to);
+                    b.getSelection ? b.getSelection().removeAllRanges() : g.selection.empty();
+                };
+                g.onmouseup = new Function('this.onmousemove=null');
+            };
+        },
+        ondrag: function (pos, x) {
+            this.step.style.width = Math.max(0, x) + 'px';
+            this.title.innerHTML = pos / 10 + '';
+        }
+    }
+    new scale('btn0', 'bar0', 'title0');
+    new scale('btn1', 'bar1', 'title1');
+    new scale('btn2', 'bar2', 'title2');
+    new scale('btn3', 'bar3', 'title3');
+    new scale('btn4', 'bar4', 'title4');
 </script>
 <style>
     body{
