@@ -71,10 +71,11 @@
         <ul id="first-list">
             <li  v-for="item in list" :key="item.id">
                 <span></span>
-                <div class="title">完成度:{{item.complete}}分</div>
-                <div class="title">连贯:{{item.fluent}}分</div>
-                <div class="title">语法:{{item.variety}}分</div>
-                <div class="title">词汇:{{item.vocabulary}}分</div>
+                <div class="title">写作内容:{{item.complete}}分</div>
+                <div class="title">结构与衔接:{{item.fluent}}分</div>
+                <div class="title">语法使用:{{item.variety}}分</div>
+                <div class="title">词汇运用:{{item.vocabulary}}分</div>
+                <div class="title">写作规范:{{item.specification}}分</div>
                 <div class="info"> {{ item.content }}</div>
                 <div class="name">{{ item.user }}</div>
                 <div class="time">
@@ -85,7 +86,7 @@
         </ul>
     </div>
 <%--作品评论区--%>
-    <div class="container-comment" >
+    <div class="container-comment" v-show="permission === 'true'">
         <div class="form-group">
             <label>评论人：</label>
             <input type="text" class="form-control" v-model="user">
@@ -101,7 +102,7 @@
     </div>
 </div>
 <%--   打分区     --%>
-<div class="container-comment" v-show="permission === 'true'">
+<div class="container-comment">
 <div class="grade_warp">
 
     <div class="User_ratings User_grade" id="div_fraction0">

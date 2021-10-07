@@ -20,29 +20,100 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js"></script>
     <%--bootstrap导入    --%>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        /*按钮美化*/
+        .butt {
+            margin: 10px;
+            float: right;
+            width: 100px;
+            height: 30px;
+            background-color: white;
+            color: black;
+            align-self: center;
+            border: 2px solid #555555;
+        }
+        .butt:hover {
+            background-color: #555555;
+            color: white;
+        }
+        /*弹窗*/
+        .mask{
+            z-index: 999;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .box{
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            width: 30%;
+        }
+    </style>
 </head>
 <body>
+<%-- 修改昵称   --%>
+
     <%@include file="headleader.jsp"%>
     <%--从session中获得user    --%>
 
     <%
         User loginUser=(User)request.getSession().getAttribute("User");
+        String UserNickname = loginUser.getNickname();
+        if (UserNickname==null){
+            UserNickname="未命名";
+        }
     %>
     <!--  -->
     <section class="intro">
         <div class="container">
             <h1><!--  -->
+                <div id="app">
+                    <!--    {{mask}}-->
+                    <!--    <br/>-->
+                    <!--    {{textno}}-->
+                    <button class="butt" @click="show()" style="font-size: medium">修改信息</button>
+                    <div class="mask" v-if="mask" @click="close()">
+                        <div class="box" @click.stop="">
+                            <div class="input-group" style="padding:5px">
+                                <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                                <input type="text" class="form-control" placeholder="昵称" id="usr" name="username" v-model="nickname">
+                            </div>
+                            <div class="input-group" style="padding:5px">
+                                <div class="input-group-addon">我的教师</div>
+                                <select class="form-control" v-model="teacher">
+                                    <option v-for="allteacher in teachers">{{allteacher.teacherNickname}}</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group" style="padding:5px" v-show="teacher != ''">
+                                <div class="input-group-addon">我的小组</div>
+                                <select class="form-control" v-model="groupid">
+                                    <option v-for="groupid in  groupfilter">{{groupid}}</option>
+                                </select>
+                            </div>
+                            <button class="butt" style="font-size: medium" @click="Active()">确认更改</button>
+                        </div>
+
+                    </div>
+                </div>
                 <section class="intro">
                     <div class="container">
-                        <h1 align="center">欢迎你登陆！<%=loginUser.getUsername()%> 查看你的最新消息吧&darr;</h1>
+                        <h1 align="center">欢迎你登陆！<%=UserNickname%> 查看你的最新消息吧</h1>
                     </div>
                 </section>
 
                 <section class="timeline">
-                    <ul class="messages">
+                    <ul class="messages" style="min-height:50%">
                     </ul>
                 </section>
-                &darr;</h1>
+                </h1>
         </div>
     </section>
 
@@ -56,6 +127,18 @@
     }
     $(function(){
         $.getJSON("shownewsservlet",function (data) {
+            //0.有关注册方面的消息，给予用户
+            //如果用户没有昵称，提示用户改名
+            if ("<%=UserNickname%>"=="未命名"){
+                var str = " <li>\n" +
+                    "                            <div style='font-size:large'>\n" +
+                    "                               "+"<br/><br/><time><span  class=\"label label-info\">信息提示</span></time>"+"您还没有昵称，点击右上角修改信息，起个名字吧"+"<br/>"+
+                    "                            </div>\n" +
+                    "       </li>";
+                $(".messages").append(str);
+            }
+
+
             //1.给用户引导；固定 2。给用户提示信息
             $.each(data,function (i,message) {
                 console.log(message)
@@ -134,6 +217,41 @@
             window.addEventListener("resize", callbackFunc);
             window.addEventListener("scroll", callbackFunc);
         })
+    })
+</script>
+<script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            teachers:[ { teacherNickname:"张老师",groups:[1,2]},
+                { teacherNickname:"胡老师",groups:[1,2,3]},
+                { teacherNickname:"苏老师",groups:[1,2,4]}
+            ],
+            groupid:NaN,
+            teacher:"",
+            nickname:"",
+            mask:false
+        },
+        methods:{
+            show(){
+                this.mask=!this.mask;
+            },
+            close(){
+                this.mask=!this.mask;
+            },
+            Active(){
+                console.log(this.nickname,this.teacher);
+            }
+        },
+        computed:{
+            groupfilter:function(){
+                for (var i=0;i<this.teachers.length;i++){
+                    if (this.teachers[i].teacherNickname==this.teacher) {
+                        return this.teachers[i].groups;
+                    }
+                }
+            }
+        }
     })
 </script>
     <!-- 提示表单样式js-->
