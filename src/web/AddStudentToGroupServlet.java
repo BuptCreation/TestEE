@@ -57,6 +57,7 @@ public class AddStudentToGroupServlet extends HttpServlet {
             user.setPassword("123456");
             //user.setEmail("123456");
             user.setIdentity("student");
+            user.setNickname(" ");
             userService.registUser(user);
             String userinfo = new Gson().toJson(user);
             System.out.println("注册成功！"+"欢迎用户"+userinfo);
