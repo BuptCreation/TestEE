@@ -11,6 +11,7 @@ public class Group {
     private int _id;
     private int studentno; //学号
     private String studentname;//学生姓名
+    private String nickname; //昵称
     private int groupid;//小组号
     private int speeches;//群聊发言次数
     private int logins;//登录次数
@@ -72,17 +73,26 @@ public class Group {
         this.logins = logins;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public Group() {
     }
 
-    public Group(int _id, int studentno, String studentname, int groupid, int speeches, String teachername,int logins) {
+    public Group(int _id, int studentno, String studentname, String nickname, int groupid, int speeches, int logins, String teachername) {
         this._id = _id;
         this.studentno = studentno;
         this.studentname = studentname;
+        this.nickname = nickname;
         this.groupid = groupid;
         this.speeches = speeches;
-        this.teachername = teachername;
         this.logins = logins;
+        this.teachername = teachername;
     }
 
     @Override
@@ -91,6 +101,7 @@ public class Group {
                 "_id=" + _id +
                 ", studentno=" + studentno +
                 ", studentname='" + studentname + '\'' +
+                ", nickname='" + nickname + '\'' +
                 ", groupid=" + groupid +
                 ", speeches=" + speeches +
                 ", logins=" + logins +
