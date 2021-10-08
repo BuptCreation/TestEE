@@ -22,21 +22,21 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"> 
     <div class="container">
         <div class="navbar-header">
-            <a href="http://47.94.108.20:8080/BuptCreationEE/pages/user/login.html" disabled="disabled" class="navbar-brand">智慧英语协同写作教师端</a> 
+            <a href="pages/user/login.html" disabled="disabled" class="navbar-brand">智慧英语协同写作教师端</a> 
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/My.jsp">我的&nbsp;</a></li>
+                <li><a href="pages/Teacher/My.jsp">我的&nbsp;</a></li>
                 <li><a href="http://47.94.108.20:8082/teacherpage?name=<%=StudentUser.getUsername()%>">任务发布</a>
                 </li>
                 <li>
-                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/DataController.jsp">学情监控</a>
+                    <a href="pages/Teacher/DataController.jsp">学情监控</a>
                 </li>
                 <li>
-                <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/Group.jsp">小组管理</a>
+                <a href="pages/Teacher/Group.jsp">小组管理</a>
                 </li>
                 <li>
-                    <a href="http://47.94.108.20:8080/BuptCreationEE/pages/Teacher/Findblog.jsp">文章浏览</a>
+                    <a href="pages/Teacher/Findblog.jsp">文章浏览</a>
                 </li>
             </ul>
         </div>

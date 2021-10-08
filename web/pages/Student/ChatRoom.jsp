@@ -519,7 +519,7 @@
             $("footer").attr('class', '');
         }
     });
-    var ws = new WebSocket("ws://" + "47.94.108.20:8080/BuptCreationEE" + "/chat");
+    var ws = new WebSocket("ws://" + "buptcw.cn" + "/chat");
     $(function () {
         $(".button-add").click(function(){
             console.log("button-add已经被点击")
