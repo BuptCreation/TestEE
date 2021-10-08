@@ -487,8 +487,9 @@
     }
 
     function showGroupChat(name) {
-        $.get("", function(data){
+        $.get("showgroupchat", function(data){
             HistoryChat = data;
+            console.log(HistoryChat);
         });
         Group = true;
         //现在聊天框
@@ -513,8 +514,9 @@
         }
     });
     var HistoryChat=[];
-    var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat")
-    // var ws = new WebSocket("ws://" + "47.94.108.20:8080/BuptCreationEE" + "/chat");
+    var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE"+"/chat")
+   // var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat")
+    //var ws = new WebSocket("ws://" + "buptcw.cn "+ "/chat");
     $(function () {
         $(".button-add").click(function(){
             console.log("button-add已经被点击")

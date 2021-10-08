@@ -343,4 +343,15 @@ public class DataTest {
         }
         System.out.println(newslist);
     }
+    @Test
+    public void GetChat() throws Exception {
+        List<Map<String,Object>> list;
+        MongoDatabase db = MongoHelper.getMongoDataBase();
+        String table = "chatmessage";
+        String session = "4suyou2021";
+        BasicDBObject dbObject = new BasicDBObject("toName",session);
+        MongoDaoImpl mongoDao = new MongoDaoImpl();
+        list = mongoDao.queryByDoc(db,table,dbObject);
+        System.out.println(list);
+    }
 }
