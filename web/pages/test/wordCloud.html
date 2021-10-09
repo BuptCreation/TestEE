@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts.js"></script>  
+        <script src='dist/echarts-wordcloud.js'></script>
+         <script src="stopwords.js"></script>
+    </head>
+    <body>
+
+        <style>
+            html, body, #main {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+            }
+        </style>
+        <div id='main'></div>
+        <script>
+              var wordclouddata = [];
+             var content ="我是学生"
+              var removeStopWord = function(){
+                 console.log(content);
+                      for(var i=0; i<stopwords.length; i++){    
+                          content = content.replace(new RegExp(' '+stopwords[i]+' ','g'), ' ');
+                      }
+                      console.log(content);
+                  }
+                var count = function(){
+                //var arr = content.split(' ');
+                var arr = content.split(/[\n\s+,，；;.]/g);
+                console.log(arr);
+                 var obj = {};
+                    for(var i=0; i<arr.length; i++){
+                        if(obj[arr[i]]){
+                            ++obj[arr[i]];
+                        }else{
+                            obj[arr[i]] = 1;
+                        }    
+                    }
+                    // console.log(obj);
+                      // obj转为数据
+                      //var result = [];
+                      for(var o in obj){
+                          var _o = {};
+                          _o.name = o;
+                          _o.value = obj[o];
+                          wordclouddata.push(_o);
+                      }
+                      //console.log(wordclouddata);
+                      //数据形式如下
+                        //{name: "participants", value: 1}
+                       // {name: "experiment", value: 2}
+                       //{name: "classes", value: 1}
+                  }
+                  removeStopWord();
+                  count();
+            var chart = echarts.init(document.getElementById('main'));
+            var option = {
+                tooltip: {
+                show: true
+                },
+                series: [ {
+                    type: 'wordCloud',
+                    gridSize: 2,
+                    sizeRange: [12, 50],
+                    rotationRange: [-90, 90],
+                    shape: 'pentagon',
+                    width: 600,
+                    height: 400,
+                    drawOutOfBound: true,
+                    textStyle: {
+                        normal: {
+                            color: function () {
+                                return 'rgb(' + [
+                                    Math.round(Math.random() * 160),
+                                    Math.round(Math.random() * 160),
+                                    Math.round(Math.random() * 160)
+                                ].join(',') + ')';
+                            }
+                        },
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowColor: '#333'
+                        }
+                    },
+                    data: wordclouddata
+                     
+                    
+                } ]
+            };
+
+            chart.setOption(option);
+
+            window.onresize = chart.resize;
+        </script>
+    </body>
+</html>

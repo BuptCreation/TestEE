@@ -13,10 +13,10 @@
     <base href="../../">
     <%--聊天室表情包导入--%>
     <link rel="stylesheet" href="static/css/chat-style.css">
-    <!--引入样式表-->
-    <link href="https://cdn.staticfile.org/quill/1.3.6/quill.snow.css" rel="stylesheet">
-    <!-- 引入Quill -->
-    <script src="https://cdn.staticfile.org/quill/1.3.6/quill.js"></script>
+<%--    <!--引入样式表-->--%>
+<%--    <link href="https://cdn.staticfile.org/quill/1.3.6/quill.snow.css" rel="stylesheet">--%>
+<%--    <!-- 引入Quill -->--%>
+<%--    <script src="https://cdn.staticfile.org/quill/1.3.6/quill.js"></script>--%>
 
     <!--    vue-基础包导入-->
     <script src="static/vue/vue.js" type="text/javascript" charset="utf-8"></script>
@@ -38,7 +38,7 @@
     <%--at包导入    --%>
     <link rel="stylesheet" href="static/css/jqueryAtwho.css"/>
     <%--    <link rel="stylesheet" href="pages/Student/atwho.css" />--%>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<%--    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>--%>
     <script type="text/javascript" src="http://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
     <%--标签样式    --%>
     <link href="https://fonts.googleapis.com/css?family=Sen:400,700,800&display=swap" rel="stylesheet">
@@ -490,13 +490,45 @@
         $.get("showgroupchat", function(data){
             HistoryChat = data;
             console.log(HistoryChat);
+            Group = true;
+            //现在聊天框
+            //立刻清空聊天框
+            $("#content").html("");
+            $("#content").css("visibility", "visible");
+            $("#Inchat").html("<div class=\"Prompt\">当前正与" + "组内所有成员" + "聊天</div>");
+            //开始加载历史记录
+            for (let i=0;i<HistoryChat.length;i++) {
+                //情况1，是我自己之前发的
+                console.log(HistoryChat[i]);
+                let atwhosArray = HistoryChat[i].atwhos.slice(1,HistoryChat[i].atwhos.length-1).replace(new RegExp('\"','g'), '').split(",");
+                if (HistoryChat[i].sender=="<%=loginUser.getUsername()%>"){
+                    //处理at
+                    var at = "";
+                    for (let j = 0; j < atwhosArray.length; j++) {
+                        if (atwhosArray[j]!=""){
+                            at += "<div style='color:lightskyblue;display: inline'>@" + atwhosArray[j] + "</div>";
+                        }
+                    }
+                    var str = "<div class=\"bubble-right\"><span>" + at + HistoryChat[i].message + "</span></div></br></br></br>";
+                    $("#content").append(str);
+                    //滚动条定位
+                    $('#content').scrollTop( $('#content')[0].scrollHeight );
+                }else {
+                    var at = "";
+                    for (let j = 0; j < atwhosArray.length; j++) {
+                        if (atwhosArray[j]!="") {
+                            at += "<div style='color:lightskyblue;display: inline'>@" + atwhosArray[j] + "</div>";
+                        }
+                    }
+                    var str = "<div class=\"bubble-left\"><span>" +HistoryChat[i].sender+":"+ at + HistoryChat[i].message + "</span></div></br></br></br>";
+
+                    $("#content").append(str);
+                    //滚动条定位
+                    $('#content').scrollTop( $('#content')[0].scrollHeight );
+                }
+            }
         });
-        Group = true;
-        //现在聊天框
-        //立刻清空聊天框
-        $("#content").html("");
-        $("#content").css("visibility", "visible");
-        $("#Inchat").html("<div class=\"Prompt\">当前正与" + "组内所有成员" + "聊天</div>");
+
     }
 
     //the alert is collapsible yay
@@ -514,8 +546,8 @@
         }
     });
     var HistoryChat=[];
-    var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE"+"/chat")
-   // var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat")
+    // var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE"+"/chat")
+   var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat")
     //var ws = new WebSocket("ws://" + "buptcw.cn "+ "/chat");
     $(function () {
         $(".button-add").click(function(){
@@ -580,7 +612,6 @@
             }
         });
         var host = window.location.host;
-        // var ws = new WebSocket("ws://"+"localhost:8080//BuptCreationEE_war_exploded"+"/chat");
         //建立连接之后
         ws.onopen = function (evt) {
             // 成功建立连接后，重置心跳检测
