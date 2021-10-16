@@ -1,5 +1,6 @@
 package pojo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +18,26 @@ public class Message {
     private List<String> atwhos;
     private int groupid;
     private String sender;
+    private Date date;
 
+    public Message(String toName, String message, boolean isGroup, boolean isat, List<String> atwhos, int groupid, String sender, Date date) {
+        this.toName = toName;
+        this.message = message;
+        this.isGroup = isGroup;
+        this.isat = isat;
+        this.atwhos = atwhos;
+        this.groupid = groupid;
+        this.sender = sender;
+        this.date = date;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
     public String getSender() {
         return sender;
     }
@@ -83,16 +103,6 @@ public class Message {
     }
 
     public Message() {
-    }
-
-    public Message(String toName, String message, boolean isGroup, boolean isat, List<String> atwhos, int groupid, String sender) {
-        this.toName = toName;
-        this.message = message;
-        this.isGroup = isGroup;
-        this.isat = isat;
-        this.atwhos = atwhos;
-        this.groupid = groupid;
-        this.sender = sender;
     }
 
     @Override

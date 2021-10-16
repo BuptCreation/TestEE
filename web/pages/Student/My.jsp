@@ -106,6 +106,8 @@
                 <section class="intro">
                     <div class="container">
                         <h1 align="center">欢迎你登陆！<%=UserNickname%> 查看你的最新消息吧</h1>
+                        <h1> 现在你在第<%=request.getSession().getAttribute("Groupid")%>组</h1>
+                        <h1> 你的组员有</h1>
                     </div>
                 </section>
 

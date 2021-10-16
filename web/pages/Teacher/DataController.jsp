@@ -71,16 +71,16 @@
                 <a href="pages/Teacher/DataController.jsp#/pageManage"><i class="fa fa-fw fa-home"></i>任务管控</a>
             </li>
             <li>
-                <a href="pages/Teacher/DataController.jsp#/Timeline"><i class="fa fa-fw fa-folder"></i> 修改/时间轴</a>
+                <a href="pages/Teacher/DataController.jsp#/Timeline"><i class="fa fa-fw fa-folder"></i>写作参与度曲线</a>
             </li>
             <li>
-                <a href="pages/Teacher/DataController.jsp#/Talkcount"><i class="fa fa-fw fa-file-o"></i> 交谈次数</a>
+                <a href="pages/Teacher/DataController.jsp#/Talkcount"><i class="fa fa-fw fa-file-o"></i> 交谈参与度</a>
             </li>
             <li>
-                <a href="pages/Teacher/DataController.jsp#/Logincount"><i class="fa fa-fw fa-cog"></i>登陆次数</a>
+                <a href="pages/Teacher/DataController.jsp#/Logincount"><i class="fa fa-fw fa-cog"></i>学习活跃度</a>
             </li>
             <li>
-                <a href="pages/Teacher/DataController.jsp#/Razergraph"><i class="fa fa-fw fa-bank"></i>认知图</a>
+                <a href="pages/Teacher/DataController.jsp#/Razergraph"><i class="fa fa-fw fa-bank"></i>社会网络关系</a>
             </li>
 <%--            <li class="dropdown">--%>
 <%--                <a href="pages/Teacher/DataController.jsp#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-plus"></i> Dropdown <span class="caret"></span></a>--%>

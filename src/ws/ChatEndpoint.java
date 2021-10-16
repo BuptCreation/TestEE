@@ -65,7 +65,7 @@ public class ChatEndpoint {
             onlineUsers.put(loginUser.getUsername(), this);
             //然后将当前在线的该组的所有用户的用户名推送给所有用户
             //1.获取消息
-            String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup),false,null,null) ;
+            String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup),false,null,null,null) ;
 
 //            String message = MessageUtils.getMessage(true, null, getNames());
             //2.调用方法进行系统推送
@@ -130,6 +130,7 @@ public class ChatEndpoint {
                     jsonObject.addProperty("isat", mess.isat());
                     jsonObject.addProperty("sender", mess.getSender());
                     jsonObject.addProperty("atwhos", new Gson().toJson(mess.getAtwhos()));
+                    jsonObject.addProperty("Time",new Gson().toJson(mess.getDate()));
                     //把上面的数据存到数据库相应位置中!
                     String json = new Gson().toJson(jsonObject);
                     MessageService messageService = new MessageServiceImpl();
@@ -170,7 +171,7 @@ public class ChatEndpoint {
                     String KeyGroup = mess.getToName();
                     //获取消息
                     String data = mess.getMessage();
-                    String resultMessage = MessageUtils.getGroupMessage(false, KeyGroup, data, mess.isat(), mess.getAtwhos(), mess.getSender());
+                    String resultMessage = MessageUtils.getGroupMessage(false, KeyGroup, data, mess.isat(), mess.getAtwhos(), mess.getSender(),mess.getDate());
                     System.out.println("发送给" + KeyGroup + "小组" + resultMessage + "有无at？" + mess.isat() + "at了谁？" + mess.getAtwhos());
                     //获取对应的session发送数据 sendToGroup
                     broadcastGroupUsers(resultMessage, KeyGroup);
@@ -189,7 +190,7 @@ public class ChatEndpoint {
         //根据名字删除
         onlineGroups.get(KeyGroup).remove(loginUser.getUsername());
         onlineUsers.remove(loginUser.getUsername());
-        java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup),false,null,null) ;
+        java.lang.String Groupmessage=MessageUtils.getGroupMessage(true,KeyGroup,getGroupNames(KeyGroup),false,null,null,null) ;
 
 //            String message = MessageUtils.getMessage(true, null, getNames());
         //2.调用方法进行系统推送

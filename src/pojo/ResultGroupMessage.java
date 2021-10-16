@@ -1,5 +1,6 @@
 package pojo;
 
+import java.util.Date;
 import java.util.List;
 
 public class ResultGroupMessage {
@@ -10,6 +11,23 @@ public class ResultGroupMessage {
     private boolean isat;
     private List<String> atwhos;
     private String sender;
+    private Date date;
+
+    public boolean isIsat() {
+        return isat;
+    }
+
+    public void setIsat(boolean isat) {
+        this.isat = isat;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public String getSender() {
         return sender;

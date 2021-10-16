@@ -476,6 +476,17 @@
         Count = 0;
     };
 
+    function ChangeDateFormat(cellval) {
+
+        var date = new Date(parseInt(cellval));
+
+        var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+
+        var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+
+        return date.getFullYear() + "-" + month + "-" + currentDate;
+
+    }
     function showChat(name) {
         Group = false;
         toName = name;
@@ -509,7 +520,7 @@
                             at += "<div style='color:lightskyblue;display: inline'>@" + atwhosArray[j] + "</div>";
                         }
                     }
-                    var str = "<div class=\"bubble-right\"><span>" + at + HistoryChat[i].message + "</span></div></br></br></br>";
+                    var str = "<div class=\"bubble-right\"><span>"+new Date(HistoryChat[i].Time).toLocaleString() + at + HistoryChat[i].message + "</span></div></br></br></br>";
                     $("#content").append(str);
                     //滚动条定位
                     $('#content').scrollTop( $('#content')[0].scrollHeight );
@@ -520,7 +531,7 @@
                             at += "<div style='color:lightskyblue;display: inline'>@" + atwhosArray[j] + "</div>";
                         }
                     }
-                    var str = "<div class=\"bubble-left\"><span>" +HistoryChat[i].sender+":"+ at + HistoryChat[i].message + "</span></div></br></br></br>";
+                    var str = "<div class=\"bubble-left\"><span>"+new Date(HistoryChat[i].Time).toLocaleString() +HistoryChat[i].sender+":"+ at + HistoryChat[i].message + "</span></div></br></br></br>";
 
                     $("#content").append(str);
                     //滚动条定位
@@ -663,11 +674,14 @@
                 if (res.group == true) {
                     //处理小组消息内容
                     console.log(res.keyGroup + "at" + res.atwhos);
+                    //时间处理——res.date变为标准时间
+                    var Time = new Date(res.date);
+                    //at处理
                     var at = "";
                     for (var i = 0; i < res.atwhos.length; i++) {
                         at += "<div style='color:lightskyblue;display: inline'>@" + res.atwhos[i] + "</div>";
                     }
-                    var str = "<div class=\"bubble-left\"><span>" + res.sender + "说:" + at + res.message + "</span></div></br></br></br>";
+                    var str = "<div class=\"bubble-left\"><span>" +Time.toLocaleString()+res.sender + "说:" + at + res.message + "</span></div></br></br></br>";
                     //如果消息就刚好是给我们组发消息的人
                     if (UserGroup == res.keyGroup) {
                         //处理at广播
@@ -787,15 +801,17 @@
                     "group": true,
                     "atwhos": atwhos,
                     "at": atwhos.length != 0,
-                    "sender": username
+                    "sender": username,
+                    "date":new Date()
                 };
+                var Time = new Date();
                 //将数据展示在聊天区
                 console.log(json);
                 var at = "";
                 for (var i = 0; i < atwhos.length; i++) {
                     at += "<div style='color:lightskyblue;display: inline'>@" + atwhos[i] + "</div>";
                 }
-                var str = "<div class=\"bubble-right\"><span>" + at + data + "</span></div></br></br></br>";
+                var str = "<div class=\"bubble-right\"><span>"+Time.toLocaleString() + at + data + "</span></div></br></br></br>";
                 $("#content").append(str);
                 //滚动条定位
                 $('#content').scrollTop( $('#content')[0].scrollHeight );
