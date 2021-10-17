@@ -358,7 +358,7 @@
         <div class="alert status-secondary">输入框的上方框框专为at设计 请在此完成at的所有功能.</div>
         <div class="alert status-info">聊天表情可以增加,at提示会出现这儿</div>
         <div class="alert status-success">点击我们，我们会消失.</div>
-        <div class="alert status-error">数据库未归档，注意归档.</div>
+        <div class="alert status-error">测试版，若有差错请见谅.</div>
     </section>
 </main>
 <%--以上--%>
