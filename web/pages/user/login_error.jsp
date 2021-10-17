@@ -12,7 +12,7 @@
 </head>
 <body>
 <p style="text-indent: 2em; margin-top: 30px;">
-    您输入的密码或用户名有误，系统将在 <span id="time">5</span> 秒钟后自动跳转至登录页面，如果未能跳转，<a href="http://47.94.108.20:8080/BuptCreationEE/pages/user/login.html" title="点击访问">请点击</a>。</p>
+    您输入的密码或用户名有误，系统将在 <span id="time">5</span> 秒钟后自动跳转至登录页面，如果未能跳转，<a href="http://buptcw.cn/pages/user/login.html" title="点击访问">请点击</a>。</p>
 <script type="text/javascript">
     delayURL();
     function delayURL() {
@@ -23,7 +23,7 @@
             document.getElementById("time").innerHTML = delay;
         } else {
             clearTimeout(t);
-            window.location.href = "http://47.94.108.20:8080/BuptCreationEE/pages/user/login.html";
+            window.location.href = "http://buptcw.cn/pages/user/login.html";
         }
     }
 </script>

@@ -1,6 +1,8 @@
 package web;
 
 
+import dao.GroupDao;
+import dao.impl.GroupDaoImpl;
 import dao.impl.NewsDaoImpl;
 import pojo.User;
 import service.GroupService;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 类<code>LoginServlet</code>用于:用户登录的servlet
@@ -37,7 +40,7 @@ public class LoginServlet extends HttpServlet {
         // 如果等于null,说明登录 失败!
         if (loginUser == null) {
             //   跳到登录错误页面
-            resp.sendRedirect("http://47.94.108.20:8080/BuptCreationEE/pages/user/login_error.jsp");
+            resp.sendRedirect("http://buptcw.cn/pages/user/login_error.jsp");
         } else {
             // 登录 成功
             System.out.println("用户登陆成功");
@@ -52,10 +55,13 @@ public class LoginServlet extends HttpServlet {
                     System.out.println(studentId);
                     String KeyGroup = userService.queryGroupIdAndTeacherName(studentId);
                     String groupid = userService.queryGroupId(studentId);
+                    GroupDao groupDao = new GroupDaoImpl();
+                    List<String> groupmembers = groupDao.queryAuthorByGroupId(groupid);
                     //把groupid存到session中
                     req.getSession().setAttribute("Groupid", groupid);
                     //user->group 并且把groupid+teacherusername
                     req.getSession().setAttribute("KeyGroup", KeyGroup);
+                    req.getSession().setAttribute("Groupmembers",groupmembers);
                     //判断消息是否为空,为空则初始化消息
                     //if (new NewsDaoImpl().getNews(loginUser.getUsername()).size() == 0)
                         //new NewsDaoImpl().initNews(String.valueOf(studentId));

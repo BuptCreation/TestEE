@@ -53,7 +53,7 @@ public class RegistServlet extends HttpServlet {
                 userService.registUser(new User(null, username,nickname, password, email, identity));
                 System.out.println("注册成功！");
 //        跳到登录页面 login.html
-                req.getRequestDispatcher("/pages/user/login.html").forward(req, resp);
+                resp.sendRedirect("http://buptcw.cn/pages/user/login.html");
             }
 //        }
 //        else {

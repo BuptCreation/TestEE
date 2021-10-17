@@ -557,9 +557,9 @@
         }
     });
     var HistoryChat=[];
-    // var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE"+"/chat")
-   var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat")
-    //var ws = new WebSocket("ws://" + "buptcw.cn "+ "/chat");
+    // var ws = new WebSocket("ws://"+"localhost:8080/backgrounduptCreationEE"+"/chat")
+   // var ws = new WebSocket("ws://"+"localhost:8080/BuptCreationEE_war_exploded"+"/chat")
+    var ws = new WebSocket("ws://buptcw.cn/chat");
     $(function () {
         $(".button-add").click(function(){
             console.log("button-add已经被点击")
