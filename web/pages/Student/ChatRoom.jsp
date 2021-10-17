@@ -194,6 +194,7 @@
         background-color: white;
         width: 100%;
         height: 400px;
+        font-size: 18px;
         /*display: none;*/
         visibility: hidden;
         overflow-y: scroll;
@@ -324,6 +325,13 @@
         box-shadow: 0 0 25px -5px lightgray;
         border-radius: 5px 5px 0 5px;
     }
+    .time{
+        margin: 20px;
+        text-align: center;
+        font-size: 10px;
+        color: #91b7de;
+    }
+
 </style>
 <body>
 <%@include file="headleader.jsp" %>
@@ -367,7 +375,6 @@
     <div id="left">
         <%--    聊天展示区    --%>
         <div id="content">
-
         </div>
         <%--输入区--%>
         <div id="input">
@@ -461,6 +468,7 @@
     //心跳连接以及状态判定
     var websocket_connected_count = 0;
     var onclose_connected_count = 0;
+    var NowTime;
     //点击好友名称展示相关消息
     window.onbeforeunload = function (event) {
         var count = {count: Count, id: Number(<%=loginUser.getStudentno()%>)};
@@ -475,6 +483,15 @@
         //count归零
         Count = 0;
     };
+
+    function setTime(Time) {
+        Time=Time.slice(0,Time.length-3);
+        if (Time!=NowTime){
+         NowTime=Time;
+         var str="<div class='time'>"+NowTime+"</div>";
+         $("#content").append(str);
+        }
+    }
 
     function ChangeDateFormat(cellval) {
 
@@ -520,7 +537,8 @@
                             at += "<div style='color:lightskyblue;display: inline'>@" + atwhosArray[j] + "</div>";
                         }
                     }
-                    var str = "<div class=\"bubble-right\"><span>"+new Date(HistoryChat[i].Time).toLocaleString() + at + HistoryChat[i].message + "</span></div></br></br></br>";
+                    setTime(new Date(HistoryChat[i].Time).toLocaleString() );
+                    var str = "<div class=\"bubble-right\"><span>"+ at + HistoryChat[i].message + "</span></div></br></br></br>";
                     $("#content").append(str);
                     //滚动条定位
                     $('#content').scrollTop( $('#content')[0].scrollHeight );
@@ -531,7 +549,8 @@
                             at += "<div style='color:lightskyblue;display: inline'>@" + atwhosArray[j] + "</div>";
                         }
                     }
-                    var str = "<div class=\"bubble-left\"><span>"+new Date(HistoryChat[i].Time).toLocaleString() +HistoryChat[i].sender+":"+ at + HistoryChat[i].message + "</span></div></br></br></br>";
+                    setTime(new Date(HistoryChat[i].Time).toLocaleString() );
+                    var str = "<div class=\"bubble-left\"><span>"+HistoryChat[i].sender+":"+ at + HistoryChat[i].message + "</span></div></br></br></br>";
 
                     $("#content").append(str);
                     //滚动条定位
@@ -681,7 +700,8 @@
                     for (var i = 0; i < res.atwhos.length; i++) {
                         at += "<div style='color:lightskyblue;display: inline'>@" + res.atwhos[i] + "</div>";
                     }
-                    var str = "<div class=\"bubble-left\"><span>" +Time.toLocaleString()+res.sender + "说:" + at + res.message + "</span></div></br></br></br>";
+                    setTime(Time.toLocaleString());
+                    var str = "<div class=\"bubble-left\"><span>"+res.sender + "说:" + at + res.message + "</span></div></br></br></br>";
                     //如果消息就刚好是给我们组发消息的人
                     if (UserGroup == res.keyGroup) {
                         //处理at广播
@@ -811,7 +831,8 @@
                 for (var i = 0; i < atwhos.length; i++) {
                     at += "<div style='color:lightskyblue;display: inline'>@" + atwhos[i] + "</div>";
                 }
-                var str = "<div class=\"bubble-right\"><span>"+Time.toLocaleString() + at + data + "</span></div></br></br></br>";
+                setTime(Time.toLocaleString());
+                var str = "<div class=\"bubble-right\"><span>"+ at + data + "</span></div></br></br></br>";
                 $("#content").append(str);
                 //滚动条定位
                 $('#content').scrollTop( $('#content')[0].scrollHeight );

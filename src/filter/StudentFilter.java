@@ -24,7 +24,7 @@ public class StudentFilter implements Filter {
             //不放行
             System.out.println("拦截器启动 请先登陆");
             HttpServletResponse res = (HttpServletResponse)servletResponse;
-            res.sendRedirect("/pages/user/login.html");
+            res.sendRedirect("http://buptcw.cn/pages/user/login.html");
         }else {
             //让程序继续访问 放行
             filterChain.doFilter(servletRequest,servletResponse);
