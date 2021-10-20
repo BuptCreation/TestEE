@@ -137,7 +137,7 @@
                     "                               "+"<br/><br/><time><span  class=\"label label-info\">信息提示</span></time>"+"您还没有昵称，点击右上角修改信息，起个名字吧(由于时间原因程序员小哥还未实现该功能)"+"<br/>"+
                     "                            </div>\n" +
                     "       </li>";
-                $(".messages").append(str);
+                $(".messages").prepend(str);
             }
 
 
@@ -153,7 +153,7 @@
                         "<button class=\"btn btn-info btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"true"+"\",\""+message.textno+"\")'><span class=\"glyphicon glyphicon-pencil\"></span>评论</button>"+
                         "                            </div>\n" +
                         "       </li>";
-                    $(".messages").append(str);
+                    $(".messages").prepend(str);
                 }else if (message.type=="suggest"){
                     //个人主页，收到提示 我的作品已经被人评论完了
                     var str = " <li>\n" +
@@ -162,7 +162,7 @@
                         "<button class=\"btn btn-success btn-lg\" onclick='goComment(\""+message.title+"\",\""+message.content+"\",\""+"false"+"\",\""+message.textno+"\")'><span class=\"glyphicon glyphicon-search\"></span>查看</button>"+
                         "                            </div>\n" +
                         "       </li>";
-                    $(".messages").append(str);
+                    $(".messages").prepend(str);
                 }else if (message.type=="group"){
                     //个人主页，收到提示 小组消息 上面那种组合方式真的垃圾下面换种好康的
                     var strVar="";
@@ -173,7 +173,7 @@
                     strVar += "<time><span class=\"glyphicon glyphicon-plus\">附加消息:"+message.extraInfo;
                     strVar += "      <\/div>";
                     strVar += "<\/li>";
-                    $(".messages").append(strVar);
+                    $(".messages").prepend(strVar);
                 }else if (message.type=="chatroom") {
                     //个人主页，收到提示 小组消息 上面那种组合方式真的垃圾下面换种好康的
                     var strVar = "";
@@ -184,7 +184,7 @@
                     strVar += "<time><span class=\"glyphicon glyphicon-plus\">附加消息:" + message.extraInfo;
                     strVar += "      <\/div>";
                     strVar += "<\/li>";
-                    $(".messages").append(strVar);
+                    $(".messages").prepend(strVar);
                 }
             })
         }).then( function () {

@@ -56,8 +56,8 @@
 <div id="tmpl">
     <div class="card">
         <div class="header" style="white-space: pre-wrap">
-            <h1>{{title}}</h1>
-            {{context}}
+            <h1 style="text-align: center">{{title}}</h1>
+            <div class="content">{{context}} </div>
         </div>
 
         <div class="container-card">
@@ -114,7 +114,7 @@
                 <div></div>
                 <span id="btn0"></span>
             </div>
-            <span class="bars_10">10</span>
+            <span class="bars_10">5</span>
         </div>
     </div>
 
@@ -127,7 +127,7 @@
                 <div></div>
                 <span id="btn1"></span>
             </div>
-            <span class="bars_10">10</span>
+            <span class="bars_10">5</span>
         </div>
     </div>
 
@@ -140,7 +140,7 @@
                 <div></div>
                 <span id="btn2"></span>
             </div>
-            <span class="bars_10">10</span>
+            <span class="bars_10">5</span>
         </div>
     </div>
 
@@ -153,7 +153,7 @@
                 <div></div>
                 <span id="btn3"></span>
             </div>
-            <span class="bars_10">10</span>
+            <span class="bars_10">5</span>
         </div>
     </div>
 
@@ -166,7 +166,7 @@
                 <div></div>
                 <span id="btn4"></span>
             </div>
-            <span class="bars_10">10</span>
+            <span class="bars_10">5</span>
         </div>
     </div>
 </div>
@@ -197,25 +197,23 @@
         methods:{
             //评论发布
             postComments() {
-                if (this.user!=''&&this.content!='') {
-                   var vocabulary = document.getElementById("title2").innerText;
-                    var fluent = document.getElementById("title1").innerText;
-                    var variety = document.getElementById("title3").innerText;
-                    var complete = document.getElementById("title0").innerText;
-                    var specification = document.getElementById("title4").innerText;
+                var vocabulary = document.getElementById("title2").innerText;
+                var fluent = document.getElementById("title1").innerText;
+                var variety = document.getElementById("title3").innerText;
+                var complete = document.getElementById("title0").innerText;
+                var specification = document.getElementById("title4").innerText;
+                if (this.user==''||this.content=='') {
+                    alert("请先填写评论内容再提交");
+                }else if(vocabulary==0||fluent==0||variety==0||complete==0||specification==0){
+                    alert("请先打分再提交");
+                }else{
                     var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,textno:this.textno,context:this.context,
                         vocabulary:parseFloat(vocabulary),fluent: parseFloat(fluent),variety:parseFloat(variety),complete:parseFloat(complete),specification:parseFloat(specification)}
                         this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){
                         console.log(data);
                         this.loadComments();
                     })
-                    //
-                    // var list = JSON.parse(localStorage.getItem('cmts') || '[]')
-                    // list.unshift(comment)
-                    // localStorage.setItem('cmts', JSON.stringify(list))
-                    // this.user = this.content = ''
-                    // this.$emit('func')
-                    // this.list=list
+                    this.content="";
                 }
             },
             loadComments(){
@@ -224,7 +222,7 @@
                 //loadcomment 要做判断 数据库中评论的title 要等于 这个title
                 this.$http.get("showcommentservlet")
                     .then(function (data) {
-                        this.list = data.body.slice(0,10);
+                        this.list = data.body.reverse();
                         console.log(this.list);
                     })
             }
@@ -278,8 +276,9 @@
             };
         },
         ondrag: function (pos, x) {
+            console.log("pos"+pos+","+"x"+x);
             this.step.style.width = Math.max(0, x) + 'px';
-            this.title.innerHTML = pos / 10 + '';
+            this.title.innerHTML = Math.floor(pos /10)*0.5 + '';
         }
     }
     new scale('btn0', 'bar0', 'title0');
@@ -322,6 +321,7 @@
         /*margin:0 10%;*/
         width: 40%;
         height: 100%;
+        max-height: 800px;
         overflow-y:scroll;
         padding: 10px 0 40px 60px
 
@@ -427,11 +427,13 @@
         /*overflow-y: scroll;*/
         opacity: 0.5;
         background:#91b7de;
-        color: white;
+        color: black;
         padding: 10px;
         font-size: 20px;
     }
-
+    div.content{
+        padding:10px;
+    }
     div.container-card {
         font-style: italic;
         padding: 10px;
