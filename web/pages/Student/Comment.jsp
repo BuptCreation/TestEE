@@ -207,7 +207,7 @@
                 }else if(vocabulary==0||fluent==0||variety==0||complete==0||specification==0){
                     alert("请先打分再提交");
                 }else{
-                    var comment = {id: Date.now(), user: this.user, content: this.content,title:this.title,textno:this.textno,context:this.context,
+                    var comment = {id: <%=loginUser.getId()%>, user: this.user, content: this.content,title:this.title,textno:this.textno,context:this.context,
                         vocabulary:parseFloat(vocabulary),fluent: parseFloat(fluent),variety:parseFloat(variety),complete:parseFloat(complete),specification:parseFloat(specification)}
                         this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){
                         console.log(data);

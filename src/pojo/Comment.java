@@ -10,7 +10,7 @@ package pojo;
 public class Comment {
 
     private String user; //发表的用户
-    private int id; //发表时间的时间戳
+    private int id; //用户的id，用于准确定位
     private String content; //内容
     private String textno; //文章号
     private String context; //不知道啥用
