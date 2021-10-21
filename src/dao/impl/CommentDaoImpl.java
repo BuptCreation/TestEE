@@ -71,7 +71,7 @@ public class CommentDaoImpl implements CommentDao {
         for (Document user : iterable) {
             String jsonString = user.toJson();
             Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
-            allpoints += Integer.parseInt(jsonStrToMap.get("vocabulary").toString());
+            allpoints += Double.parseDouble(jsonStrToMap.get("vocabulary").toString());
         }
         return allpoints;
     }
@@ -87,7 +87,7 @@ public class CommentDaoImpl implements CommentDao {
         for (Document user : iterable) {
             String jsonString = user.toJson();
             Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
-            allpoints += Integer.parseInt(jsonStrToMap.get("fluent").toString());
+            allpoints += Double.parseDouble(jsonStrToMap.get("fluent").toString());
         }
         return allpoints;
     }
@@ -103,7 +103,7 @@ public class CommentDaoImpl implements CommentDao {
         for (Document user : iterable) {
             String jsonString = user.toJson();
             Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
-            allpoints += Integer.parseInt(jsonStrToMap.get("variety").toString());
+            allpoints += Double.parseDouble(jsonStrToMap.get("variety").toString());
         }
         return allpoints;
     }
@@ -119,7 +119,7 @@ public class CommentDaoImpl implements CommentDao {
         for (Document user : iterable) {
             String jsonString = user.toJson();
             Map<String, Object> jsonStrToMap = JsonStrToMap.jsonStrToMap(jsonString);
-            allpoints += Integer.parseInt(jsonStrToMap.get("complete").toString());
+            allpoints += Double.parseDouble(jsonStrToMap.get("complete").toString());
         }
         return allpoints;
     }

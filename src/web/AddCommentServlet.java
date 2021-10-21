@@ -98,6 +98,7 @@ public class AddCommentServlet extends HttpServlet {
 
             //插入消息部分
             GroupDao groupDao = new GroupDaoImpl();
+            System.out.println("textno"+textno);
             String groupno = articleDao.queryGroupidByTextno(textno);
             List<String> authors = groupDao.queryAuthorByGroupId(groupno);
             for (int i = 0; i < authors.size(); i++) {
