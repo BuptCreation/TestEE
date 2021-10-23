@@ -164,6 +164,7 @@
             <h3 v-html="State(blog.has1writed,blog.has2writed,blog.has3writed)"></h3>
             <br/>
             <h2 v-html="highlight(blog.title)"></h2>
+            <h4>小组{{blog.groupno}}:</h4>
             <br/>
             <article>{{blog.content|snippet}}</article>
             <div class="detail"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;{{blog.averagevocabularypoint}}</div>

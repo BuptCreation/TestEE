@@ -135,6 +135,7 @@
         <div class="blog">
             <h2 v-html="highlight(blog.title)"></h2>
             <br/>
+            <h4>小组{{blog.groupno}}:</h4>
             <article>{{blog.content|snippet}}</article>
             <div class="detail"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;{{blog.averagevocabularypoint}}</div>
             <div class="detail"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;{{blog.averagefluentpoint}}</div>
