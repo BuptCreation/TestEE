@@ -4,8 +4,86 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body >
+<style>
+    div
+    {
+        animation:myfirst 1s linear 2s infinite alternate;
+        /* Firefox: */
+        -moz-animation:myfirst 1s linear 2s infinite alternate;
+        /* Safari and Chrome: */
+        -webkit-animation:myfirst 1s linear 2s infinite alternate;
+        /* Opera: */
+        -o-animation:myfirst 1s linear 2s infinite alternate;
+    }
 
+    @keyframes myfirst
+    {
+        0%   {background:red; left:0px; top:0px;}
+        25%  {background:yellow; left:200px; top:0px;}
+        50%  {background:blue; left:200px; top:200px;}
+        75%  {background:green; left:0px; top:200px;}
+        100% {background:red; left:0px; top:0px;}
+    }
+
+    @-moz-keyframes myfirst /* Firefox */
+    {
+        0%   {background:red; left:0px; top:0px;}
+        25%  {background:yellow; left:200px; top:0px;}
+        50%  {background:blue; left:200px; top:200px;}
+        75%  {background:green; left:0px; top:200px;}
+        100% {background:red; left:0px; top:0px;}
+    }
+
+    @-webkit-keyframes myfirst /* Safari and Chrome */
+    {
+        0%   {background:red; left:0px; top:0px;}
+        25%  {background:yellow; left:200px; top:0px;}
+        50%  {background:blue; left:200px; top:200px;}
+        75%  {background:green; left:0px; top:200px;}
+        100% {background:red; left:0px; top:0px;}
+    }
+
+    @-o-keyframes myfirst /* Opera */
+    {
+        0%   {background:red; left:0px; top:0px;}
+        25%  {background:yellow; left:200px; top:0px;}
+        50%  {background:blue; left:200px; top:200px;}
+        75%  {background:green; left:0px; top:200px;}
+        100% {background:red; left:0px; top:0px;}
+    }
+</style>
+<body >
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/velocity.js"></script>
+<script type="text/javascript" src="js/velocity.ui.js"></script>
+<script type="text/javascript" src="js/Quttons.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var quttonUpload = Qutton.getInstance($('#qutton_upload'));
+        quttonUpload.init({
+            icon: 'images/icon_upload.png',
+            backgroundColor: '#917466'
+        });
+
+        var quttonDelete = Qutton.getInstance($('#qutton_delete'));
+        quttonDelete.init({
+            icon: 'images/icon_delete.png',
+            backgroundColor: "#eb1220"
+        });
+
+        var quttonComment = Qutton.getInstance($('#qutton_comment'));
+        quttonComment.init({
+            icon: 'images/icon_comment.png',
+            backgroundColor: "#41aaf1"
+        });
+    });
+</script>
+<div style="width:500px;height:1000px;overflow:hidden;border:0px">
+    <div style="width:500px;height:1000px;margin:-200px 0px 0px -10px;">
+        <iFrame src="http://localhost:8080/BuptCreationEE_war_exploded/pages/Student/ChatRoom.jsp" width="800" height="1000" scrolling="no">
+        </iFrame>
+    </div>
+</div>
 <!--<div class="arrow">-->
 <!--    hello-->
 <!--</div>-->
