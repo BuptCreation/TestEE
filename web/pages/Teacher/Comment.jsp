@@ -243,10 +243,12 @@
                 this.$http.get("showcontentbytextnoservlet").then(function(data){
                     this.date=data.data.date;
                     this.context=data.data.content;
+                    this.$http.post("showcommentservlet",JSON.stringify(thisblog)).then(function () {
+                        this.loadComments();
+                    });
                 });
             })
-            this.$http.post("showcommentservlet",JSON.stringify(thisblog));
-            this.loadComments();
+
         }
     })
 </script>
