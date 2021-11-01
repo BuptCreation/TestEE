@@ -121,7 +121,7 @@
 <br/>
 <br/>
 <br/>
-<div id="show_blogs" style="overflow-y: scroll">
+<div id="show_blogs" style="overflow-y: scroll;height: 100%">
     <%-- 搜索栏     --%>
     <div class="search bar1">
         <form>
@@ -131,7 +131,7 @@
     </div>
 
     <%-- 具体博客           --%>
-    <blog class="single-blog" v-for="blog in filterblogs">
+    <blog class="single-blog"  v-for="blog in filterblogs">
         <div class="blog">
             <h2 v-html="highlight(blog.title)"></h2>
             <br/>
@@ -202,5 +202,7 @@
         return value.slice(1,value.length-1);
     })
 </script>
+<%--尾部--%>
+<%@include file="../Public/footer.jsp"%>
 </body>
 </html>

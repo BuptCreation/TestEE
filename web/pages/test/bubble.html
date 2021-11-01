@@ -5,52 +5,23 @@
     <title>Title</title>
 </head>
 <style>
-    div
-    {
-        animation:myfirst 1s linear 2s infinite alternate;
-        /* Firefox: */
-        -moz-animation:myfirst 1s linear 2s infinite alternate;
-        /* Safari and Chrome: */
-        -webkit-animation:myfirst 1s linear 2s infinite alternate;
-        /* Opera: */
-        -o-animation:myfirst 1s linear 2s infinite alternate;
+    #popup{
+        top: 20%;
+        position:fixed; /*绝对定位*/
+        left:30%; /*距左部*/
+        transform: translate(-50%,-50%); /*2D转换*/
+        visibility: hidden; /*隐藏元素*/
+        opacity: 0; /*不透明度*/
+        transition: 0.5s; /*过渡时间*/
+    }
+    #popup.active{
+        height: 600px;
+        width: 500px;
+        visibility: visible; /*显示元素*/
+        opacity: 1; /*不透明度*/
+        transition: 0.5s; /*过渡时间*/
     }
 
-    @keyframes myfirst
-    {
-        0%   {background:red; left:0px; top:0px;}
-        25%  {background:yellow; left:200px; top:0px;}
-        50%  {background:blue; left:200px; top:200px;}
-        75%  {background:green; left:0px; top:200px;}
-        100% {background:red; left:0px; top:0px;}
-    }
-
-    @-moz-keyframes myfirst /* Firefox */
-    {
-        0%   {background:red; left:0px; top:0px;}
-        25%  {background:yellow; left:200px; top:0px;}
-        50%  {background:blue; left:200px; top:200px;}
-        75%  {background:green; left:0px; top:200px;}
-        100% {background:red; left:0px; top:0px;}
-    }
-
-    @-webkit-keyframes myfirst /* Safari and Chrome */
-    {
-        0%   {background:red; left:0px; top:0px;}
-        25%  {background:yellow; left:200px; top:0px;}
-        50%  {background:blue; left:200px; top:200px;}
-        75%  {background:green; left:0px; top:200px;}
-        100% {background:red; left:0px; top:0px;}
-    }
-
-    @-o-keyframes myfirst /* Opera */
-    {
-        0%   {background:red; left:0px; top:0px;}
-        25%  {background:yellow; left:200px; top:0px;}
-        50%  {background:blue; left:200px; top:200px;}
-        75%  {background:green; left:0px; top:200px;}
-        100% {background:red; left:0px; top:0px;}
-    }
 </style>
 <body >
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
@@ -58,155 +29,14 @@
 <script type="text/javascript" src="js/velocity.ui.js"></script>
 <script type="text/javascript" src="js/Quttons.js"></script>
 <script type="text/javascript">
-    $(function() {
-        var quttonUpload = Qutton.getInstance($('#qutton_upload'));
-        quttonUpload.init({
-            icon: 'images/icon_upload.png',
-            backgroundColor: '#917466'
-        });
-
-        var quttonDelete = Qutton.getInstance($('#qutton_delete'));
-        quttonDelete.init({
-            icon: 'images/icon_delete.png',
-            backgroundColor: "#eb1220"
-        });
-
-        var quttonComment = Qutton.getInstance($('#qutton_comment'));
-        quttonComment.init({
-            icon: 'images/icon_comment.png',
-            backgroundColor: "#41aaf1"
-        });
-    });
+    function toggle () {
+        var popup=document.getElementById("popup"); // 同上
+        popup.classList.toggle("active"); // 同上
+    }
 </script>
-<div style="width:500px;height:1000px;overflow:hidden;border:0px">
-    <div style="width:500px;height:1000px;margin:-200px 0px 0px -10px;">
-        <iFrame src="http://localhost:8080/BuptCreationEE_war_exploded/pages/Student/ChatRoom.jsp" width="800" height="1000" scrolling="no">
-        </iFrame>
-    </div>
-</div>
-<!--<div class="arrow">-->
-<!--    hello-->
-<!--</div>-->
-<!--<style type="text/css">-->
-<!--    .arrow {-->
-<!--        width:0;-->
-<!--        height:0;-->
-<!--        font-size:0;-->
-<!--        border:solid 10px #000;-->
-<!--    }</style>-->
-
-<!--<div class="arrow"></div>-->
-<!--<style type="text/css">-->
-<!--    .arrow {-->
-<!--        width:0;-->
-<!--        height:0;-->
-<!--        font-size:0;-->
-<!--        border:solid 10px;-->
-<!--        border-color:#f00 #0f0 #00f #000;-->
-<!--    }-->
-<!--</style>-->
+<button onclick="toggle()">展开</button>
 
 
-<!--<div class="send">-->
-<!--    <div>你好啊</div>-->
-<!--    <div class="arrow"></div>-->
-<!--</div>-->
-<!--<style type="text/css">-->
-<!--    body {-->
-<!--        background:#4D4948;-->
-<!--    }-->
-
-<!--    .send {-->
-<!--        position:relative;-->
-<!--        width:150px;-->
-<!--        height:35px;-->
-<!--        background:#F8C301;-->
-<!--        border-radius:5px; /* 圆角 */-->
-<!--        margin:30px auto 0;-->
-<!--    }-->
-
-<!--    .send .arrow {-->
-<!--        position:absolute;-->
-<!--        top:5px;-->
-<!--        right:-16px; /* 圆角的位置需要细心调试哦 */-->
-<!--        width:0;-->
-<!--        height:0;-->
-<!--        font-size:0;-->
-<!--        border:solid 8px;-->
-<!--        border-color:#4D4948 #4D4948 #4D4948 #F8C301;-->
-<!--    }-->
-<!--</style>-->
-<style>
-    .pp1 span{
-         background-color: #999999;
-         padding: 5px 8px;
-         display: inline-block;
-         border-radius: 4px;
-         margin:10px 0 10px 10px;
-         position: relative;
-
-     }
-    .pp1 span::after{
-        content: '';
-        border: 8px solid #ffffff00;
-        border-right: 8px solid #999999;
-        position: absolute;
-        top: 6px;
-        left: -16px;
-    }
-    .pp2 span{
-        background-color: #c6feeb;
-    padding: 5px 8px;
-    display: inline-block;
-    border-radius: 4px;
-    margin:10px 0 10px 10px;
-    position: relative;
-
-    }
-    .pp2 span::after{
-        content: '';
-        border: 8px solid #ffffff00;
-        border-left: 8px solid #c6feeb;
-        position: absolute;
-        top: 6px;
-        right: -16px;
-    }
-</style>
-<div class="pp1"><span>文本很长你装一下文本很长你装一下文本很长你装一下文本很长你装一下</span></div>
-<div class="pp2"><span>文本很长你装一下文本很长你装一下文本很长你装一下文本很长你装一下</span></div>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>超出部分隐藏滚动条</title>
-</head>
-<style type="text/css">
-    #box {
-        width: 500px;
-        height: 300px;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        line-height: 30px;
-        text-align: center;
-    }
-    #box::-webkit-scrollbar {
-        display: none;
-    }
-</style>
-<body>
-<!-- 兼容所有浏览器的超出部分滚动不显示滚动条 -->
-<div id="box">
-    你好 </br>你好 </br>
-    你好 </br>你好 </br>
-    你好 </br>你好 </br>
-    你好 </br>你好 </br>
-    你好 </br>你好 </br>
-    你好 </br>你好 </br>
-    你好 </br>你好 </br>
-</div>
 </body>
 </html>
 
-</body>
-</html>

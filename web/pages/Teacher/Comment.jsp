@@ -466,7 +466,8 @@
 <%--背景--%>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script  src="static/script/teacher-background-script.js"></script>
-
+<%--尾部--%>
+<%@include file="../Public/footer.jsp"%>
 </body>
 </html>
 

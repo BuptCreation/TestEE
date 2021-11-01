@@ -52,5 +52,8 @@
             </div>
         </div>
     </main>
+
+<%--尾部--%>
+    <%@include file="../Public/footer.jsp"%>
 </body>
 </html>

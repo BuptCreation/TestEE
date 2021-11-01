@@ -183,7 +183,8 @@
         box-sizing: border-box;
     }
 </style>
-
+<%--尾部--%>
+<%@include file="../Public/footer.jsp"%>
 </body>
 </html>
 

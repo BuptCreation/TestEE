@@ -18,31 +18,23 @@
 </head>
 <body>
 <!-- 导航栏区域   -->
-<%    User StudentUser=(User)request.getSession().getAttribute("User");%> 
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"> 
+<%    User StudentUser=(User)request.getSession().getAttribute("User");%>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a href="pages/user/login.html" disabled="disabled" class="navbar-brand">智慧英语协同写作教师端</a> 
+            <a href="pages/Student/My.jsp" class="navbar-brand">智慧英语协同写作学生端</a >
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="pages/Teacher/My.jsp">我的&nbsp;</a></li>
-                <li><a href="http://47.94.108.20:8082/teacherpage?name=<%=StudentUser.getUsername()%>">任务发布</a>
-                </li>
-                <li>
-                    <a href="pages/Teacher/DataController.jsp">学情监控</a>
-                </li>
-                <li>
-                <a href="pages/Teacher/Group.jsp">小组管理</a>
-                </li>
-                <li>
-                    <a href="pages/Teacher/Findblog.jsp">文章浏览</a>
-                </li>
+                <li><a href="pages/Teacher/My.jsp">我的</a></li>
+                <li><a href="pages/Teacher/PWriter.jsp">任务发布</a></li>
+                <li><a href="pages/Teacher/DataController.jsp">学情监控</a></li>
+                <li><a href="pages/Teacher/Group.jsp">小组管理</a></li>
+                <li><a href="pages/Teacher/Findblog.jsp">文章浏览</a></li>
             </ul>
         </div>
     </div>
 </nav>
-
 <br/>
 <br/>
 <br/>

@@ -258,6 +258,8 @@
 </script>
     <!-- 提示表单样式js-->
 <%--手动美化包 --%>
+<%--尾部--%>
+<%@include file="../Public/footer.jsp"%>
 </body>
 
 </html>

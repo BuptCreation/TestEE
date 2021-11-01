@@ -26,35 +26,7 @@
     <script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script>
 </head>
 <body>
-<%
-    User StudentUser=(User)request.getSession().getAttribute("User");
-%>
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <a href="pages/Student/My.jsp" disabled="disabled" class="navbar-brand">智慧英语协同写作教师端</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="pages/user/login.html">我的</a>
-                </li>
-                <li>
-                    <a href="http://47.94.108.20:8082/teacherpage?name=<%=StudentUser.getUsername()%>">任务发布</a>
-                </li>
-                <li class="active">
-                    <a href="pages/Teacher/DataController.jsp">学情监控</a>
-                </li>
-                <li>
-                    <a href="pages/Teacher/Group.jsp">小组管理</a>
-                </li>
-                <li>
-                    <a href="pages/Teacher/Findblog.jsp">文章浏览</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<%@include file="headleader.jsp"%>
 
 <div id="wrapper" style="top:6%">
     <div class="overlay" style="top:6%"></div>
@@ -267,5 +239,7 @@
         });
     });
 </script>
+<%--尾部--%>
+<%@include file="../Public/footer.jsp"%>
 </body>
 </html>

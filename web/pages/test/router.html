@@ -1,76 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
-<!--    导入包安装相应组建-->
-    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
-    <script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="css/style.css" rel="stylesheet" /> <!--引入css-->
+    <title>2019_12_23</title>
     <style>
-        .router-link-active,.myactive{
-            color:red;
-            font-size:80px;
-            text-decoration: underline;
-            background-color: #666666;
+        *{
+            margin: 0; /*外边距*/
+            padding: 0; /*内边距*/
+            box-sizing: border-box; /*设置border为宽高内部*/
+            font-family: Arial, Helvetica, sans-serif; /*字体*/
         }
-        .v-enter,
-        .v-leave-to{
-            opacity: 0;
-            transform: translateX(140px);
+        .container{
+            position: relative; /*元素定位为相对定位*/
+            width: 100%; /*宽度*/
+            min-height: 100vh; /*最小高度*/
+            display: flex; /*弹性盒*/
+            justify-content: center; /*弹性盒主轴（X）对其方式*/
+            align-items: center; /*弹性盒交叉轴（Y）对齐方式*/
+            background: rgb(116, 185, 255);/*背景颜色*/
+            transition: 0.5s; /*过度时间（此处为简写）全写：transition-duration*/
+            padding: 20px; /*内边距*/
         }
-        .v-enter-active,
-        .v-leave-active{
-            transition: all 0.5s ease;
+        .container#blur.active{
+            filter: blur(20px); /*滤镜：模糊20px*/
+            pointer-events: none; /*阻止元素的点击事件*/
+            user-select: none; /*用户是否可以选择文本*/
         }
+        .container .content{
+            position: relative; /*生成相对定位*/
+            max-width: 800px; /*最大宽度*/
+        }
+        h2{
+            font-weight: 600; /*字体粗细*/
+            margin-bottom: 10px; /*内下边距*/
+            color: #333; /*字体颜色*/
+        }
+        .container .content img{
+            max-width: 100%; /*最大宽度*/
+            display: block; /*块元素*/
+        }
+        a{
+            position: relative; /*相对定位*/
+            padding: 5px 20px; /*内边距 上下5px 左右20px*/
+            display: inline-block;/*行内块元素*/
+            margin-top: 20px; /*外上边距*/
+            text-decoration: none; /*文本修饰（无下划线）*/
+            color: #fff;/*字体颜色*/
+            background: #111;/*背景颜色*/
+        }
+        #popup{
+            position:fixed; /*绝对定位*/
+            top:40%; /*距上部*/
+            left: 50%; /*距左部*/
+            transform: translate(-50%,-50%); /*2D转换*/
+            width: 600px; /*宽度*/
+            padding: 50px; /*内边距*/
+            box-shadow: 0 5px 30px rgba(0,0,0,0.30); /*元素阴影 X偏移 Y偏移 阴影模糊半径 阴影颜色*/
+            background-color: #fff; /*背景颜色*/
+            visibility: hidden; /*隐藏元素*/
+            opacity: 0; /*不透明度*/
+            transition: 0.5s; /*过渡时间*/
+        }
+        #popup.active{
+            top:60%; /*距上部*/
+            visibility: visible; /*显示元素*/
+            opacity: 1; /*不透明度*/
+            transition: 0.5s; /*过渡时间*/
+        }
+
+
     </style>
 </head>
 <body>
-<div id="app">
-
-    <!--vue的路由基于hash 写a标签的时候如下 要加入#表示前端路由    -->
-<!--    <a href="#login">登陆</a>-->
-<!--    <a href="#register">注册</a>-->
-<!--router-link标签即渲染成a标签 但是不用加# tag能指定渲染成的样式 -->
-    <router-link to="/login">登陆</router-link>
-    <router-link to="/register">注册</router-link>
-    <!-- 路由匹配到的组件将渲染在这里 -->
-    <transition mode="out-in">
-    <router-view></router-view>
-    </transition>
+<div class="container" id="blur"> <!---主窗体-->
+    <div class="content">
+        <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga nihil magnam repellendus nostrum nemo? Tempore dolore libero ea molestiae. Delectus iusto nulla architecto eos minima culpa accusamus voluptatum velit vero!</h2>
+        <img src="img/img.jpg" alt="Error!">
+        <a href="#" onclick="toggle()">Read More</a> <!--主窗体触发事件（显示弹窗）-->
+    </div>
 </div>
-
+<div id="popup"> <!---弹出窗体-->
+    <h2>Lorem ipsum dolor sit amet</h2>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga nihil magnam repellendus nostrum nemo? Tempore dolore libero ea molestiae. Delectus iusto nulla architecto eos minima culpa accusamus voluptatum velit vero!</p>
+    <a href="#" onclick="toggle()">Close</a><!--弹出窗体触发事件（关闭）-->
+</div>
 <script>
-    //vuerouter对象
-    var login={
-        template:'<h1>登陆组件</h1>'
+    function toggle () {
+        var blur=document.getElementById("blur"); // 根据id获取元素
+        blur.classList.toggle("active"); // 切换指定id对应的class
+        var popup=document.getElementById("popup"); // 同上
+        popup.classList.toggle("active"); // 同上
     }
-    // 导入了vue-router包之后，在window全局对象中，就有了路由的构造函数，叫做vueRouter
-
-    var register = {
-        template: '<h1>注册组件</h1>'
-    }
-
-    //在new路由对象时，可以为构造函数传递配置对象
-    var routerObj = new VueRouter({
-      //这个route表示路由匹配规则 routes则表示多个匹配
-        //每个路由规则都是一个对象 这个规则对象身上有两个必须属性
-        // 属性1是path 表示监听哪个对象，
-        //属性2是component 表示如果路由是前面匹配到的path 则展示component属性对应的组件
-        routes:[
-            {path:'/',redirect:'/login'},//这里的重定向和node中的是两码事 是客户端手动修改hash值
-            {path:'/login',component:login}, //注意 放组件模版对象 不能是组件名称 即不用加""
-            {path:'/register',component: register}
-        ],
-        linkActiveClass:'myactive'
-    })
-    //vue实例
-    var vm=new Vue({
-       el:'#app',
-       data:{},
-       methods:{},
-        router: routerObj  //将路由规则注册到vm实际例子上
-    });
-
 </script>
 </body>
 </html>
+

@@ -455,6 +455,14 @@
 </div>
 <br/>
 <br/>
+<%--尾部--%>
+<div style="width:100%;position: absolute;text-align:center;top: 112%;padding: 10px;border-collapse:collapse; background:#333333;color: white" class="footer">
+    版权所有 © 北京邮电大学&nbsp;&nbsp;&nbsp;
+    |&nbsp;&nbsp;&nbsp;地址:北京市区西土城路10号&nbsp;&nbsp;&nbsp;
+    |&nbsp;&nbsp;&nbsp;邮编:100976&nbsp;&nbsp;&nbsp;
+    |&nbsp;&nbsp;&nbsp;京ICP备<a style="color: white" href="https://beian.miit.gov.cn/">14033833</a>号-1&nbsp;&nbsp;&nbsp;
+    |&nbsp;<img style="width: 18px;height: 18px" src="static/img/Police.png">&nbsp;京公网安备110402430070
+</div>
 </body>
 <%--jquery管理区域--%>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
