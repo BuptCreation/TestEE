@@ -123,6 +123,7 @@
             justify-content: center;
         }
         .box{
+            overflow-y: scroll;
             background: #fff;
             padding: 40px;
             border-radius: 8px;
