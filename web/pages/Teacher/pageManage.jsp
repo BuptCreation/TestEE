@@ -124,6 +124,7 @@
         }
         .box{
             overflow-y: scroll;
+            max-height: 800px;
             background: #fff;
             padding: 40px;
             border-radius: 8px;
