@@ -456,7 +456,7 @@
 <br/>
 <br/>
 <%--尾部--%>
-<div style="width:100%;position: absolute;text-align:center;top: 112%;padding: 10px;border-collapse:collapse; background:#333333;color: white" class="footer">
+<div style="width:100%;position: absolute;text-align:center;top:1050px;padding: 10px;border-collapse:collapse; background:#333333;color: white" class="footer">
     版权所有 © 北京邮电大学&nbsp;&nbsp;&nbsp;
     |&nbsp;&nbsp;&nbsp;地址:北京市区西土城路10号&nbsp;&nbsp;&nbsp;
     |&nbsp;&nbsp;&nbsp;邮编:100976&nbsp;&nbsp;&nbsp;
