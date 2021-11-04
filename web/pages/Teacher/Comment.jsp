@@ -420,8 +420,7 @@
         width: 55%;
         /*height: 700px;*/
         max-height: 800px;
-        overflow-x: hidden;
-        /*overflow-y: scroll;*/
+        overflow-y: scroll;
         float: left;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         /*text-align: center;*/
@@ -436,6 +435,7 @@
         font-size: 20px;
     }
     div.content{
+        word-break: break-word;
         padding:10px;
     }
     div.container-card {
@@ -466,8 +466,7 @@
 <%--背景--%>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script  src="static/script/teacher-background-script.js"></script>
-<%--尾部--%>
-<%@include file="../Public/footer.jsp"%>
+
 </body>
 </html>
 

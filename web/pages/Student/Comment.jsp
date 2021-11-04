@@ -15,43 +15,42 @@
     <title>评论区</title>
     <%--    基础地址--%>
     <base href="../../">
-<%--    vue包导入--%>
+    <%--    vue包导入--%>
     <script src="static/vue/vue.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
     <!--    vue-resource 包导入-->
     <script src="https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.3/vue-resource.js"></script>
-<%-- bootstrap导入   --%>
+    <%-- bootstrap导入   --%>
     <link rel="stylesheet" href="static/css/bootstrap.css">
-<%--    温馨提示--%>
+    <%--    温馨提示--%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel="stylesheet" href="static/css/roll-style-teacher.css">
-<%--    背景--%>
+    <%--    背景--%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel="stylesheet" href="static/css/teacher-background-style.css">
-<%--打分部分样式--%>
+    <%--打分部分样式--%>
     <link type="text/css" href="static/css/score-style.css" rel="stylesheet" />
 </head>
 <%--从session中获得user    把名字填入评论人--%>
-<body>
 <%
     User loginUser=(User)request.getSession().getAttribute("User");
 %>
-    <%@include file="headleader.jsp"%>
+<%@include file="headleader.jsp"%>
 <%--背景--%>
 <%--<div id="top-image"></div>--%>
 <%--  温馨提示--%>
-    <div class="reminder">
-        <div class="text">
-            <p>Please be&nbsp
-                <span class="word wisteria">polite.</span>
-                <span class="word belize">patient.</span>
-                <span class="word pomegranate">fancy.</span>
-                <span class="word green">friendly.</span>
-                <span class="word midnight">kind.</span>
-            </p>
-        </div>
+<div class="reminder">
+    <div class="text">
+        <p>Please be&nbsp
+            <span class="word wisteria">polite.</span>
+            <span class="word belize">patient.</span>
+            <span class="word pomegranate">fancy.</span>
+            <span class="word green">friendly.</span>
+            <span class="word midnight">kind.</span>
+        </p>
     </div>
-    <br/><br/><br/><br/><br/><br/>
+</div>
+<br/><br/><br/><br/><br/><br/>
 <%--    --%>
 <%--评论展示区--%>
 <div id="tmpl">
@@ -66,111 +65,111 @@
         </div>
     </div>
 
-<%--评论展示区    --%>
+    <%--评论展示区    --%>
     <div id="comment">
-    <div class="box">
-        <ul id="first-list">
-            <li  v-for="item in list" :key="item.id">
-                <span></span>
-                <div class="title">写作内容:{{item.complete}}分</div>
-                <div class="title">结构与衔接:{{item.fluent}}分</div>
-                <div class="title">语法使用:{{item.variety}}分</div>
-                <div class="title">词汇运用:{{item.vocabulary}}分</div>
-                <div class="title">写作规范:{{item.specification}}分</div>
-                <div class="info"> {{ item.content }}</div>
-                <div class="name">{{ item.user }}</div>
-                <div class="time">
-                    <span>{{item.date.slice(0,10)}}</span>
-                    <span>{{item.date.slice(11,19)}}</span>
-                </div>
-            </li>
-        </ul>
-    </div>
-<%--作品评论区--%>
-    <div class="container-comment" v-show="permission === 'true'">
-        <div class="form-group">
-            <label>评论人：</label>
-            <input type="text" class="form-control" v-model="user">
+        <div class="box">
+            <ul id="first-list">
+                <li  v-for="item in list" :key="item.id">
+                    <span></span>
+                    <div class="title">写作内容:{{item.complete}}分</div>
+                    <div class="title">结构与衔接:{{item.fluent}}分</div>
+                    <div class="title">语法使用:{{item.variety}}分</div>
+                    <div class="title">词汇运用:{{item.vocabulary}}分</div>
+                    <div class="title">写作规范:{{item.specification}}分</div>
+                    <div class="info"> {{ item.content }}</div>
+                    <div class="name">{{ item.user }}</div>
+                    <div class="time">
+                        <span>{{item.date.slice(0,10)}}</span>
+                        <span>{{item.date.slice(11,19)}}</span>
+                    </div>
+                </li>
+            </ul>
         </div>
-        <div class="form-group">
-            <label>评论内容：</label>
-            <textarea class="form-control" v-model="content"></textarea>
+        <%--作品评论区--%>
+        <div class="container-comment" v-show="permission === 'true'">
+            <div class="form-group">
+                <label>评论人：</label>
+                <input type="text" class="form-control" v-model="user">
+            </div>
+            <div class="form-group">
+                <label>评论内容：</label>
+                <textarea class="form-control" v-model="content"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="button" value="发表评论" class="butt" @click="postComments">
+            </div>
         </div>
-        <div class="form-group">
-            <input type="button" value="发表评论" class="butt" @click="postComments">
-        </div>
-    </div>
     </div>
 </div>
 <%--   打分区     --%>
 <div class="container-comment">
-<div class="grade_warp">
+    <div class="grade_warp">
 
-    <div class="User_ratings User_grade" id="div_fraction0">
-        <div class="ratings_title01"><p><span>写作内容</span>-你觉得这篇文章的内容出色吗？<i>分数越高表示越优秀。</i></p></div>
-        <div class="ratings_bars">
-            <span id="title0">0</span>
-            <span class="bars_10">0</span>
-            <div class="scale" id="bar0">
-                <div></div>
-                <span id="btn0"></span>
+        <div class="User_ratings User_grade" id="div_fraction0">
+            <div class="ratings_title01"><p><span>写作内容</span>-你觉得这篇文章的内容出色吗？<i>分数越高表示越优秀。</i></p></div>
+            <div class="ratings_bars">
+                <span id="title0">0</span>
+                <span class="bars_10">0</span>
+                <div class="scale" id="bar0">
+                    <div></div>
+                    <span id="btn0"></span>
+                </div>
+                <span class="bars_10">5</span>
             </div>
-            <span class="bars_10">5</span>
+        </div>
+
+        <div class="User_ratings User_grade" id="div_fraction1">
+            <div class="ratings_title01"><p><span>结构与衔接</span>-你觉得这篇文章在结构与衔接上优秀吗？<i>分数越高表示越优秀。</i></p></div>
+            <div class="ratings_bars">
+                <span id="title1">0</span>
+                <span class="bars_10">0</span>
+                <div class="scale" id="bar1">
+                    <div></div>
+                    <span id="btn1"></span>
+                </div>
+                <span class="bars_10">5</span>
+            </div>
+        </div>
+
+        <div class="User_ratings User_grade" id="div_fraction2">
+            <div class="ratings_title01"><p><span>词汇运用</span>-你觉得这篇文章在词汇运用上优秀吗？<i>分数越高表示越优秀。</i></p></div>
+            <div class="ratings_bars">
+                <span id="title2">0</span>
+                <span class="bars_10">0</span>
+                <div class="scale" id="bar2">
+                    <div></div>
+                    <span id="btn2"></span>
+                </div>
+                <span class="bars_10">5</span>
+            </div>
+        </div>
+
+        <div class="User_ratings User_grade" id="div_fraction3">
+            <div class="ratings_title01"><p><span>语法使用</span>-你觉得这篇文章在语法使用上可行吗？<i>分数越高表示越可行。</i></p></div>
+            <div class="ratings_bars">
+                <span id="title3">0</span>
+                <span class="bars_10">0</span>
+                <div class="scale" id="bar3">
+                    <div></div>
+                    <span id="btn3"></span>
+                </div>
+                <span class="bars_10">5</span>
+            </div>
+        </div>
+
+        <div class="User_ratings User_grade" id="div_fraction4">
+            <div class="ratings_title01"><p><span>写作规范</span>-你觉得这篇文章写作规范吗？<i>分数越高表示越优秀。</i></p></div>
+            <div class="ratings_bars">
+                <span id="title4">0</span>
+                <span class="bars_10">0</span>
+                <div class="scale" id="bar4">
+                    <div></div>
+                    <span id="btn4"></span>
+                </div>
+                <span class="bars_10">5</span>
+            </div>
         </div>
     </div>
-
-    <div class="User_ratings User_grade" id="div_fraction1">
-        <div class="ratings_title01"><p><span>结构与衔接</span>-你觉得这篇文章在结构与衔接上优秀吗？<i>分数越高表示越优秀。</i></p></div>
-        <div class="ratings_bars">
-            <span id="title1">0</span>
-            <span class="bars_10">0</span>
-            <div class="scale" id="bar1">
-                <div></div>
-                <span id="btn1"></span>
-            </div>
-            <span class="bars_10">5</span>
-        </div>
-    </div>
-
-    <div class="User_ratings User_grade" id="div_fraction2">
-        <div class="ratings_title01"><p><span>词汇运用</span>-你觉得这篇文章在词汇运用上优秀吗？<i>分数越高表示越优秀。</i></p></div>
-        <div class="ratings_bars">
-            <span id="title2">0</span>
-            <span class="bars_10">0</span>
-            <div class="scale" id="bar2">
-                <div></div>
-                <span id="btn2"></span>
-            </div>
-            <span class="bars_10">5</span>
-        </div>
-    </div>
-
-    <div class="User_ratings User_grade" id="div_fraction3">
-        <div class="ratings_title01"><p><span>语法使用</span>-你觉得这篇文章在语法使用上可行吗？<i>分数越高表示越可行。</i></p></div>
-        <div class="ratings_bars">
-            <span id="title3">0</span>
-            <span class="bars_10">0</span>
-            <div class="scale" id="bar3">
-                <div></div>
-                <span id="btn3"></span>
-            </div>
-            <span class="bars_10">5</span>
-        </div>
-    </div>
-
-    <div class="User_ratings User_grade" id="div_fraction4">
-        <div class="ratings_title01"><p><span>写作规范</span>-你觉得这篇文章写作规范吗？<i>分数越高表示越优秀。</i></p></div>
-        <div class="ratings_bars">
-            <span id="title4">0</span>
-            <span class="bars_10">0</span>
-            <div class="scale" id="bar4">
-                <div></div>
-                <span id="btn4"></span>
-            </div>
-            <span class="bars_10">5</span>
-        </div>
-    </div>
-</div>
 </div>
 <p style="clear:both"></p>
 <script type="text/javascript">
@@ -210,11 +209,13 @@
                 }else{
                     var comment = {id: <%=loginUser.getId()%>, user: this.user, content: this.content,title:this.title,textno:this.textno,context:this.context,
                         vocabulary:parseFloat(vocabulary),fluent: parseFloat(fluent),variety:parseFloat(variety),complete:parseFloat(complete),specification:parseFloat(specification)}
-                        this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){
+                    this.$http.post('addcommentsevlet',JSON.stringify(comment)).then(function(data){
                         console.log(data);
                         this.loadComments();
+                        //清空所有数据
                     })
                     this.content="";
+
                 }
             },
             loadComments(){
@@ -247,6 +248,7 @@
                     });
                 });
             })
+
         }
     })
 </script>
@@ -418,8 +420,7 @@
         width: 55%;
         /*height: 700px;*/
         max-height: 800px;
-        overflow-x: hidden;
-        /*overflow-y: scroll;*/
+        overflow-y: scroll;
         float: left;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         /*text-align: center;*/
@@ -434,6 +435,7 @@
         font-size: 20px;
     }
     div.content{
+        word-break: break-word;
         padding:10px;
     }
     div.container-card {
@@ -459,12 +461,12 @@
     }
 
 </style>
-
 <%--    温馨提示--%>
-    <script  src="static/script/roll-script-teacher.js"></script>
+<script  src="static/script/roll-script-teacher.js"></script>
 <%--背景--%>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script  src="static/script/teacher-background-script.js"></script>
+
 </body>
 </html>
 
